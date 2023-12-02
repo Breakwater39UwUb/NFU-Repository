@@ -43,7 +43,9 @@ def get_data(driver, web):
         ago = data.find_element(
             By.XPATH, './/span[@class="rsqaWe"]').text
 
-        lst_data.append([name + " from GoogleMaps", text, score[0], ago])
+        # lst_data.append([name + " from GoogleMaps", text, score[0], ago])
+
+        lst_data.append([text, score[0]])
 
     return lst_data
 
@@ -157,7 +159,7 @@ def write_to_xlsx(data, filename):
     print(f'write to {filename}.csv...')
     dir = '.\Google Maps Reviews Scraper\\'
     filepath = dir + filename + '.csv'
-    cols = ["name", "comment", 'rating', 'time']
+    cols = ["comment", 'rating']
     df = pd.DataFrame(data, columns=cols)
     df.to_csv(filepath, encoding='utf-8')
 
