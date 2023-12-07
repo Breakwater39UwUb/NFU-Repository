@@ -5,7 +5,10 @@ from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.options import Options
 from fake_useragent import UserAgent
+from selenium.webdriver.common.proxy import Proxy, ProxyType
+import undetected_chromedriver as uc
 import pandas as pd
 import env
 
@@ -231,25 +234,37 @@ def save_ratings(webname):
 
 
 if __name__ == "__main__":
-    for pages in env.GMs:
-        print(f'scraping {pages}...')
+    proxy = Proxy()
+    proxy.proxy_type = ProxyType.MANUAL
+    proxy.http_proxy = "122.117.162.248:1080"
+    for pages in env.FPs:
         options = webdriver.ChromeOptions()
-        options.add_argument("--head")  # show browser or not
+        options.add_argument("--headed")  # show browser or not
         options.add_argument("--lang=en-US")
         options.add_experimental_option('prefs', {'intl.accept_languages': 'en,en_US'})
-        options.add_argument("--disable-blink-features")
         options.add_argument("--disable-blink-features=AutomationControlled")
+        options.add_argument("start-maximized")
+        options.add_experimental_option("excludeSwitches", ["enable-automation"])
+        options.add_experimental_option('useAutomationExtension', False)
+        options.add_extension(".\Drivers\Proxy-SwitchyOmega.crx")
+        options.add_extension(".\Drivers\\reCAPTCHA-Solver-auto-captcha-bypass.crx")
         ua = UserAgent()
         user_agent = ua.random
         options.add_argument(f'--user-agent={user_agent}')
-        driver = webdriver.Chrome(options=options)
+        # driver = webdriver.Chrome(options=options)
+        driver = uc.Chrome(headless=True, use_subprocess=False)
+        driver.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
+        driver.execute_cdp_cmd('Network.setUserAgentOverride', {"userAgent": 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.53 Safari/537.36'})
+        print(driver.execute_script("return navigator.userAgent;"))
+        print(f'scraping {pages}...')
         driver.get(pages)
         try:
-            wait = WebDriverWait(driver, timeout=2)
+            wait = WebDriverWait(driver, timeout=5)
             wait.until(lambda d : driver.is_displayed())
         except:
             pass
         webTitle, webname = set_args(driver)
+        driver.save_screenshot('nowsecure.png')
 
         counts = counter(webname)
         scrolling(counts, webname)
