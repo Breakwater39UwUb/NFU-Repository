@@ -2,6 +2,8 @@
 
 this quide is suitable for vscode
 
+if you encounter any problems, contact [breakwater39](mailto:41043152@gm.nfu.edu.tw)
+
 # Guidelines
 
 ## step 1
