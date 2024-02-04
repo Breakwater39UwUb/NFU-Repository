@@ -63,13 +63,38 @@ test_env_vars()
 init_db()
 
 with db.connect() as conn:
-        conn.execute(
-            sqlalchemy.text(
-                '''CREATE TABLE IF NOT EXISTS stu (
-                stuid INTEGER PRIMARY KEY,
-                name VARCHAR(50) not null,
-                pid VARCHAR(20) not null,
-                phone VARCHAR(20) not null)'''
-            )
+    conn.execute(
+        sqlalchemy.text(
+            "CREATE TABLE IF NOT EXISTS stu ("
+            "stuid INTEGER PRIMARY KEY,"
+            "name VARCHAR(50) not null,"
+            "pid VARCHAR(20) not null,"
+            "phone VARCHAR(20) not null);"
+            
         )
-        conn.commit()
+    )
+    conn.commit()
+
+    # conn.execute(
+    #     sqlalchemy.text(
+    #         "INSERT INTO stu VALUES (104001, 'Claire', 'B342222', '1245667');"
+    #     )
+    # )
+    # conn.commit()
+
+    rows = conn.execute(
+        sqlalchemy.text(
+            "SELECT * FROM stu;"
+        )
+    )
+    conn.commit()
+    
+    # query and fetch ratings table
+    results = conn.execute(sqlalchemy.text("SELECT * FROM stu")).fetchall()
+    print('You have successfully queried from the table.')
+
+    # show results
+    for row in results:
+        print(row)
+
+
