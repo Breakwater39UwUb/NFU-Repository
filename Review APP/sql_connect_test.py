@@ -18,6 +18,7 @@ from google.cloud.sql.connector import Connector, IPTypes
 import pymysql
 import sqlalchemy
 from connect_connector import connect_with_connector
+from getEnv import test_env_vars
 
 def init_connection_pool() -> sqlalchemy.engine.base.Engine:
     """Sets up connection pool for the app."""
@@ -58,6 +59,7 @@ def init_db() -> sqlalchemy.engine.base.Engine:
         db = connect_with_connector()
         migrate_db(db)
 
+test_env_vars()
 init_db()
 
 with db.connect() as conn:
