@@ -10,7 +10,7 @@
 import os
 
 check_list = ["GOOGLE_APPLICATION_CREDENTIALS", "INSTANCE_CONNECTION_NAME", "DB_PORT", "DB_NAME", "DB_USER", "DB_PASS"]
-vars = {check_list[0]: "/graphic-pathway-397813-95c959fdc875.json",
+vars = {check_list[0]: "./Review APP/graphic-pathway-397813-95c959fdc875.json",
         check_list[1]: "graphic-pathway-397813:asia-east1:nfu-113-2",
         check_list[2]: "3306",
         check_list[3]: "commentsDB",
