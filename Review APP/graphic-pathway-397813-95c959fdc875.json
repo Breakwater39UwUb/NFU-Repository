@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "graphic-pathway-397813",
+  "private_key_id": "95c959fdc8759ff993e45fa7322947a954bbce1d",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDEpIscB2UDQ96U\nfS4BG7NlzjjgDC8ytEcKLil2iECyGIp7cOzKi5HKBurlSTnSWRphoiSRVQaZ4Hbc\noz6EcuxqljUBEaxJRiPJaFYREIJUre2KNdTOWdJybMhmF+XyEHeiTNaD70gviVcc\nPOe4BMD8RjwMsadzuS+qo/uaDiC+navmFEOjajWZ3dEmaNQ3tYMxB2bwdAK7Q2n4\nNmiOJcr4fHfb17imqAwC6uQLKvEqv12Onjr4eeoPDnpW2NY7tOvHEZpCI1B4tIMM\nLhHlvUa1B7ChCi7T+ke4oLldzZFc34rH/b1ghCIJ+ZfPCEgc7FlN2nMKjhssWuLT\neIIzq9ivAgMBAAECggEACG2pDL2AZeBt1N18sE14pf9tzqSXDUxO0y/hVRRH+Zo1\nrU7Mx22uBQPA46z8znhFOjQR7yy+yK+nSJOypUiru3HOucoBIW7hL8vKDJcxjuGZ\nkdf21BVjgMYK3N1fXL258vnqI+OIq4juc+ZkZC3H+8gi4MRokfw4/85hhVvfqWvT\nZjrs69OLgEq86Mo+ah3xzQFc7ptLMpV0L97B0xGbJ/4l5HNLCnUPm1NX4caI6I00\nNfZA7wPQOqBH7C7w7EIop9QINosPr5G0k+eZD6b2/cAtlxGs9nEfkHvnBGAmURwD\ndL13A8G4VgUEjDcJtPmlv63dSJZWzyaSEgvf6Ey2mQKBgQDrDHDwi8JcC0eXtnVU\n6cLwZA++xFCujNvecifqDElfyrPRkXmRDqOtN6QIgvQM3P9P8t7T+J8Tm2IsooSS\nnctgehEbFHHX2mgi2FjOvR226Kpm0z9xkWbarpHCpr8UsNW9b54fOzLGmcDQAZAh\nRVfKWyPHO+B6fpxHuPqoNMYeuwKBgQDWK7i6R9LtWSjX38K4mI4O7pTfIUW0boEs\nzeBoSTn+lOvt9a+VzK8nEy/2rf9rRIkHZWN0vIdV0cUK3BOjp9av2OxxdKm0KeHq\nfaMMuljIJWN0V3lC2qxlgsVHzOn4OnQDxpBOeRh652UcoPEYiFnkZ0+w9f35IHMg\nGvPJB1EAnQKBgF0Iq5tKdj+gZ1HxcjeN3w7vTBwh8B1mu5Asdwf4nQJBZTNJ9Wgo\n9zgUkeSckKSWxKeMZg5Ylf5Yvl8UZIzz0A/7wNGLIhRh6l4AbAZIbH59URUqAC6f\ncqqT9jWpcnBqHe/BQkDyWYKqUNsEA1xn6fu6X0r4tD1H5+url+sEGHcJAoGBAIO/\nM4zMABHnpftd94/MsJ643zV/Zzy+OZJRNzmPyjA0dgnU9+VDm3+DCx9JG/VlnJHD\nKfI2w13kg7zRcvdamPNlktWcOYTNut6f2LxMqa69aTe5U6vvjtuHHUq04DzF4HYu\nILlVPtzkGUwKKSW5QusBLoGiYVBuSMO4ML06Vfb1AoGACaQ3EcjZRIzv5kxrh/QE\n1uKAfuMDA8YMCRY6py6vOl6/pUnh6ezWw/9u8C9ie0hsuKLPhOTm/Kul3Z2PA0hE\nb8AB4gPxAmW019weORnzhZRANJew+C+oR+b27PlNHYFnxv38kmIatW59+8mLl4HZ\nn02jti8Xwe1OkGIe7+ZnNv0=\n-----END PRIVATE KEY-----\n",
+  "client_email": "breakwater@graphic-pathway-397813.iam.gserviceaccount.com",
+  "client_id": "103437895406390923134",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/breakwater%40graphic-pathway-397813.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
