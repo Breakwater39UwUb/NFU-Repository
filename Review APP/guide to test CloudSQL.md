@@ -18,7 +18,7 @@ py -m venv env
 # activate python virtual environment
 .\env\Scripts\activate
 # deactivate python virtual environment
-.\env\Scripts\activate
+.\env\Scripts\deactivate
 ```
 
 if you encounter problems to execute this command, try this powershell command
