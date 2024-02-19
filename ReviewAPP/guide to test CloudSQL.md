@@ -3,8 +3,22 @@
 this quide is suitable for vscode
 
 if you encounter any problems, contact [breakwater39](mailto:41043152@gm.nfu.edu.tw)
+# Guidelines for connecting to remote MySQL Server
+## step 1
 
-# Guidelines
+Check ngrok forward address and paste to [ngrok.txt](./ngrok.txt) file
+
+Make sure that only copy the marked part and the file should be only contain this one line.
+
+![ngrok](./Images/guide_ngrok1.png)
+
+## step 2
+run sql_connect_test2.py
+
+    python sql_connect_test2.py
+
+---
+# Guidelines for connecting to CloudSQL
 
 ## step 1
 
