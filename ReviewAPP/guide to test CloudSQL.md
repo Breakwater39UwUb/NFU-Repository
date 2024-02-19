@@ -10,7 +10,7 @@ if you encounter any problems, contact [breakwater39](mailto:41043152@gm.nfu.edu
 
 in the terminal, check current directory is
 
-    NFU-Repsitory>
+    NFU-Repsitory\ReviewAPP>
 
 then create a python virtual environment by running these commands in terminal
 ```bash
@@ -34,6 +34,8 @@ install dependencies packages
 ## step 2
 
 under virtual environment, run sql_connect_test.py
+
+    python sql_connect_test.py
 
 the test function will create a new table on the SQL
 
