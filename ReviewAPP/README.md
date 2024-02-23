@@ -7,9 +7,6 @@ Develop with PyQt5
 ## App interface
 ![sample image](./Images/UI_page1.png)
 
-## Database implementation
-
-[Google CloudSQL](./guide%20to%20test%20CloudSQL.md)
 
 ## Issue and work-around
 
@@ -22,3 +19,11 @@ Develop with PyQt5
     ```
     pyuic5.exe -x ./Src/uifiles.ui -o ouput.py
     ```
+## Database implementation
+
+```
++-- Database: reviews
+    +-- Table: reviews
+    |   +-- column 1: rating INT
+    |   +-- column 2: txt VARCHAR(1024)
+```
