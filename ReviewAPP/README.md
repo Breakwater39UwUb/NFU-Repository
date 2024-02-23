@@ -1,5 +1,9 @@
 # ReviewAPP
 
+Develop with PyQt5
+
+[pyside2 for android development](https://stackoverflow.com/questions/70907303/pyside2-for-android-development)
+
 ## App interface
 ![sample image]()
 
