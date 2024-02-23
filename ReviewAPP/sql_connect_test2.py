@@ -8,7 +8,7 @@ try:
     db = pymysql.connect(host=forward_ip,
                         port=forward_port,
                         user="root",
-                        database="reviews",
+                        database="test_con",
                         password="239mikuNFU@~@")
 except pymysql.err.OperationalError as err:
     print("Error connecting to MySQL database, check your ngrok host and port.")
@@ -16,12 +16,12 @@ else:
     cursor = db.cursor()
 
     # Create table
-    cursor.execute('''CREATE TABLE IF NOT EXISTS reviews (
+    cursor.execute('''CREATE TABLE IF NOT EXISTS test_table (
                 rating INTEGER,
-                text NVARCHAR(1024))''')
+                txt NVARCHAR(1024))''')
 
     # Update table
-    command = "INSERT INTO reviews (rating, text) VALUES (%s, %s)"
+    command = "INSERT INTO test_table (rating, text) VALUES (%s, %s)"
     rating = -1
     text = 'The food was terrible.'
     review = (rating, text)
@@ -30,7 +30,7 @@ else:
     db.commit()
 
     # Read the review
-    cursor.execute("SELECT * FROM reviews")
+    cursor.execute("SELECT * FROM test_table")
     result = cursor.fetchall()
 
     for x in result:
