@@ -1,5 +1,6 @@
 # user ignores
 *.DS_Store
+pyside6/
 
 .vscode/*
 !.vscode/settings.json
