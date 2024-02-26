@@ -6,8 +6,6 @@ def get_connection_args(filepath: str = None):
 
     if filepath is None:
         filename = './ReviewAPP/ngrok.txt'
-    else:
-        filename = './ngrok.txt'
 
     with open(filename, 'r') as file:
         hostname = file.readline()
