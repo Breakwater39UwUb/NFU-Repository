@@ -22,7 +22,7 @@ def db_update(rating: int, text: str, db_name: str):
                             database=db_name,
                             password="239mikuNFU@~@")
     except pymysql.err.OperationalError as err:
-        print("Error connecting to MySQL database, check your ngrok host and port.")
+        print(f'Error connecting to MySQL database, check your ngrok host and port.\nhost: {forward_ip}\nport: {forward_port}')
     else:
         cursor = db.cursor()
 
