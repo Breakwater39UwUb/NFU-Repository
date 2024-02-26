@@ -5,6 +5,13 @@ Develop with PyQt5
 [pyside2 for android development](https://stackoverflow.com/questions/70907303/pyside2-for-android-development)
 
 Scraped data from internet are saved in the [SaveDate](./SaveData/)
+
+# Guide to debugging and development
+### 1. Make sure you have the URL host in [ngrok.txt](./ngrok.txt), for steps, see [here](./guide%20to%20test%20CloudSQL.md#set_ngrok_host)
+### 2. if you see ```'Error to scrape the webdriver'``` in terminal, just try again
+### 3. if you met any error, contact [防波堤](mailto:41043152@gm.nfu.edu.tw)
+
+
 ## App interface
 ![sample image](./Images/UI_page1.png)
 
