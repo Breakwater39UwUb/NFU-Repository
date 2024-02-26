@@ -1,11 +1,13 @@
 import os
-def get_connection_args(filepath: str = None):
+def get_connection_args(filepath: str | None= None):
     """Returns the connection hostname and port
     filepath: None -> './ReviewAPP/ngrok.txt'
     """
 
     if filepath is None:
         filename = './ReviewAPP/ngrok.txt'
+    else:
+        filename = filepath
 
     with open(filename, 'r') as file:
         hostname = file.readline()
