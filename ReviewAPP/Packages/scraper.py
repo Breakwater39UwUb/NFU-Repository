@@ -1,10 +1,12 @@
 # https://github.com/MajideND/scraping-reviews-from-googlemaps/blob/main/app.py
+import os
 import math
 import time
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
+import selenium.common.exceptions
 from fake_useragent import UserAgent
 import pandas as pd
 import env
@@ -49,15 +51,12 @@ def get_data(driver, web):
         elif score[0] == '5':
             rating_level_G[4] += 1
 
-        lst_data.append([text, score[0]])
+        lst_data.append([score[0], text])
 
     return lst_data
 
 def get_foodpanda(driver, web):
     print('get_foodpanda...')
-    if web == 'Ubereat':
-        get_ubereat(driver)
-        return
 
     xpath = '//div[@class="info-reviews-modal-review-card"]'
     elements = driver.find_elements(By.CLASS_NAME, 'info-reviews-modal-review-card')
@@ -85,44 +84,61 @@ def get_foodpanda(driver, web):
 
     return lst_data
 
-def get_ubereat(driver):
-    print('Getting Ubeeeerrrerrer')
-
-def set_args(driver):
-    'return (title, webname)'
-    args = (driver.title.replace(' ', '').split('|')[0],)
-    if 'maps' in driver.current_url:
-        args += ('Googlemaps',)
-    elif 'foodpanda' in driver.current_url:
-        args += ('Foodpanda',)
-    return args
-
 def counter(driver, web):
     print('Jumping to review tab')
+    # driver.implicitly_wait(1)
+    result = None
     if web == 'Googlemaps':
         review_btn_xpath = '//div[@class="RWPxGd"]/button[2]'
         class_name_1 = 'jANrlb'
         class_name_2 = 'fontBodySmall'
         x = 0
-        reviewBTN = driver.find_element(By.XPATH, review_btn_xpath)
-        reviewBTN.click()
-        result = driver.find_element(By.CLASS_NAME, class_name_1).find_element(By.CLASS_NAME, class_name_2).text
+        try:
+            reviewBTN = driver.find_element(By.XPATH, review_btn_xpath)
+            reviewBTN.click()
+            result = driver.find_element(By.CLASS_NAME, class_name_1).find_element(By.CLASS_NAME, class_name_2).text
+        except selenium.common.exceptions.StaleElementReferenceException:
+            pass
+        except selenium.common.exceptions.NoSuchElementException:
+            pass
+        else:
+            driver.implicitly_wait(2)
+            reviewBTN = driver.find_element(By.XPATH, review_btn_xpath)
+            reviewBTN.click()
+            result = driver.find_element(By.CLASS_NAME, class_name_1).find_element(By.CLASS_NAME, class_name_2).text
+
+            result = result.replace(',', '').replace('(', '').replace(')', '').replace('+', '')
+            result = result.split(' ')
+            result = result[x].split('\n')
+            return int(int(result[0])/10)+1
+
     elif web == 'Foodpanda':
         review_btn_xpath = '//*[@id="vendor-details-root"]/main/section[2]/div/div[3]/div[1]/div[2]/button'
         review_btn_name = 'bds-c-btn bds-c-btn-text bds-c-btn--size-small bds-is-idle bds-c-btn--layout-default bds-c-btn--remove-side-spacing zi-surface-base'
         class_name_1 = 'ratings-summary-section'
         class_name_2 = '//*[@id="info-reviews-content"]/div/div/div[1]/div/div/div[1]/div[3]/div'
         x = 1
-        reviewBTN = driver.find_element(By.XPATH, review_btn_xpath)
-        reviewBTN.click()
-        time.sleep(1)
-        xpath = '//*[@id="info-reviews-content"]/div/div/div[1]/div/div/div[1]/div[3]'
-        result = driver.find_element(By.CLASS_NAME, class_name_1).find_element(By.XPATH, xpath).find_element(By.XPATH, class_name_2).text
+        try:
+            reviewBTN = driver.find_element(By.XPATH, review_btn_xpath)
+            reviewBTN.click()
+            driver.implicitly_wait(1)
+            xpath = '//*[@id="info-reviews-content"]/div/div/div[1]/div/div/div[1]/div[3]'
+            result = driver.find_element(By.CLASS_NAME, class_name_1).find_element(By.XPATH, xpath).find_element(By.XPATH, class_name_2).text
+        except selenium.common.StaleElementReferenceException:
+            pass
+        except selenium.common.exceptions.NoSuchElementException:
+            pass
+        else:
+            driver.implicitly_wait(2)
+            reviewBTN = driver.find_element(By.XPATH, review_btn_xpath)
+            reviewBTN.click()
+            xpath = '//*[@id="info-reviews-content"]/div/div/div[1]/div/div/div[1]/div[3]'
+            result = driver.find_element(By.CLASS_NAME, class_name_1).find_element(By.XPATH, xpath).find_element(By.XPATH, class_name_2).text
     
-    result = result.replace(',', '').replace('(', '').replace(')', '').replace('+', '')
-    result = result.split(' ')
-    result = result[x].split('\n')
-    return int(int(result[0])/10)+1
+    # result = result.replace(',', '').replace('(', '').replace(')', '').replace('+', '')
+    # result = result.split(' ')
+    # result = result[x].split('\n')
+    # return int(int(result[0])/10)+1
 
 def scrolling(driver, counter, web):
     print('scrolling...')
@@ -199,39 +215,58 @@ def scrolling(driver, counter, web):
 
 def write_to_xlsx(data, filename):
     print(f'write to {filename}.csv...')
-    dir = '../SavedData'
+    dir = './SaveData/'
     filename = filename.replace('/', ' ').replace('\\', ' ')
     filepath = dir + filename + '.csv'
     cols = ["comment", 'rating']
-    df = pd.DataFrame(data, columns=cols)
-    df.to_csv(filepath, encoding='utf-8', index=False)
+    df = pd.DataFrame(data, columns=cols) # this insert the head
+    # df = pd.DataFrame(data) # headless column name
+    df.to_csv(filepath, encoding='utf-8', index=False, header=None)
+    return filename
 
-def get_reviews(url: str = None):
+def get_reviews(url: str = None, webname: str = 'Googlemaps'):
+    '''Get reviews on Googlemap or Foodpanda
+    * url: string
+    * webname: It is set by choosing platform in QT
+    
+    Returns the path of saved csv file
+    '''
+    if url is None:
+        return
+    
     print(f'Find reviews on {url}...')
-    options = webdriver.ChromeOptions()
-    options.add_argument("--head")  # show browser or not
-    options.add_argument("--lang=en-US")
-    options.add_experimental_option('prefs', {'intl.accept_languages': 'en,en_US'})
-    options.add_argument("--disable-blink-features")
-    options.add_argument("--disable-blink-features=AutomationControlled")
-    ua = UserAgent()
-    user_agent = ua.random
-    options.add_argument(f'--user-agent={user_agent}')
-    driver = webdriver.Chrome(options=options)
-    driver.get(url)
+
     try:
-        wait = WebDriverWait(driver, timeout=2)
-        wait.until(lambda d : driver.is_displayed())
+        options = webdriver.ChromeOptions()
+        options.add_argument("--headless")  # show browser or not
+        options.add_argument("--lang=en-US")
+        options.add_experimental_option('prefs', {'intl.accept_languages': 'en,en_US'})
+        options.add_argument("--disable-blink-features")
+        options.add_argument("--disable-blink-features=AutomationControlled")
+        ua = UserAgent()
+        user_agent = ua.random
+        options.add_argument(f'--user-agent={user_agent}')
+        driver = webdriver.Chrome(options=options)
+        driver.get(url)
+        try:
+            wait = WebDriverWait(driver, timeout=2)
+            wait.until(lambda d : driver.is_displayed())
+        except:
+            pass
+        
+        webTitle = driver.title.replace(' ', '').split('|')[0]
+
+        counts = counter(driver, webname)
+        scrolling(driver, counts, webname)
+
+        data = get_data(driver, webname)
+        driver.close()
+        file = write_to_xlsx(data, webTitle)
+        print('Done!')
+        return file
     except:
-        pass
-    webTitle, webname = set_args(driver)
+        print('Error to scrape the webdriver')
+    finally:
+        driver.quit()
+        os.system("taskkill /f /im chrome.exe")
 
-    counts = counter(driver, webname)
-    scrolling(driver, counts, webname)
-
-    data = get_data(driver, webname)
-    driver.close()
-
-    write_to_xlsx(data, webTitle)
-
-    print('Done!')
