@@ -237,6 +237,7 @@ def get_reviews(url: str = None, webname: str = 'Googlemaps'):
     print(f'Find reviews on {url}...')
 
     try:
+        # setup webdriver options
         options = webdriver.ChromeOptions()
         options.add_argument("--headless")  # show browser or not
         options.add_argument("--lang=en-US")
@@ -247,20 +248,27 @@ def get_reviews(url: str = None, webname: str = 'Googlemaps'):
         user_agent = ua.random
         options.add_argument(f'--user-agent={user_agent}')
         driver = webdriver.Chrome(options=options)
+        # get web from the url
         driver.get(url)
+        # wait for web is properly loaded
         try:
             wait = WebDriverWait(driver, timeout=2)
             wait.until(lambda d : driver.is_displayed())
         except:
             pass
         
+        # format the web title for further use
         webTitle = driver.title.replace(' ', '').split('|')[0]
 
+        # count for scrolling
         counts = counter(driver, webname)
+        # scroll to the bottom of the page
         scrolling(driver, counts, webname)
 
+        # get reviews on the web
         data = get_data(driver, webname)
         driver.close()
+        # write reviews to csv file
         file = write_to_xlsx(data, webTitle)
         print('Done!')
         return file
