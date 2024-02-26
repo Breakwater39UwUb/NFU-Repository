@@ -4,8 +4,19 @@ Develop with PyQt5
 
 [pyside2 for android development](https://stackoverflow.com/questions/70907303/pyside2-for-android-development)
 
+Scraped data from internet are saved in the [SaveDate](./SaveData/)
 ## App interface
 ![sample image](./Images/UI_page1.png)
+
+## Todo
+
+* To prevent ngrok.txt path is not found, add a try/catch block
+    - Make quick troubleshooting guide for users
+
+* Close the chromedriver properly, preventing from too many zombie processes in background
+
+### Fix
+1. Web scraper sometimes works as expected, but fails often
 
 
 ## Issue and work-around
