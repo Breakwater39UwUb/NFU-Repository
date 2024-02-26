@@ -1,13 +1,13 @@
 import pymysql
 from Packages.parse_ngrok import get_connection_args
 
-def db_update(rating: int, text: str, db_name: str):
+def db_update(rating: int, text: str, db_name: str, ngrok_file: str | None = None):
     """Update database with new review
     Args:
         rating: int in range 1 to 5
         text: string
-        db: database to connect, default is None
-            which connect to reviews database
+        db_name: database to connect, default connect to reviews database
+        ngrok_file: default = './ReviewAPP/ngrok.txt'
     No returns
     """
 
@@ -15,7 +15,7 @@ def db_update(rating: int, text: str, db_name: str):
         db_name = 'reviews'
 
     try:
-        forward_ip, forward_port = get_connection_args()
+        forward_ip, forward_port = get_connection_args(ngrok_file)
         db = pymysql.connect(host=forward_ip,
                             port=forward_port,
                             user="root",
