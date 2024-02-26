@@ -3,7 +3,7 @@
 this quide is suitable for vscode
 
 if you encounter any problems, contact [breakwater39](mailto:41043152@gm.nfu.edu.tw)
-# Guidelines for connecting to remote MySQL Server
+# Guidelines for connecting to remote MySQL Server [#](#set_ngrok_host)
 ## step 1
 
 Check ngrok forward address and paste to [ngrok.txt](./ngrok.txt) file
