@@ -22,109 +22,6 @@
    <property name="enabled">
     <bool>true</bool>
    </property>
-   <widget class="QWidget" name="widget_userB_page" native="true">
-    <property name="enabled">
-     <bool>true</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>10</y>
-      <width>324</width>
-      <height>611</height>
-     </rect>
-    </property>
-    <widget class="QWidget" name="verticalLayoutWidget_6">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>0</y>
-       <width>321</width>
-       <height>591</height>
-      </rect>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_5">
-      <property name="spacing">
-       <number>10</number>
-      </property>
-      <property name="sizeConstraint">
-       <enum>QLayout::SetDefaultConstraint</enum>
-      </property>
-      <property name="leftMargin">
-       <number>40</number>
-      </property>
-      <property name="rightMargin">
-       <number>40</number>
-      </property>
-      <item>
-       <spacer name="verticalSpacer_11">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::Fixed</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>50</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item>
-       <widget class="QLabel" name="label_6">
-        <property name="font">
-         <font>
-          <family>微軟正黑體</family>
-          <pointsize>20</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
-        </property>
-        <property name="text">
-         <string>輸入評論</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPlainTextEdit" name="plainTextEdit"/>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButton_setURL_2">
-        <property name="font">
-         <font>
-          <family>微軟正黑體</family>
-          <pointsize>18</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>確定</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <spacer name="verticalSpacer_12">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>40</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-     </layout>
-    </widget>
-   </widget>
    <widget class="QWidget" name="widget_seturl_page" native="true">
     <property name="enabled">
      <bool>true</bool>
@@ -213,7 +110,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_setURL">
+       <widget class="QPushButton" name="pushButton_set_url">
         <property name="font">
          <font>
           <family>微軟正黑體</family>
@@ -319,7 +216,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_mode_user_A">
+       <widget class="QPushButton" name="pushButton_mode_business">
         <property name="enabled">
          <bool>true</bool>
         </property>
@@ -350,7 +247,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_mode_user_B">
+       <widget class="QPushButton" name="pushButton_mode_user">
         <property name="enabled">
          <bool>true</bool>
         </property>
@@ -380,13 +277,6 @@
         </property>
         <property name="flat">
          <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="apushButton">
-        <property name="text">
-         <string>start</string>
         </property>
        </widget>
       </item>
@@ -558,30 +448,160 @@
      </layout>
     </widget>
    </widget>
-   <zorder>widget_userB_page</zorder>
-   <zorder>widget_seturl_page</zorder>
+   <widget class="QWidget" name="widget_user_page" native="true">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>324</width>
+      <height>611</height>
+     </rect>
+    </property>
+    <widget class="QWidget" name="verticalLayoutWidget_6">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>321</width>
+       <height>591</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_5">
+      <property name="spacing">
+       <number>10</number>
+      </property>
+      <property name="sizeConstraint">
+       <enum>QLayout::SetDefaultConstraint</enum>
+      </property>
+      <property name="leftMargin">
+       <number>40</number>
+      </property>
+      <property name="rightMargin">
+       <number>40</number>
+      </property>
+      <item>
+       <spacer name="verticalSpacer_11">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>50</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_set_rating">
+        <property name="font">
+         <font>
+          <family>微軟正黑體</family>
+          <pointsize>20</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
+        <property name="text">
+         <string>輸入星等</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSlider" name="horizontalSlider_1">
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>5</number>
+        </property>
+        <property name="pageStep">
+         <number>1</number>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="invertedAppearance">
+         <bool>false</bool>
+        </property>
+        <property name="invertedControls">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_set_comment">
+        <property name="font">
+         <font>
+          <family>微軟正黑體</family>
+          <pointsize>20</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
+        <property name="text">
+         <string>輸入評論</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPlainTextEdit" name="plainTextEdit"/>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_set_review">
+        <property name="font">
+         <font>
+          <family>微軟正黑體</family>
+          <pointsize>18</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>確定</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="verticalSpacer_12">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </widget>
    <zorder>widget_platform_page</zorder>
+   <zorder>widget_seturl_page</zorder>
    <zorder>widget_main_page</zorder>
+   <zorder>widget_user_page</zorder>
   </widget>
  </widget>
  <resources/>
  <connections>
-  <connection>
-   <sender>pushButton_mode_user_B</sender>
-   <signal>clicked()</signal>
-   <receiver>widget_userB_page</receiver>
-   <slot>show()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>240</x>
-     <y>275</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>361</x>
-     <y>315</y>
-    </hint>
-   </hints>
-  </connection>
   <connection>
    <sender>pushButton_platform_google</sender>
    <signal>clicked()</signal>
@@ -615,23 +635,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>apushButton</sender>
-   <signal>clicked()</signal>
-   <receiver>widget_userB_page</receiver>
-   <slot>hide()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>240</x>
-     <y>347</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>241</x>
-     <y>315</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_mode_user_B</sender>
+   <sender>pushButton_mode_user</sender>
    <signal>clicked()</signal>
    <receiver>widget_main_page</receiver>
    <slot>hide()</slot>
@@ -647,39 +651,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>apushButton</sender>
-   <signal>clicked()</signal>
-   <receiver>widget_platform_page</receiver>
-   <slot>hide()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>240</x>
-     <y>347</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>241</x>
-     <y>315</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>apushButton</sender>
-   <signal>clicked()</signal>
-   <receiver>widget_seturl_page</receiver>
-   <slot>hide()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>240</x>
-     <y>347</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>241</x>
-     <y>315</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_mode_user_A</sender>
+   <sender>pushButton_mode_business</sender>
    <signal>clicked()</signal>
    <receiver>widget_main_page</receiver>
    <slot>hide()</slot>
@@ -695,7 +667,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>pushButton_mode_user_A</sender>
+   <sender>pushButton_mode_business</sender>
    <signal>clicked()</signal>
    <receiver>widget_platform_page</receiver>
    <slot>show()</slot>
