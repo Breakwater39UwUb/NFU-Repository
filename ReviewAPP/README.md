@@ -1,8 +1,8 @@
 # ReviewAPP
 
-Develop with PyQt5
+Web implementates with flask
 
-[pyside2 for android development](https://stackoverflow.com/questions/70907303/pyside2-for-android-development)
+~~[pyside2 for android development](https://stackoverflow.com/questions/70907303/pyside2-for-android-development)~~
 
 Scraped data from internet are saved in the [SaveDate](./SaveData/)
 
