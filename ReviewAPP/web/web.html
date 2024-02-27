@@ -96,15 +96,17 @@
             top: 0px;
             left: 50%;
             transform: translate(-50%, 0%);
-            width: 150px;
             height: 70px;
             font-size: 30px;
             border-style: outset;
             border-radius: 10px;
+            width: 200px;
+            min-width: 200px;
+            min-height: 70px;
         }
         [data-gwd-group="Group1"] {
             width: 100px;
-            height: 70px;
+            height: 170px;
         }
         .gwd-div-j7nr {
             position: absolute;
@@ -112,24 +114,40 @@
             transform: translate(-50%, 0%);
             top: 25%;
         }
-        [data-gwd-group="Group1"] .gwd-grp-1fih.gwd-button-lowx {
+        [data-gwd-group="Group1"] .gwd-grp-1fih.gwd-button-1esx {
             position: absolute;
             left: 50%;
             transform: translate(-50%, 0%);
+            height: 70px;
             font-size: 30px;
             border-style: outset;
             border-radius: 10px;
-            width: 150%;
-            height: 100%;
-            top: 150%;
+            width: 200px;
+            min-width: 200px;
+            min-height: 70px;
+            top: 100px;
+        }
+        [data-gwd-group="ButtonGroup2"] .gwd-grp-b81f.gwd-button-1wag {
+            position: absolute;
+            width: 100px;
+            height: 24px;
+            left: 0px;
+            top: 0px;
+        }
+        [data-gwd-group="ButtonGroup2"] {
+            width: 100px;
+            height: 23.9915px;
+        }
+        .gwd-div-11gh {
+            position: absolute;
+            left: 156px;
+            top: 257px;
         }
     </style>
     <script data-source="gwd_webcomponents_v1_min.js" data-version="2" data-exports-type="gwd_webcomponents_v1" src="gwd_webcomponents_v1_min.js"></script>
     <script data-source="gwdpage_min.js" data-version="13" data-exports-type="gwd-page" src="gwdpage_min.js"></script>
     <script data-source="gwdpagedeck_min.js" data-version="14" data-exports-type="gwd-pagedeck" src="gwdpagedeck_min.js"></script>
     <script type="text/javascript" src="groups_runtime.min.1.0.js" gwd-groups-version="1.0"></script>
-    <script type="text/javascript" src="gwdid.min.1.0.js" gwd-gwdid-version="1.0"></script>
-    <script type="text/javascript" gwd-events="support" src="gwd-events-support.1.0.js"></script>
     <script type="text/javascript" gwd-events="handlers">
         window.gwd = window.gwd || {};
         gwd.click_business = function(event) {
@@ -143,31 +161,34 @@
             document.body.insertBefore(newDiv, currentDiv);
         };
     </script>
-    <script type="text/javascript" gwd-events="registration">
-        // Google Web Designer 中處理事件的支援程式碼
-        // 這個指令碼區塊是自動產生的，請勿編輯！
-        gwd.actions.events.registerEventHandlers = function(event) {
-            gwd.actions.events.addHandler(' Group1 button_select_business', 'click', gwd.click_business, false);
-        };
-        gwd.actions.events.deregisterEventHandlers = function(event) {
-            gwd.actions.events.removeHandler(' Group1 button_select_business', 'click', gwd.click_business, false);
-        };
-        document.addEventListener("DOMContentLoaded", gwd.actions.events.registerEventHandlers);
-        document.addEventListener("unload", gwd.actions.events.deregisterEventHandlers);
-    </script>
 </head>
 
 <body class="document-body">
     <template id="gwd-group-definitions">
         <div data-gwd-group-def="Group1" data-gwd-group-class="gwd-grp-1fih" style="display: none;">
-            <button class="gwd-button-ixfk gwd-grp-1fih" data-gwd-grp-id="button_select_business" data-gwd-name="button_select_business">Business<br class="gwd-grp-1fih"></button>
-            <button class="gwd-grp-1fih gwd-button-lowx" data-gwd-name="button_select_normal" data-gwd-grp-id="button_select_normal">Normal</button>
+            <button class="gwd-grp-1fih gwd-button-1esx" data-gwd-name="button_select_normal" data-gwd-grp-id="button_select_normal">Normal</button>
+            <button class="gwd-button-ixfk gwd-grp-1fih" data-gwd-grp-id="button_select_business" data-gwd-name="button_select_business">Business</button>
+        </div>
+        <div data-gwd-group-def="ButtonGroup2" data-gwd-group-class="gwd-grp-b81f" style="display: none;">
+            <button class="gwd-button-1wag gwd-grp-b81f" data-gwd-grp-id="button_1">按鈕</button>
         </div>
     </template>
-    <gwd-pagedeck class="gwd-page-container" id="pagedeck">
-        <gwd-page id="page1" class="gwd-page-wrapper page1-content gwd-lightbox gwd-page-13xu" data-gwd-width="412px" data-gwd-height="847px">
+    <gwd-pagedeck class="gwd-page-container" id="pagedeck" default-page="page1">
+        <gwd-page id="page1" class="gwd-page-wrapper page1-content gwd-lightbox gwd-page-13xu" data-gwd-width="412px" data-gwd-height="847px" data-gwd-name="page_home">
             <div class="gwd-page-content page1-content gwd-div-1tkm">
                 <h1 id="label_1" class="gwd-label-74gh">選擇模式</h1>
+                <div class="gwd-div-j7nr" data-gwd-group="Group1"></div>
+            </div>
+        </gwd-page>
+        <gwd-page id="page1_2" class="gwd-page-wrapper page1-content gwd-lightbox gwd-page-13xu" data-gwd-width="412px" data-gwd-height="847px" data-gwd-name="page_select_platform">
+            <div class="gwd-page-content page1-content gwd-div-1tkm">
+                <h1 id="label_3" class="gwd-label-74gh">選擇平台</h1>
+                <div class="gwd-div-11gh" data-gwd-group="ButtonGroup2"></div>
+            </div>
+        </gwd-page>
+        <gwd-page id="page1_1" class="gwd-page-wrapper page1-content gwd-lightbox gwd-page-13xu" data-gwd-width="412px" data-gwd-height="847px" data-gwd-name="page2">
+            <div class="gwd-page-content page1-content gwd-div-1tkm">
+                <h1 id="label_2" class="gwd-label-74gh text-tool-feedback">輸入星等</h1>
                 <div class="gwd-div-j7nr" data-gwd-group="Group1"></div>
             </div>
         </gwd-page>
