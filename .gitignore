@@ -4,6 +4,7 @@ pyside6/
 test.py
 test.ipynb
 gwd_preview_web/
+*gwd_workspace.json
 
 .vscode/*
 !.vscode/settings.json
