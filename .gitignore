@@ -3,6 +3,7 @@
 pyside6/
 test.py
 test.ipynb
+gwd_preview_web/
 
 .vscode/*
 !.vscode/settings.json
