@@ -5,6 +5,7 @@ test.py
 test.ipynb
 gwd_preview_web/
 gwd_workspace.json
+Data_local/
 
 .vscode/*
 !.vscode/settings.json
