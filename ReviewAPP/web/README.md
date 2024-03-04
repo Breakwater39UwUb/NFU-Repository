@@ -1,0 +1,5 @@
+CSS fILE AND HTML2 FILE IS Not necessary
+
+CSS FILE already ON HTML FILE
+
+HTML FILE MUST BE UNDER templates FOLDER
