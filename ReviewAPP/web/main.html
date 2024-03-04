@@ -99,6 +99,19 @@
             }
 
             .btn-field button{
+                
+                flex-basis: 48%;
+                color: black;
+                height: 40px;
+                border-radius: 20px;
+                border: 0;
+                outline: 0;
+                cursor: pointer;
+                transition: background 1s;
+            }
+
+            .input-fieid button{
+                display:none;
                 flex-basis: 48%;
                 color: black;
                 height: 40px;
@@ -181,13 +194,14 @@
     </head>
     
     <body>
-
+        <h1 style="color: skyblue" > </h1>
         <header class = "header">
             <nav class="nav">
               <a href="#" class="nav_logo">美食評論系統</a>
-    
+               
               <ul class="nav_items">
                 <h1 id = "title" style="color: skyblue" >請選擇你是商家還是使用著 </h1>
+                
                 <button type="button" class="Open" onclick="ShowDiv()">Open</button>
               </ul>
             <nav>
@@ -199,30 +213,24 @@
             <div style="display:none;" class="form_box" id = "myDiv"> 
                 <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>       
                 <h1 id = "title"> 使用著/商家</h1>
-                <form action="#">                          
-                    
+                <form action="/comment"  method="POST">                          
                     <div class = "input-group">
                         <div class="input-fieid" >
-                           <input name="Comment" type = "hidden" id = "nameField" value="評論">
+                           <input type = "hidden" name="Comment" id = "nameField" Placeholder="評論">
                         </div>
-                    </div>
+                        <div class="input-fieid" >
+                            <button type="button" id = "Foodpanda">Foodpanda</button>
+                            <button type="button" id = "Google">Google</button>
+                         </div>
 
-                    <div class = "input-group">
-                        <div class="input-fieid" >
-                           <input name="FoodpandaLink" type = "hidden" id = "nameField3" value="Foodpanda網址">
-                        </div>
-                    </div>
-        
-                    <div class = "input-group">
                         <div class="input-fieid">
-                           <input name="GoogleLink" type = "hidden" id = "nameField2"  value="Google網址">
+                            <input  type = "hidden" name="Link" id = "nameField2"  Placeholder="網址">
                         </div>
+                        
                     </div>
-
-  
                     <div class="btn-field">
                         <button type="button" id = "signupBtn">商家 </button>
-                        <button type="button" class = "disable" id = "signinBtn">使用著</button>
+                        <button type="button" id = "signinBtn">使用著</button>
                     </div>
                </form>
             </div>
@@ -243,21 +251,40 @@
             let NameField = document.getElementById("nameField")
             let NameField2 = document.getElementById("nameField2")
             let NameField3 = document.getElementById("nameField3")
+            let Foodpanda = document.getElementById("Foodpanda")
+            let Google = document.getElementById("Google")
             let Title = document.getElementById("title")
           
             SigninBtn.onclick = function(){
                 Title.innerHTML = "請輸入評論"
                 NameField.type = "text";
                 NameField2.type = "hidden";
-                NameField3.type = "hidden";
             } 
     
             SignupBtn.onclick = function(){
                 Title.innerHTML = "請選擇平台"
                 NameField2.type = "text";
                 NameField.type = "hidden";
-                NameField3.type = "text";
             }  
+
+            Foodpanda.onclick = function(){
+                document.getElementsByName('Link')[0].placeholder='Foodpanda網址';
+            } 
+
+            Google.onclick = function(){
+                document.getElementsByName('Link')[0].placeholder='Google網址';
+            }
+
+            $(document).ready(function(){
+                $("#signupBtn").click(function(){
+                    $(".input-fieid button").toggle(1000);
+                });
+
+                $("#signinBtn").click(function(){
+                    $(".input-fieid button").toggle(0);
+                });
+            });
+            
             
             function ShowDiv() 
             {
