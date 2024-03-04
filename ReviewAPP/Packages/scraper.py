@@ -1,5 +1,5 @@
 # https://github.com/MajideND/scraping-reviews-from-googlemaps/blob/main/app.py
-import os
+import re
 import math
 import time
 from selenium import webdriver
@@ -9,11 +9,11 @@ from selenium.webdriver.common.by import By
 import selenium.common.exceptions
 from fake_useragent import UserAgent
 import pandas as pd
-import env
 
 rating_level_G = [0, 0, 0, 0, 0] # from star 1 to 5, google
 rating_level_F = [0, 0, 0, 0, 0] # from star 1 to 5, foodpanda
-def get_data(driver, web):
+time_filter = ['年前', '個月前', '週前', '天前']
+def get_data(driver, web, t_range):
     print('get data...')
     if web == 'Foodpanda':
         return get_foodpanda(driver, web)
@@ -32,11 +32,20 @@ def get_data(driver, web):
     lst_data = []
     for data in elements:
         try:
-            text = data.find_element(
-                By.XPATH, './/div[@class="MyEned"]').text
+            driver.implicitly_wait(3)
+            if t_range is None:
+                text = data.find_element(
+                    By.XPATH, './/div[@class="MyEned"]').text
+            if t_range is not None:
+                if valid_time_interval(t_range, data.text) == False:
+                    continue
+                text = data.find_element(
+                    By.XPATH, './/div[@class="MyEned"]').text
         except:
-            text = ''
+            # text = ''
+            continue
         # //*[@id="QA0Szd"]/div/div/div[1]/div[2]/div/div[1]/div/div/div[2]/div[8]/div[22]/div/div/div[4]/div[1]/span[1]
+            
         score = data.find_element(
             By.XPATH, './/span[@class="kvMYJc"]').get_attribute("aria-label")
 
@@ -61,7 +70,9 @@ def get_foodpanda(driver, web):
     xpath = '//div[@class="info-reviews-modal-review-card"]'
     elements = driver.find_elements(By.CLASS_NAME, 'info-reviews-modal-review-card')
     lst_data = []
+
     for data in elements:
+        driver.implicitly_wait(1)
         text = data.find_element(
             By.CLASS_NAME, 'info-reviews-modal-description').text
         score = data.find_element(By.XPATH, '//div[@class="info-reviews-modal-card-subtitle"]')
@@ -84,6 +95,30 @@ def get_foodpanda(driver, web):
 
     return lst_data
 
+def valid_time_interval(time_interval:list[str], to_check:str):
+    pos = 0
+    valid_num = int(time_interval[0])
+    valid_time = time_interval[1]
+    valid_interval = time_interval[2]
+
+    # Find date in review text
+    list_ = to_check.split()
+    for target in list_:
+        if time_interval[1] in target:
+            check_num = int(list_[pos-1])
+            check_time = target
+        pos += 1
+
+    if check_time != valid_time:
+        return False
+    if valid_interval == 'after':
+        if check_num > valid_num:
+            return False
+    if valid_interval == 'before':
+        if check_num < valid_num:
+            return False
+    return True
+
 def counter(driver, web):
     print('Jumping to review tab')
     # driver.implicitly_wait(1)
@@ -96,21 +131,25 @@ def counter(driver, web):
         try:
             reviewBTN = driver.find_element(By.XPATH, review_btn_xpath)
             reviewBTN.click()
-            result = driver.find_element(By.CLASS_NAME, class_name_1).find_element(By.CLASS_NAME, class_name_2).text
-        except selenium.common.exceptions.StaleElementReferenceException:
-            pass
-        except selenium.common.exceptions.NoSuchElementException:
-            pass
-        else:
             driver.implicitly_wait(2)
+            result = driver.find_element(By.CLASS_NAME, class_name_1).find_element(By.CLASS_NAME, class_name_2).text
+        except selenium.common.exceptions.StaleElementReferenceException as sere:
+            print(sere, sere.args)
+        except selenium.common.exceptions.NoSuchElementException as nsee:
+            print(nsee, nsee.args)
+        else:
             reviewBTN = driver.find_element(By.XPATH, review_btn_xpath)
             reviewBTN.click()
             result = driver.find_element(By.CLASS_NAME, class_name_1).find_element(By.CLASS_NAME, class_name_2).text
-
+        finally:
+            if result is None:
+                return
             result = result.replace(',', '').replace('(', '').replace(')', '').replace('+', '')
             result = result.split(' ')
             result = result[x].split('\n')
-            return int(int(result[0])/10)+1
+            counts = int(int(result[0])/10)+1
+            print(counts)
+            return counts
 
     elif web == 'Foodpanda':
         review_btn_xpath = '//*[@id="vendor-details-root"]/main/section[2]/div/div[3]/div[1]/div[2]/button'
@@ -124,10 +163,10 @@ def counter(driver, web):
             driver.implicitly_wait(1)
             xpath = '//*[@id="info-reviews-content"]/div/div/div[1]/div/div/div[1]/div[3]'
             result = driver.find_element(By.CLASS_NAME, class_name_1).find_element(By.XPATH, xpath).find_element(By.XPATH, class_name_2).text
-        except selenium.common.StaleElementReferenceException:
-            pass
-        except selenium.common.exceptions.NoSuchElementException:
-            pass
+        except selenium.common.exceptions.StaleElementReferenceException as sere:
+            print(sere, sere.args)
+        except selenium.common.exceptions.NoSuchElementException as nsee:
+            print(nsee, nsee.args)
         else:
             driver.implicitly_wait(2)
             reviewBTN = driver.find_element(By.XPATH, review_btn_xpath)
@@ -135,10 +174,10 @@ def counter(driver, web):
             xpath = '//*[@id="info-reviews-content"]/div/div/div[1]/div/div/div[1]/div[3]'
             result = driver.find_element(By.CLASS_NAME, class_name_1).find_element(By.XPATH, xpath).find_element(By.XPATH, class_name_2).text
     
-    # result = result.replace(',', '').replace('(', '').replace(')', '').replace('+', '')
-    # result = result.split(' ')
-    # result = result[x].split('\n')
-    # return int(int(result[0])/10)+1
+            result = result.replace(',', '').replace('(', '').replace(')', '').replace('+', '')
+            result = result.split(' ')
+            result = result[x].split('\n')
+            return int(int(result[0])/10)+1
 
 def scrolling(driver, counter, web):
     print('scrolling...')
@@ -169,87 +208,126 @@ def scrolling(driver, counter, web):
                 print('Scrolled tp bottom')
                 return
     elif web == 'Googlemaps':
-        # <div class="m6QErb DxyBCb kA9KIf dS8AEf ">
-        scrollable_xpath = '//*[@id="QA0Szd"]/div/div/div[1]/div[2]/div/div[1]/div/div/div[2]'
-        # <div class="m6QErb " style> //*[@id="QA0Szd"]/div/div/div[1]/div[2]/div/div[1]/div/div/div[2]/div[9]
-        height_xpath = '//*[@id="QA0Szd"]/div/div/div[1]/div[2]/div/div[1]/div/div/div[2]/div[9]'
-        element = driver.find_element(By.XPATH, scrollable_xpath)
-        review_block = driver.find_element(By.XPATH, height_xpath)
-        size = element.size
-        w = size['width'] 
-        h = size['height']
+        # # <div class="m6QErb DxyBCb kA9KIf dS8AEf ">
+        # scrollable_xpath = '//*[@id="QA0Szd"]/div/div/div[1]/div[2]/div/div[1]/div/div/div[2]'
+        # # <div class="m6QErb " style> //*[@id="QA0Szd"]/div/div/div[1]/div[2]/div/div[1]/div/div/div[2]/div[9]
+        # height_xpath = '//*[@id="QA0Szd"]/div/div/div[1]/div[2]/div/div[1]/div/div/div[2]/div[9]'
+        # element = driver.find_element(By.XPATH, scrollable_xpath)
+        # review_block = driver.find_element(By.XPATH, height_xpath)
+        # size = element.size
+        # w = size['width'] 
+        # h = size['height']
 
-        #Calculate where to click
-        click_place_x = math.floor(w / 2)-1
-        click_place_y = math.floor(h / 2)-10
+        # #Calculate where to click
+        # click_place_x = math.floor(w / 2)-1
+        # click_place_y = math.floor(h / 2)-1
 
-        last_h = 0
-        current_h = 0
-        max_h = 370*counter*10
-        while True:
-            last_h = review_block.size['height']
-            ActionChains(driver).move_to_element(element)\
-                .move_by_offset(click_place_x, click_place_y)\
-                .click_and_hold().perform()
-            driver.implicitly_wait(3)
-            current_h = review_block.size['height']
+        # last_h = 0
+        # current_h = 0
+        # # max_h = 370*counter*10
+        # while True:
+        #     last_h = review_block.size['height']
+        #     ActionChains(driver).move_to_element(element)\
+        #         .move_by_offset(click_place_x, click_place_y)\
+        #         .click_and_hold().perform()
+        #     driver.implicitly_wait(3)
+        #     # time.sleep(1)
+        #     current_h = review_block.size['height']
+        #     if current_h > last_h:
+        #         pass
+        #     else:
+        #         ActionChains(driver).move_to_element(element)\
+        #         .move_by_offset(click_place_x, click_place_y)\
+        #         .release().perform()
+        #         print('Scrolled tp bottom')
+        #         return
+
+        scrollable_div = driver.find_element(
+            By.XPATH, '//div[@class="lXJj5c Hk4XGb "]')
         
-            if current_h > last_h:
+        for _i in range(counter):
+            try:
+                scrolling = driver.execute_script(
+                    'document.getElementsByClassName("dS8AEf")[0].scrollTop = document.getElementsByClassName("dS8AEf")[0].scrollHeight',
+                    scrollable_div
+                )
+            except:
                 pass
-            else:
-                print('Scrolled tp bottom')
-                return
+            time.sleep(1)
 
-    scrollable_div = driver.find_element(
-        By.XPATH, '//div[@class="lXJj5c Hk4XGb "]')
-    
-    for _i in range(counter):
-        try:
-            scrolling = driver.execute_script(
-                'document.getElementsByClassName("dS8AEf")[0].scrollTop = document.getElementsByClassName("dS8AEf")[0].scrollHeight',
-                scrollable_div
-            )
-        except:
-            pass
-        time.sleep(2)
-
-def write_to_xlsx(data, filename):
-    print(f'write to {filename}.csv...')
-    dir = './SaveData/'
+def write_to_xlsx(data, filename, dir, format):
     filename = filename.replace('/', ' ').replace('\\', ' ')
-    filepath = dir + filename + '.csv'
-    cols = ["comment", 'rating']
+    filepath = dir + filename + '.' + format
+    print(f'write to {filepath}...')
+    cols = ['rating', 'comment']
     df = pd.DataFrame(data, columns=cols) # this insert the head
     # df = pd.DataFrame(data) # headless column name
-    df.to_csv(filepath, encoding='utf-8', index=False, header=None)
+    if format == 'csv':
+        df.to_csv(filepath, encoding='utf-8', index=False, header=None)
+    
+    if format == 'json':
+        df.to_json(filepath, orient='records', indent=4)
+    
     return filename
 
-def get_reviews(url: str = None, webname: str = 'Googlemaps'):
-    '''Get reviews on Googlemap or Foodpanda
-    * url: string
-    * webname: It is set by choosing platform in QT
-    
-    Returns the path of saved csv file
+def get_reviews(url: str|list = None,
+                webname: str = 'Googlemaps',
+                save_path: str = '\\SaveData\\',
+                format: str = None,
+                time_range: list[str] = None):
+    '''
+    Get reviews on Googlemap or Foodpanda
+    * url: website url at "Overview Tab"
+    * webname: It is set by selecting platform
+    * save_path: Where the data will be saved
+    * format: Filename extension(filename suffix) of saved data
+    * time_range: Time range to scrape the reviews
+          * None: all the time
+          * example:['1', '個月前', 'after']
+
+        Returns the path of saved file
     '''
     if url is None:
-        return
+        raise Exception('url is None, string is required')
+    elif type(url) is not str:
+        raise Exception('url must be a string')
+
+    if format is None:
+        format = 'csv'
+    elif type(format) is not str:
+        raise Exception('format must be a string')
+    elif format not in ['csv', 'json']:
+        raise Exception('format must be csv or json')
+    
+    if not all(isinstance(elem, str) for elem in time_range):
+        raise Exception(f'Argument format required list of strings')
+    elif time_range[1] not in time_filter:
+        raise Exception(f'Argument format must be one of {time_filter}')
+
     
     print(f'Find reviews on {url}...')
 
     try:
         # setup webdriver options
         options = webdriver.ChromeOptions()
-        options.add_argument("--headless")  # show browser or not
+        options.add_argument('--no-sandbox')
+        options.add_argument("--head")  # show browser or not
+        options.add_experimental_option("excludeSwitches", ["enable-automation"])
+        options.add_experimental_option('useAutomationExtension', False)
         options.add_argument("--lang=en-US")
         options.add_experimental_option('prefs', {'intl.accept_languages': 'en,en_US'})
         options.add_argument("--disable-blink-features")
         options.add_argument("--disable-blink-features=AutomationControlled")
+        # options.add_extension('.\\Data_local\\Mouse-Coordinates.crx')
         ua = UserAgent()
         user_agent = ua.random
         options.add_argument(f'--user-agent={user_agent}')
         driver = webdriver.Chrome(options=options)
+        driver.set_window_position(2561,1440-1080)
+        driver.set_window_size(800,1000)
         # get web from the url
-        driver.get(url)
+        driver.get(url) # uncomment this line
+        
         # wait for web is properly loaded
         try:
             wait = WebDriverWait(driver, timeout=2)
@@ -258,23 +336,21 @@ def get_reviews(url: str = None, webname: str = 'Googlemaps'):
             pass
         
         # format the web title for further use
-        webTitle = driver.title.replace(' ', '').split('|')[0]
-
+        # webTitle = driver.title.replace(' ', '').split('|')[0]
+        webTitle = re.sub(r'< > : " / \ | ? * ｜', '', driver.title)
         # count for scrolling
         counts = counter(driver, webname)
         # scroll to the bottom of the page
         scrolling(driver, counts, webname)
-
         # get reviews on the web
-        data = get_data(driver, webname)
-        driver.close()
+        data = get_data(driver, webname, time_range)
         # write reviews to csv file
-        file = write_to_xlsx(data, webTitle)
+        file = write_to_xlsx(data, webTitle, save_path, format)
         print('Done!')
         return file
-    except:
-        print('Error to scrape the webdriver')
+    # except:
+        # print('Failed to scrape web')
     finally:
         driver.quit()
-        os.system("taskkill /f /im chrome.exe")
+        # os.system("taskkill /f /im chrome.exe")
 
