@@ -270,7 +270,7 @@ def write_to_xlsx(data, filename, dir, format):
     
     return filename
 
-def get_reviews(url: str|list = None,
+def get_reviews(url: str = None,
                 webname: str = 'Googlemaps',
                 save_path: str = '\\SaveData\\',
                 format: str = None,
@@ -299,7 +299,7 @@ def get_reviews(url: str|list = None,
     elif format not in ['csv', 'json']:
         raise Exception('format must be csv or json')
     
-    if not all(isinstance(elem, str) for elem in time_range):
+    if not all(isinstance(elem, str) for elem in time_range) and time_range is not None:
         raise Exception(f'Argument format required list of strings')
     elif time_range[1] not in time_filter:
         raise Exception(f'Argument format must be one of {time_filter}')
