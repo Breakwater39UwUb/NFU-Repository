@@ -3,7 +3,7 @@ from Packages.scraper import get_reviews
 app = Flask(__name__,template_folder="web/templates/") 
 
 
-app = Flask(__name__)
+
 app.debug = True
 
 @app.route("/")
@@ -20,8 +20,10 @@ def comment():
         link = request.form['Link']
         if link:
            print(request.form['Link'])
-           get_reviews(link)
+           get_reviews(url=link)
            return link 
-    
+        
+        
+        
 if __name__ == "__main__":
     app.run(port=8900)

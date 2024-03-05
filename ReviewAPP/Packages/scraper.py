@@ -299,10 +299,11 @@ def get_reviews(url: str = None,
     elif format not in ['csv', 'json']:
         raise Exception('format must be csv or json')
     
-    if not all(isinstance(elem, str) for elem in time_range) and time_range is not None:
-        raise Exception(f'Argument format required list of strings')
-    elif time_range[1] not in time_filter:
-        raise Exception(f'Argument format must be one of {time_filter}')
+    if  time_range is not None:
+        if not all(isinstance(elem, str) for elem in time_range):
+            raise Exception(f'Argument format required list of strings')
+        elif time_range[1] not in time_filter:
+            raise Exception(f'Argument format must be one of {time_filter}')
 
     
     print(f'Find reviews on {url}...')
