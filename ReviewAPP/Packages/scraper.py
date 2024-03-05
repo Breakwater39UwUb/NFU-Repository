@@ -324,8 +324,6 @@ def get_reviews(url: str = None,
         user_agent = ua.random
         options.add_argument(f'--user-agent={user_agent}')
         driver = webdriver.Chrome(options=options)
-        driver.set_window_position(2561,1440-1080)
-        driver.set_window_size(800,1000)
         # get web from the url
         driver.get(url) # uncomment this line
         
