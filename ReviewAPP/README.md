@@ -13,11 +13,26 @@ Scraped data from internet are saved in the [SaveDate](./SaveData/)
 
 ### 3. Properly sets the flask templates directory
 
+### 4. Download the [trained_model]() from OneDrive
+- Download the file from above link.
+- Extract the file to project root like this:
+- ```+-- Database: reviews
+    +-- ReviewAPP
+    |   +-- albert
+    |   +-- Images
+    |   +-- SaveData
+    |   +-- Src
+    |   +-- trained_model
+    |   +-- web
+    |   +-- app.py
+    ```
+
+
 ### if you met any error, contact [防波堤](mailto:41043152@gm.nfu.edu.tw)
 
 
-## App interface
-![sample image](./Images/UI_page1.png)
+## Web interface
+
 
 ## Todo
 
