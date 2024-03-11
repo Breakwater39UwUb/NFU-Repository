@@ -54,5 +54,5 @@ def review_predict(q_inputs: list):
         label = (predicts == max_val).nonzero().numpy()[0][1]
         ans_label.append(answer_dic.to_text(label))
         
-    return ans_label
+    return ans_label[0]
 
