@@ -10,7 +10,6 @@
     <link href="gwdpage_style.css" rel="stylesheet" data-version="13" data-exports-type="gwd-page">
     <link href="gwdpagedeck_style.css" rel="stylesheet" data-version="14" data-exports-type="gwd-pagedeck">
     <link href="gwdimage_style.css" rel="stylesheet" data-version="17" data-exports-type="gwd-image">
-    <link href="gwdstarratings_style.css" rel="stylesheet" data-version="3" data-exports-type="gwd-starratings">
     <style id="gwd-lightbox-style">
         .gwd-lightbox {
             overflow: hidden;
@@ -117,20 +116,6 @@
             font-size: 32px;
             font-weight: 700;
         }
-        .gwd-starratings-bpbc {
-            position: absolute;
-            width: 200px;
-            height: 40px;
-            left: 9px;
-            top: 100px;
-        }
-        .gwd-starratings-1gmf {
-            position: absolute;
-            width: 200px;
-            height: 40px;
-            left: 9px;
-            top: 194px;
-        }
         .gwd-label-19dp {
             position: absolute;
             font-family: Arial;
@@ -160,6 +145,31 @@
             width: 250px;
             height: 305.5px;
         }
+        .gwd-button-1ib9 {
+            position: absolute;
+            left: 164px;
+            top: 245.453px;
+            width: 100px;
+            height: 24px;
+        }
+        .gwd-label-1juo {
+            position: absolute;
+            width: 100px;
+            left: 10px;
+            top: 110px;
+            height: 30px;
+            font-size: 25px;
+            font-family: Arial;
+        }
+        .gwd-label-v9yc {
+            position: absolute;
+            width: 100px;
+            left: 10px;
+            top: 204px;
+            font-size: 25px;
+            height: 30px;
+            font-family: Arial;
+        }
     </style>
     <script data-source="gwd_webcomponents_v1_min.js" data-version="2" data-exports-type="gwd_webcomponents_v1" src="gwd_webcomponents_v1_min.js"></script>
     <script data-source="gwdpage_min.js" data-version="13" data-exports-type="gwd-page" src="gwdpage_min.js"></script>
@@ -174,6 +184,16 @@
             var url = '/';
             window.location = url;
         };
+        gwd.test = function(event) {
+            console.log('btn test')
+            var ee = document.getElementById('label_user_rating');
+            if (ee) {
+                console.log('Found');
+            } else {
+                console.log('Not Found');
+            }
+            ee.innerText = '' + 'star';
+        };
     </script>
     <script type="text/javascript" gwd-events="support" src="gwd-events-support.1.0.js"></script>
     <script type="text/javascript" gwd-events="registration">
@@ -181,16 +201,17 @@
         // 這個指令碼區塊是自動產生的，請勿編輯！
         gwd.actions.events.registerEventHandlers = function(event) {
             gwd.actions.events.addHandler('gwd-imagebutton_goto_home_2', 'click', gwd.goto_home_page, false);
+            gwd.actions.events.addHandler('button_1', 'click', gwd.test, false);
         };
         gwd.actions.events.deregisterEventHandlers = function(event) {
             gwd.actions.events.removeHandler('gwd-imagebutton_goto_home_2', 'click', gwd.goto_home_page, false);
+            gwd.actions.events.removeHandler('button_1', 'click', gwd.test, false);
         };
         document.addEventListener("DOMContentLoaded", gwd.actions.events.registerEventHandlers);
         document.addEventListener("unload", gwd.actions.events.deregisterEventHandlers);
     </script>
     <script data-source="gwdimage_min.js" data-version="17" data-exports-type="gwd-image" src="gwdimage_min.js"></script>
     <script data-source="gwdimagebutton_min.js" data-version="13" data-exports-type="gwd-imagebutton" src="gwdimagebutton_min.js"></script>
-    <script data-source="gwdstarratings_min.js" data-version="3" data-exports-type="gwd-starratings" src="gwdstarratings_min.js"></script>
 </head>
 
 <body class="document-body">
@@ -200,10 +221,11 @@
                 <gwd-imagebutton id="gwd-imagebutton_goto_home_2" up-image="assets/home_FILL0_wght400_GRAD0_opsz24.png" over-image="" down-image="" scaling="cover" class="gwd-imagebutton-1xwg"></gwd-imagebutton>
                 <div class="gwd-div-1xz7 star one two three four five">
                     <label id="label_head" class="gwd-label-9v8c">Predict result</label>
-                    <gwd-starratings id="gwd-starratings_1" ratingvalue="5" isemptyshown="" class="gwd-starratings-bpbc" iconsize="30" ratingmin="1"></gwd-starratings>
-                    <gwd-starratings id="gwd-starratings_2" ratingvalue="4" class="gwd-starratings-1gmf" iconsize="30" isemptyshown=""></gwd-starratings>
                     <label id="label_2" class="gwd-label-19dp">Your rating</label>
                     <label id="label_1" class="gwd-label-1j2k">Predict rating</label>
+                    <button id="button_1" class="gwd-button-1ib9">按鈕</button>
+                    <label id="label_bert_rating" class="gwd-label-1juo">標籤</label>
+                    <label id="label_user_rating" class="gwd-label-v9yc">標籤</label>
                 </div>
                 <textarea class="gwd-textarea-vnup"></textarea>
             </div>

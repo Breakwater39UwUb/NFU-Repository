@@ -255,6 +255,25 @@
         .gwd-page-18bj {
             height: 777px;
         }
+        .gwd-label-191c {
+            position: absolute;
+            left: 50%;
+            transform: translate(-50%, 0%);
+            top: 26%;
+            font-size: 32px;
+            font-weight: bold;
+            font-family: Arial;
+            width: 263px;
+            height: 46px;
+            text-align: center;
+            line-height: 60px;
+        }
+        .gwd-textarea-13zl {
+            transform: translate(-50%, 0%) translate3d(0px, 26px, 0px);
+        }
+        .gwd-textarea-1pzl {
+            transform: translate(-50%, 0%) translate3d(0px, -118px, 0px);
+        }
     </style>
     <script data-source="gwd_webcomponents_v1_min.js" data-version="2" data-exports-type="gwd_webcomponents_v1" src="gwd_webcomponents_v1_min.js"></script>
     <script data-source="gwdpage_min.js" data-version="13" data-exports-type="gwd-page" src="gwdpage_min.js"></script>
@@ -323,6 +342,20 @@
             var url = '/';
             window.location = url;
         };
+        gwd.select_platform = function(event) {
+            // set arg for 'GET'
+            console.log('Test JS function');
+            myLabel = document.getElementById("label_4");
+            if(myLabel) {
+                console.log(myLabel.textContent);
+            } else {
+                console.error('Text element not found on page 2.');
+            }
+        };
+        gwd.auto_Gwd_imagebutton_goto_home_3Click = function(event) {
+            // GWD Predefined Function
+            gwd.actions.gwdPagedeck.goToPage('pagedeck', 'page1', 'slide', 700, 'ease', 'left');
+        };
     </script>
     <script type="text/javascript" gwd-events="support" src="gwd-events-support.1.0.js"></script>
     <script type="text/javascript" gwd-events="registration">
@@ -330,23 +363,27 @@
         // 這個指令碼區塊是自動產生的，請勿編輯！
         gwd.actions.events.registerEventHandlers = function(event) {
             gwd.actions.events.addHandler(' Group1 button_select_business', 'click', gwd.click_business, false);
+            gwd.actions.events.addHandler(' Group1 button_select_normal', 'click', gwd.click_normal, false);
             gwd.actions.events.addHandler('gwd-imagebutton_goto_home', 'click', gwd.auto_Gwd_imagebutton_goto_homeClick, false);
             gwd.actions.events.addHandler('gwd-imagebutton_goto_home_1', 'click', gwd.auto_Gwd_imagebutton_goto_home_1Click, false);
             gwd.actions.events.addHandler('gwd-imagebutton_goto_home_2', 'click', gwd.auto_Gwd_imagebutton_goto_home_2Click, false);
-            gwd.actions.events.addHandler(' Group1 button_select_normal', 'click', gwd.click_normal, false);
             gwd.actions.events.addHandler('button_send_review', 'click', gwd.get_review_stars, false);
             gwd.actions.events.addHandler('range_1', 'change', gwd.slider_changed, false);
             gwd.actions.events.addHandler('range_1', 'input', gwd.slider_changed, false);
+            gwd.actions.events.addHandler('gwd-imagebutton_goto_home_3', 'click', gwd.auto_Gwd_imagebutton_goto_home_3Click, false);
+            gwd.actions.events.addHandler(' ButtonGroup2 button_select_googlemap', 'click', gwd.select_platform, false);
         };
         gwd.actions.events.deregisterEventHandlers = function(event) {
             gwd.actions.events.removeHandler(' Group1 button_select_business', 'click', gwd.click_business, false);
+            gwd.actions.events.removeHandler(' Group1 button_select_normal', 'click', gwd.click_normal, false);
             gwd.actions.events.removeHandler('gwd-imagebutton_goto_home', 'click', gwd.auto_Gwd_imagebutton_goto_homeClick, false);
             gwd.actions.events.removeHandler('gwd-imagebutton_goto_home_1', 'click', gwd.auto_Gwd_imagebutton_goto_home_1Click, false);
             gwd.actions.events.removeHandler('gwd-imagebutton_goto_home_2', 'click', gwd.auto_Gwd_imagebutton_goto_home_2Click, false);
-            gwd.actions.events.removeHandler(' Group1 button_select_normal', 'click', gwd.click_normal, false);
             gwd.actions.events.removeHandler('button_send_review', 'click', gwd.get_review_stars, false);
             gwd.actions.events.removeHandler('range_1', 'change', gwd.slider_changed, false);
             gwd.actions.events.removeHandler('range_1', 'input', gwd.slider_changed, false);
+            gwd.actions.events.removeHandler('gwd-imagebutton_goto_home_3', 'click', gwd.auto_Gwd_imagebutton_goto_home_3Click, false);
+            gwd.actions.events.removeHandler(' ButtonGroup2 button_select_googlemap', 'click', gwd.select_platform, false);
         };
         document.addEventListener("DOMContentLoaded", gwd.actions.events.registerEventHandlers);
         document.addEventListener("unload", gwd.actions.events.deregisterEventHandlers);
@@ -385,11 +422,22 @@
             <div class="gwd-page-content page1-content gwd-div-1tkm gwd-div-6s2o">
                 <gwd-imagebutton id="gwd-imagebutton_goto_home_2" up-image="assets/home_FILL0_wght400_GRAD0_opsz24.png" over-image="" down-image="" scaling="cover" class="gwd-imagebutton-1xwg"></gwd-imagebutton>
                 <div class="gwd-div-1xz7 star one two three four five">
+                    <label id="label_5" class="gwd-label-191c">輸入評論</label>
                     <h1 id="label_2" class="gwd-h1-1eds">輸入星等</h1>
                     <input type="range" id="range_1" value="50" min="1" max="5" step="1" class="gwd-input-5nms">
                     <button id="button_send_review" class="gwd-button-1hvj">Send</button>
-                    <textarea class="gwd-textarea-ql8p" id="text_1"></textarea>
+                    <textarea class="gwd-textarea-ql8p gwd-textarea-13zl" id="text_1"></textarea>
                     <label id="label_show_star" class="gwd-label-1ljh"></label>
+                </div>
+            </div>
+        </gwd-page>
+        <gwd-page id="page1_3" class="gwd-page-wrapper page1-content gwd-lightbox gwd-page-13xu gwd-page-18bj" data-gwd-width="412px" data-gwd-height="777px" data-gwd-name="page_get_url">
+            <div class="gwd-page-content page1-content gwd-div-1tkm gwd-div-6s2o">
+                <gwd-imagebutton id="gwd-imagebutton_goto_home_3" up-image="assets/home_FILL0_wght400_GRAD0_opsz24.png" over-image="" down-image="" scaling="cover" class="gwd-imagebutton-1xwg"></gwd-imagebutton>
+                <div class="gwd-div-1xz7 star one two three four five">
+                    <h1 id="label_4" class="gwd-h1-1eds">輸入網址</h1>
+                    <button id="button_send_url" class="gwd-button-1hvj">Send</button>
+                    <textarea class="gwd-textarea-ql8p gwd-textarea-1pzl" id="text_url"></textarea>
                 </div>
             </div>
         </gwd-page>
