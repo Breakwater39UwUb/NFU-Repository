@@ -53,10 +53,10 @@ def get_url():
 	
 	if platform == 'Googlemaps':
 		print(scrape_url)
-		get_reviews(url=scrape_url)
+		get_reviews(url=scrape_url, webname=platform)
 
 	if platform == 'Foodpanda':
-		pass
+		get_reviews(url=scrape_url, webname=platform)
 
 	return render_template(home_page)
 
