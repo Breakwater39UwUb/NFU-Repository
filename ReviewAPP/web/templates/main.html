@@ -11,9 +11,47 @@
                 font-family: 'Poppins','sans-serif';
                 box-sizing: border-box;
             }
+
+            .slidecontainer {
+            width: 100%; /* Width of the outside container */
+            }
+
+            /* The slider itself */
+            .slider {
+            -webkit-appearance: none;  /* Override default CSS styles */
+            appearance: none;
+            width: 100%; /* Full-width */
+            height: 25px; /* Specified height */
+            background: #d3d3d3; /* Grey background */
+            outline: none; /* Remove outline */
+            opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+            -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+            transition: opacity .2s;
+            }
+
+            /* Mouse-over effects */
+            .slider:hover {
+            opacity: 1; /* Fully shown on mouse-over */
+            }
+
+            /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+            .slider::-webkit-slider-thumb {
+            -webkit-appearance: none; /* Override default look */
+            appearance: none;
+            width: 25px; /* Set a specific slider handle width */
+            height: 25px; /* Slider handle height */
+            background: #04AA6D; /* Green background */
+            cursor: pointer; /* Cursor on hover */
+            }
+
+            .slider::-moz-range-thumb {
+            width: 25px; /* Set a specific slider handle width */
+            height: 25px; /* Slider handle height */
+            background: #04AA6D; /* Green background */
+            cursor: pointer; /* Cursor on hover */
+            }
   
-            .button-container
-            {
+            .button-container{
                 width: 100%;
                 height: 100vh;
                 background-color: rgba(0, 0, 50, .4);
@@ -24,8 +62,7 @@
                 position: relative;
             }  
 
-            .form_box
-            {
+            .form_box{
                 width: 90%;
                 max-width: 450px;
                 position: absolute;
@@ -38,16 +75,14 @@
                 position: none;
             }
 
-            .form_box h1
-            {
+            .form_box h1{
                 font-size: 30px;
                 margin-bottom: 60px;
                 color:blue;
                 position: relative;
             }
 
-            .form_box h1::after
-            {
+            .form_box h1::after{
                 content: ' ';
                 width: 30px;
                 height: 4px;
@@ -78,7 +113,7 @@
                 padding: 18px 15px;
             }
 
-            form p {
+            form p{
                 text-align: left;
                 font-size: 13px;
             }
@@ -111,7 +146,7 @@
             }
 
             .input-fieid button{
-                display:none;
+                display: none;
                 flex-basis: 48%;
                 color: black;
                 height: 40px;
@@ -122,12 +157,14 @@
                 transition: background 1s;
             }
 
-
             .btn-field button.disable{
                 background: #eaeaea;
                 color: #555;
             }
 
+            .slidecontainer p{
+                display: none;
+            }
 
             .header{
                 position: fixed;
@@ -194,6 +231,7 @@
     </head>
     
     <body>
+        
         <h1 style="color: skyblue" > </h1>
         <header class = "header">
             <nav class="nav">
@@ -226,7 +264,13 @@
                         <div class="input-fieid">
                             <input  type = "hidden" name="Link" id = "nameField2"  Placeholder="網址">
                         </div>
-                        
+
+                        <div class="slidecontainer">
+                            <input type="hidden" min="1" max="5" value="1" oninput="rangeValue.innerText = this.value" name ="Star" 
+                            id = "sliderField">
+                            <p id="rangeValue">1</p>   
+                        </div>  
+
                     </div>
                     <div class="btn-field">
                         <button type="button" id = "signupBtn">商家 </button>
@@ -237,49 +281,68 @@
         </div> 
       
         <script>
-            
-
-
+    
             let SigninBtn = document.getElementById("signinBtn")
             let SignupBtn = document.getElementById("signupBtn")
             let NameField = document.getElementById("nameField")
             let NameField2 = document.getElementById("nameField2")
             let NameField3 = document.getElementById("nameField3")
             let Foodpanda = document.getElementById("Foodpanda")
+            let SliderField = document.getElementById("sliderField")
             let Google = document.getElementById("Google")
             let Title = document.getElementById("title")
+
+            let  value = document.getElementById('sliderField').value; 
+
+            $.ajax({ 
+                url: '/comment', 
+                type: 'POST', 
+                contentType: 'application/json', 
+                data: JSON.stringify({ 'data': value }), 
+                success: function(response) { 
+                    document.getElementById('sliderField').innerHTML = response; 
+                }, 
+                error: function(error) { 
+                    console.log(error); 
+                } 
+            }); 
           
             SigninBtn.onclick = function(){
-                Title.innerHTML = "請輸入評論"
+                Title.innerHTML = "請輸入評論和星級"
                 NameField.type = "text";
                 NameField2.type = "hidden";
+                SliderField.type = "range"
             } 
     
             SignupBtn.onclick = function(){
                 Title.innerHTML = "請選擇平台"
-                NameField2.type = "text";
                 NameField.type = "hidden";
+                SliderField.type = "hidden"
             }  
 
             Foodpanda.onclick = function(){
                 document.getElementsByName('Link')[0].placeholder='Foodpanda網址';
+                NameField2.type = "text";
             } 
 
             Google.onclick = function(){
-                document.getElementsByName('Link')[0].placeholder='Google網址';
+                document.getElementsByName('Link')[0].placeholder='Google Map網址';
+                NameField2.type = "text";
             }
 
             $(document).ready(function(){
                 $("#signupBtn").click(function(){
-                    $(".input-fieid button").toggle(1000);
+                    $(".input-fieid button").show();
+                    $(".slidecontainer p").toggle(0);      
+                      
                 });
 
-                $("#signinBtn").click(function(){
-                    $(".input-fieid button").toggle(0);
+                $("#signinBtn").click(function(){  
+                    $(".slidecontainer p").show();   
+                    $(".input-fieid button").hide();    
                 });
             });
-            
-            
+
             function ShowDiv() 
             {
                 document.getElementById("myDiv").style.display = "";
