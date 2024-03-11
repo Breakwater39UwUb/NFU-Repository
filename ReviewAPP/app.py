@@ -4,6 +4,8 @@ from Packages.scraper import get_reviews
 flask_template_path = 'web/'	# web/templates/
 home_page = 'web.html'	# main.html
 predict_page = 'predict.html'
+user_rating = 1
+bert_rating = 1
 
 app = Flask(__name__,
 			template_folder=flask_template_path,
@@ -38,6 +40,22 @@ def get_reviews():
 	print(request.form['star'])
 	print(request.form['txt'])
 	return render_template(predict_page)
+
+@app.route("/get_url", methods=['GET'])
+def get_url():
+	if request.args.get('platform') is None:
+		raise ValueError('Please select a platform.')
+	
+	if request.args.get('url') is None :
+		raise ValueError('Please input a url under "Overview tab".')
+	
+	if request.args.get('platform') == 'Googlemaps':
+		pass
+
+	if request.args.get('platform') == 'Foodpanda':
+		pass
+
+	return render_template(home_page)
         
 if __name__ == "__main__":
 	app.run(port=8900)
