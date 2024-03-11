@@ -1,6 +1,7 @@
 from flask import Flask, request, render_template, json
 import os
 from Packages.scraper import get_reviews
+from Packages.predictor_1 import review_predict
 flask_template_path = 'web/'	# web/templates/
 home_page = 'web.html'	# main.html
 predict_page = 'predict.html'
@@ -38,11 +39,11 @@ def comment():
 		
 @app.route("/get_user_review", methods=['POST'])
 def get_user_review():
-	
-	print(request.form['star'])
-	print(request.form['txt'])
-	data = request.form['star']
-	return render_template(predict_page, DATA = data)
+	user_rating = request.form['star'] + '星'
+	txt = [request.form['txt']]
+	bert_rating = review_predict(txt) + '星'
+
+	return render_template(predict_page, users = user_rating, berts = bert_rating)
 
 @app.route("/get_url", methods=['GET', 'POST'])
 def get_url():
