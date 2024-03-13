@@ -44,7 +44,7 @@ def get_url():
 	
 	if scrape_url == 'test':
 		print(scrape_url)
-		return render_template(analysis_page)
+		return request.get_json()
 	
 	if platform == 'Googlemaps':
 		print('Select Googlemaps')
@@ -59,12 +59,13 @@ def get_url():
 
 @app.route("/get_platform", methods=['GET','POST'])
 def get_platform():
-	'''Set platform to set scrape web'''
-	output = request.get_json()
-	global platform
-	platform = output
+	'''Set platform to set scrape web
+	Foodpanda | Googlemaps
+	'''
+	# output = request.get_json()
+	# global platform
+	# platform = output
 	return ('', 204)
 
 if __name__ == "__main__":
-	print(os.getcwd())
 	app.run(port=8900)
