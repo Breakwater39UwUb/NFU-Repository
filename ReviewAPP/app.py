@@ -1,10 +1,11 @@
-from flask import Flask, request, render_template, json
+from flask import Flask, request, render_template, json, url_for
 import os
 from Packages.scraper import get_reviews
 from Packages.predictor_1 import review_predict
 flask_template_path = 'web/'	# web/templates/
 home_page = 'web.html'	# main.html
 predict_page = 'predict.html'
+analysis_page = 'analysis.html'
 platform = ''
 user_rating = 1
 bert_rating = 1
@@ -18,27 +19,12 @@ app.debug = True
 @app.route("/")
 def Home():
 	return render_template(home_page)
-
-@app.route("/comment", methods=['POST'])
-def comment():
-	comment = request.form['Comment']
-	if comment:
-		print(request.form['Comment'])
-		return comment  
-	
-
-	link = request.form['Link']
-	if link:
-		print(request.form['Link'])
-		try:
-			get_reviews(url=link)
-		except Exception:
-			print(os.getcwd())
-		finally:
-			return link
 		
 @app.route("/get_user_review", methods=['POST'])
 def get_user_review():
+	'''
+	Show BERT prediction
+	'''
 	user_rating = request.form['star'] + '星'
 	txt = [request.form['txt']]
 	bert_rating = review_predict(txt) + '星'
@@ -47,26 +33,38 @@ def get_user_review():
 
 @app.route("/get_url", methods=['GET', 'POST'])
 def get_url():
+	'''
+	Get url for web scraper
+	then call web scraper
+	calculate all label and show results on web
+	'''
 	scrape_url = request.get_json()
 	if scrape_url is None :
 		raise ValueError('Please input a url under "Overview tab".')
 	
-	if platform == 'Googlemaps':
+	if scrape_url == 'test':
 		print(scrape_url)
+		return render_template(analysis_page)
+	
+	if platform == 'Googlemaps':
+		print('Select Googlemaps')
 		get_reviews(url=scrape_url, webname=platform)
 
 	if platform == 'Foodpanda':
+		print('Select foodpanda')
 		get_reviews(url=scrape_url, webname=platform)
 
-	return render_template(home_page)
+	print('return analysis results')
+	return render_template(analysis_page)
 
 @app.route("/get_platform", methods=['GET','POST'])
 def get_platform():
+	'''Set platform to set scrape web'''
 	output = request.get_json()
 	global platform
 	platform = output
-	print(platform)
-	return render_template(home_page)
-        
+	return ('', 204)
+
 if __name__ == "__main__":
+	print(os.getcwd())
 	app.run(port=8900)
