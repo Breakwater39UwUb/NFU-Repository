@@ -274,6 +274,58 @@
         .gwd-textarea-1pzl {
             transform: translate(-50%, 0%) translate3d(0px, -118px, 0px);
         }
+        .gwd-page-1et4 {
+            width: 412px;
+            height: 777px;
+        }
+        .gwd-div-1wwu {
+            width: 412px;
+            height: 777px;
+        }
+        .gwd-imagebutton-htyj {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            left: 25px;
+            top: 39px;
+        }
+        @keyframes gwd-gen-1mzcgwdanimation_gwd-keyframes {
+            0% {
+                --gwd-visibility-range: 0, ;
+            }
+        }
+        .gwd-play-animation #loading_div .gwd-gen-1mzcgwdanimation {
+            animation: 0s linear 0s 1 normal forwards running gwd-gen-1mzcgwdanimation_gwd-keyframes;
+        }
+        .gwd-div-1wi3 {
+            position: absolute;
+            width: 280px;
+            left: 50%;
+            transform: translate(-50%, 0%);
+            top: 15%;
+            height: 600px;
+        }
+        .gwd-label-9v8c {
+            display: block;
+            font-family: Arial;
+            font-size: 32px;
+            font-weight: 700;
+            height: 46px;
+            left: 50%;
+            position: absolute;
+            text-align: center;
+            top: 0px;
+            transform: translate(-50%, 0%);
+            width: 263px;
+        }
+        .gwd-image-hoj8 {
+            display: block;
+            height: 100px;
+            left: 90px;
+            position: absolute;
+            top: 125px;
+            width: 100px;
+        }
     </style>
     <script data-source="gwd_webcomponents_v1_min.js" data-version="2" data-exports-type="gwd_webcomponents_v1" src="gwd_webcomponents_v1_min.js"></script>
     <script data-source="gwdpage_min.js" data-version="13" data-exports-type="gwd-page" src="gwdpage_min.js"></script>
@@ -332,6 +384,7 @@
             }
             document.body.appendChild(form);
             form.submit();
+            document.getElementById('pagedeck').goToPage('page1_4', 'slide', 700, 'ease', 'left');
         };
         gwd.slider_changed = function(event) {
             // show star on label to show to users
@@ -383,6 +436,10 @@
                 data: JSON.stringify(platform)
             });
         };
+        gwd.auto_Gwd_imagebutton_goto_home_4Click = function(event) {
+            // GWD Predefined Function
+            gwd.actions.gwdPagedeck.goToPage('pagedeck', 'page1', 'slide', 700, 'ease', 'left');
+        };
     </script>
     <script type="text/javascript" gwd-events="support" src="gwd-events-support.1.0.js"></script>
     <script type="text/javascript" gwd-events="registration">
@@ -401,6 +458,7 @@
             gwd.actions.events.addHandler(' ButtonGroup2 button_select_googlemap', 'click', gwd.select_platform, false);
             gwd.actions.events.addHandler('button_send_url', 'click', gwd.get_url, false);
             gwd.actions.events.addHandler(' ButtonGroup2 button_select_foodpanda', 'click', gwd.select_platform2, false);
+            gwd.actions.events.addHandler('gwd-imagebutton_goto_home_4', 'click', gwd.auto_Gwd_imagebutton_goto_home_4Click, false);
         };
         gwd.actions.events.deregisterEventHandlers = function(event) {
             gwd.actions.events.removeHandler(' Group1 button_select_business', 'click', gwd.click_business, false);
@@ -415,6 +473,7 @@
             gwd.actions.events.removeHandler(' ButtonGroup2 button_select_googlemap', 'click', gwd.select_platform, false);
             gwd.actions.events.removeHandler('button_send_url', 'click', gwd.get_url, false);
             gwd.actions.events.removeHandler(' ButtonGroup2 button_select_foodpanda', 'click', gwd.select_platform2, false);
+            gwd.actions.events.removeHandler('gwd-imagebutton_goto_home_4', 'click', gwd.auto_Gwd_imagebutton_goto_home_4Click, false);
         };
         document.addEventListener("DOMContentLoaded", gwd.actions.events.registerEventHandlers);
         document.addEventListener("unload", gwd.actions.events.deregisterEventHandlers);
@@ -469,6 +528,15 @@
                     <h1 id="label_4" class="gwd-h1-1eds">輸入網址</h1>
                     <button id="button_send_url" class="gwd-button-1hvj">Send</button>
                     <textarea class="gwd-textarea-ql8p gwd-textarea-1pzl" id="text_url"></textarea>
+                </div>
+            </div>
+        </gwd-page>
+        <gwd-page id="page1_4" class="gwd-page-wrapper gwd-lightbox gwd-page-1et4" data-gwd-width="412px" data-gwd-height="777px" data-gwd-name="loading">
+            <div class="gwd-page-content gwd-div-1wwu">
+                <gwd-imagebutton id="gwd-imagebutton_goto_home_4" up-image="assets/home_FILL0_wght400_GRAD0_opsz24.png" over-image="" down-image="" scaling="cover" class="gwd-imagebutton-htyj"></gwd-imagebutton>
+                <div class="star one two three four five gwd-div-1wi3" id="loading_div">
+                    <label id="label_head" class="gwd-label-9v8c gwd-gen-1mzcgwdanimation">Predict loading...</label>
+                    <gwd-image class="gwd-image-hoj8" id="gwd-image_1" source="assets/Gray_circles_rotate.gif"></gwd-image>
                 </div>
             </div>
         </gwd-page>
