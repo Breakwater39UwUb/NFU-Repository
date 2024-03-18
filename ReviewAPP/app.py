@@ -37,7 +37,7 @@ def get_user_review():
 	'''
 	user_rating = request.form['star'] + '星'
 	txt = [request.form['txt']]
-	bert_rating =  "5" + '星'
+	bert_rating =  review_predict(txt) + '星'
 
 	return render_template(predict_page, users = user_rating, berts = bert_rating)
 
