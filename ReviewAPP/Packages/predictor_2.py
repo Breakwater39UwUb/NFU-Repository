@@ -49,29 +49,39 @@ def Predict(model, text , device, D, tokenizer):
     device = torch.device(D)
     model.eval()     # Enter Evaluation Mode
     # tokenize the sentences
-    print(text)
     encoding = tokenizer(text, return_tensors='pt')
     input_ids = encoding['input_ids']
-            
+
     attention_mask = encoding['attention_mask']
-            
+
     # move to GPU if necessary
     input_ids = input_ids.to(device)
     attention_mask = attention_mask.to(device)
-            
+
     # generate prediction
     outputs = model(input_ids, attention_mask=attention_mask)  # NOT USING INTERNAL CrossEntropyLoss
     prob = outputs.logits.sigmoid()   # BCEWithLogitsLoss has sigmoid
-       
-             
+
     # take the index of the highest prob as prediction output
     THRESHOLD = 0.6
     prediction = prob.detach().clone()
-    print(prediction)        
+    # print(prediction)
     prediction[prediction > THRESHOLD] = 1
     prediction[prediction <= THRESHOLD] = 0
-            
-    
-    # print completed result
-    
-    return prediction[0]
+
+    AnswerLabel=[]
+    HaveAnswer=0
+
+    for i in range(len(prediction[0])):
+        if prediction[0][i]==1:
+            HaveAnswer=1
+            AnswerLabel.append(text)
+
+    if HaveAnswer==0:
+        AnswerLabel.append("No Answer")
+
+    Prediction=[]
+    for i in range(len(prediction[0])):
+        Prediction.append(int(prediction.tolist()[0][i]))
+
+    return Prediction,AnswerLabel
