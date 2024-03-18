@@ -20,6 +20,10 @@ app.debug = True
 @app.route("/")
 def Home():
 	return render_template(home_page)
+
+@app.route("/get_predict")
+def predict():
+	return render_template('analysis.html')
 		
 @app.route("/get_user_review", methods=['POST'])
 def get_user_review():
@@ -63,10 +67,10 @@ def get_platform():
 	'''Set platform to set scrape web
 	Foodpanda | Googlemaps
 	'''
-	# output = request.get_json()
-	# global platform
-	# platform = output
-	return ('', 204)
+	#output = request.get_json()
+	#global platform
+	#platform = output
+	#return ('', 204)
 
 if __name__ == "__main__":
 	app.run(port=8900)

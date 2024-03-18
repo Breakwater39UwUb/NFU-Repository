@@ -423,6 +423,10 @@
                 contentType: 'application/json',
                 data: JSON.stringify(url)
             });
+            if (document.getElementById('text_url').value) {
+                var url = '/get_predict';
+                window.location = url;
+            }
         };
         gwd.select_platform2 = function(event) {
             // set arg for 'GET'
