@@ -2,6 +2,7 @@ from flask import Flask, request, render_template, json, url_for
 import os
 from Packages.scraper import get_reviews
 from Packages.predictor_1 import review_predict
+from Packages.predictor_2 import predict_multiclass
 flask_template_path = 'web/'	# web/templates/
 home_page = 'web.html'	# main.html
 predict_page = 'predict.html'
