@@ -14,14 +14,19 @@ from transformers import BertTokenizer, BertForSequenceClassification
 import pandas as pd
 import numpy as np
 import os
-import time
+from Packages.bert_paths import PATH_multi_label_model
 
-PATH = 'trained_model/model'
-
-def predict_multiclass(TEXT: list):
-    '''Predict Multiclass
+def review_analyze(TEXT: list, file: str = None):
+    '''BERT Predict Multi-labels
+    
     TEXT: list of reviews
+    file: path of json file
+
+    returns list of label predictions
     '''
+
+    Predictions = []
+
     # ML Parameters
     LabelNum = 4
     D = 'cuda'
@@ -29,7 +34,7 @@ def predict_multiclass(TEXT: list):
     device = torch.device(D)
     print("using device",device)
 
-    # hard code the label dimension to be 6 (because the data has 6 classes)
+    # hard code the label dimension to be 4 (because the data has 4 classes)
     num_labels = LabelNum
 
     # Define model
@@ -39,11 +44,13 @@ def predict_multiclass(TEXT: list):
     # Define tokenizer
     tokenizer = BertTokenizer.from_pretrained('bert-base-chinese')
 
-    model.load_state_dict(torch.load(PATH))
+    model.load_state_dict(torch.load(PATH_multi_label_model))
 
     for i in range(len(TEXT)):
-        Answer=Predict(model, TEXT[i], device, D, tokenizer)
-        print(Answer)
+        Prediction, Answer = Predict(model, TEXT[i], device, D, tokenizer)
+        Predictions.append(Prediction)
+
+    return Predictions
 
 def Predict(model, text , device, D, tokenizer):
     device = torch.device(D)
