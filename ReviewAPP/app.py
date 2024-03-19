@@ -11,6 +11,13 @@ platform = ''
 user_rating = 1
 bert_rating = 1
 
+bert_meals_rating = 0
+bert_serve_rating = 1
+bert_surroundings_rating = 2
+bert_price_rating = 3
+
+
+
 app = Flask(__name__,
 			template_folder=flask_template_path,
 			static_folder=flask_template_path,
@@ -21,9 +28,7 @@ app.debug = True
 def Home():
 	return render_template(home_page)
 
-@app.route("/get_predict")
-def predict():
-	return render_template('analysis.html')
+
 		
 @app.route("/get_user_review", methods=['POST'])
 def get_user_review():
@@ -32,9 +37,44 @@ def get_user_review():
 	'''
 	user_rating = request.form['star'] + '星'
 	txt = [request.form['txt']]
-	bert_rating = review_predict(txt) + '星'
+	bert_rating =  review_predict(txt) + '星'
 
 	return render_template(predict_page, users = user_rating, berts = bert_rating)
+
+
+
+@app.route("/get_predict")
+def get_predict():
+	if platform == 'Googlemaps':
+		print('Select Googlemaps')
+		try:
+			get_reviews(url=scrape_url, webname=platform)
+		except Exception:
+			print(os.getcwd())
+		finally:
+			return render_template('analysis.html',
+			str1=bert_meals_rating,str2=bert_serve_rating,str3=bert_surroundings_rating,str4=bert_price_rating)
+		
+	if platform == 'Foodpanda':
+		print('Select foodpanda')
+		try:
+			get_reviews(url=scrape_url, webname=platform)
+		except Exception:
+			print(os.getcwd())
+		finally:
+			return render_template('analysis.html',
+			str1=bert_meals_rating,str2=bert_serve_rating,str3=bert_surroundings_rating,str4=bert_price_rating)		
+	
+
+@app.route("/get_platform", methods=['GET','POST'])
+def get_platform():
+	'''Set platform to set scrape web
+	Foodpanda | Googlemaps
+	'''
+	output = request.get_json()
+	global platform
+	platform = output
+	return ('', 204)
 
 @app.route("/get_url", methods=['GET', 'POST'])
 def get_url():
@@ -43,34 +83,15 @@ def get_url():
 	then call web scraper
 	calculate all label and show results on web
 	'''
-	scrape_url = request.get_json()
+	output = request.get_json()
+	global scrape_url
+	scrape_url = output
+	
 	if scrape_url is None :
 		raise ValueError('Please input a url under "Overview tab".')
-	
-	if scrape_url == 'test':
-		print(scrape_url)
-		return request.get_json()
-	
-	if platform == 'Googlemaps':
-		print('Select Googlemaps')
-		get_reviews(url=scrape_url, webname=platform)
-
-	if platform == 'Foodpanda':
-		print('Select foodpanda')
-		get_reviews(url=scrape_url, webname=platform)
 
 	print('return analysis results')
 	return render_template(analysis_page)
-
-@app.route("/get_platform", methods=['GET','POST'])
-def get_platform():
-	'''Set platform to set scrape web
-	Foodpanda | Googlemaps
-	'''
-	#output = request.get_json()
-	#global platform
-	#platform = output
-	#return ('', 204)
 
 if __name__ == "__main__":
 	app.run(port=8900)
