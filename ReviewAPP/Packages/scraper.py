@@ -9,6 +9,7 @@ from selenium.webdriver.common.by import By
 import selenium.common.exceptions
 from fake_useragent import UserAgent
 import pandas as pd
+from Packages.utils import check_loacal_cache
 
 rating_level_G = [0, 0, 0, 0, 0] # from star 1 to 5, google
 rating_level_F = [0, 0, 0, 0, 0] # from star 1 to 5, foodpanda
@@ -32,7 +33,7 @@ def get_data(driver, web, t_range):
     lst_data = []
     for data in elements:
         try:
-            driver.implicitly_wait(3)
+            driver.implicitly_wait(.5)
             if t_range is None:
                 text = data.find_element(
                     By.XPATH, './/div[@class="MyEned"]').text
@@ -272,9 +273,10 @@ def write_to_xlsx(data, filename, dir, format):
 
 def get_reviews(url: str = None,
                 webname: str = 'Googlemaps',
-                save_path: str = '\\SaveData\\',
+                save_path: str = 'SaveData\\',
                 format: str = None,
-                time_range: list[str] = None):
+                time_range: list[str] = None,
+                check_cache: bool = False):
     '''
     Get reviews on Googlemap or Foodpanda
     * url: website url at "Overview Tab"
@@ -284,6 +286,7 @@ def get_reviews(url: str = None,
     * time_range: Time range to scrape the reviews
           * None: all the time
           * example:['1', '個月前', 'after']
+    * check_cache: Whether to check cache or not
 
         Returns the path of saved file
     '''
@@ -337,12 +340,20 @@ def get_reviews(url: str = None,
         # format the web title for further use
         # webTitle = driver.title.replace(' ', '').split('|')[0]
         webTitle = re.sub(r'< > : " / \ | ? * ｜', '', driver.title)
+        if check_loacal_cache(query=webTitle, query_dir=save_path, file_type=format) and \
+            check_cache:
+            print(f'{webTitle} is already cached')
+            return save_path+webTitle+format
+        
         # count for scrolling
         counts = counter(driver, webname)
+
         # scroll to the bottom of the page
         scrolling(driver, counts, webname)
+
         # get reviews on the web
         data = get_data(driver, webname, time_range)
+
         # write reviews to csv file
         file = write_to_xlsx(data, webTitle, save_path, format)
         print('Done!')
