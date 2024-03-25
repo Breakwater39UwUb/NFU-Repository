@@ -52,6 +52,18 @@ Scraped data from internet are saved in the [SaveDate](./SaveData/)
     "GET /null HTTP/1.1" 404 -
     ```
 
+## Dataset
+
+BERT multi class model
+
+- 7995(90% for training, 10% for validating) records for training
+- 800(10%) for testing
+
+BERT multi label model
+
+- 3346 records for training
+- 10% for testing
+
 ## Database implementation
 
 ```text
@@ -75,5 +87,13 @@ Scraped data from internet are saved in the [SaveDate](./SaveData/)
     pyuic5.exe -x ./Src/uifiles.ui -o ouput.py
     ```
 
+3. Can not run predict on macOS
+
+    AssertionError: Torch not compiled with CUDA enabled
+
+    ```bash
+    pip3 install torch torchvision torchaudio
+    ```
+
 [pyside2_for_android]: https://stackoverflow.com/questions/70907303/pyside2-for-android-development "Android Development"
-[trained_model]: https://nfuedu-my.sharepoint.com/:u:/g/personal/41043152_nfu_edu_tw/EehfyMuKe0VFmVjRY1o0gYABA3Om_QTfJMLkevAbtKZpKA?e=a4oAik
+[trained_model]: https://nfuedu-my.sharepoint.com/:u:/g/personal/41043152_nfu_edu_tw/EehfyMuKe0VFmVjRY1o0gYAB7gOqdc0cXsKPx_ZrZMEq2w "model link"

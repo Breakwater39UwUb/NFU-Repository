@@ -13,24 +13,30 @@ from transformers import BertTokenizer, BertForSequenceClassification
 # Python
 import pandas as pd
 import numpy as np
-import os
+import os, platform
 from Packages.bert_paths import PATH_multi_label_model
+D = ''
+device = None
 
-def review_analyze(TEXT: list, file: str = None):
+def review_analyze(TEXT: list):
     '''BERT Predict Multi-labels
     
     TEXT: list of reviews
-    file: path of json file
 
-    returns list of label predictions
+    returns list of tuples [(labels: list of int, text: list of string)]
     '''
 
     Predictions = []
 
     # ML Parameters
     LabelNum = 4
-    D = 'cuda'
+    global D
+    if (platform.processor() == 'arm'):
+        D = 'mps'
+    else:
+        D = 'cuda'
 
+    global device
     device = torch.device(D)
     print("using device",device)
 
@@ -44,16 +50,17 @@ def review_analyze(TEXT: list, file: str = None):
     # Define tokenizer
     tokenizer = BertTokenizer.from_pretrained('bert-base-chinese')
 
-    model.load_state_dict(torch.load(PATH_multi_label_model))
+    model.load_state_dict(torch.load(PATH_multi_label_model, device))
 
     for i in range(len(TEXT)):
-        Prediction, Answer = Predict(model, TEXT[i], device, D, tokenizer)
-        Predictions.append(Prediction)
+        labels, text = Predict(model, TEXT[i], tokenizer)
+        Predictions.append((labels, text))
 
     return Predictions
 
-def Predict(model, text , device, D, tokenizer):
-    device = torch.device(D)
+def Predict(model, text, tokenizer):
+    # global D
+    # device = torch.device(D)
     model.eval()     # Enter Evaluation Mode
     # tokenize the sentences
     encoding = tokenizer(text, return_tensors='pt')
@@ -62,6 +69,7 @@ def Predict(model, text , device, D, tokenizer):
     attention_mask = encoding['attention_mask']
 
     # move to GPU if necessary
+    global device
     input_ids = input_ids.to(device)
     attention_mask = attention_mask.to(device)
 

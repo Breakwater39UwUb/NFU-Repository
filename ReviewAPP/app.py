@@ -62,7 +62,7 @@ def calculate_labels(labels: list):
 	sum of labels
 
 		[food, price, service, environment]
-    '''
+	'''
 	analysis = [0, 0, 0, 0]
 
 	for label in labels:
@@ -97,7 +97,7 @@ def get_url():
 	return ('', 204)
 
 def read_review_file(FILE: str):
-	'''move this function to Packages.predictor2
+	'''Read lines from file for the BERT
 	'''
 
 	TEXT = []

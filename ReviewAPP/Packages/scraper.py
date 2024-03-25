@@ -1,7 +1,5 @@
 # https://github.com/MajideND/scraping-reviews-from-googlemaps/blob/main/app.py
-import re
-import math
-import time
+import os, re, math, time
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
@@ -257,8 +255,7 @@ def scrolling(driver, counter, web):
             time.sleep(1)
 
 def write_to_xlsx(data, filename, dir, format):
-    filename = filename.replace('/', ' ').replace('\\', ' ')
-    filepath = dir + filename + '.' + format
+    filepath = os.path.join(dir, filename) + '.' + format
     print(f'write to {filepath}...')
     cols = ['rating', 'comment']
     df = pd.DataFrame(data, columns=cols) # this insert the head
@@ -267,13 +264,13 @@ def write_to_xlsx(data, filename, dir, format):
         df.to_csv(filepath, encoding='utf-8', index=False, header=None)
     
     if format == 'json':
-        df.to_json(filepath, orient='records', indent=4)
+        df.to_json(filepath, orient='records', indent=4, force_ascii=False)
     
     return filename
 
 def get_reviews(url: str = None,
                 webname: str = 'Googlemaps',
-                save_path: str = 'SaveData\\',
+                save_path: str = 'SaveData',
                 format: str = None,
                 time_range: list[str] = None,
                 check_cache: bool = False):
@@ -343,7 +340,8 @@ def get_reviews(url: str = None,
         if check_loacal_cache(query=webTitle, query_dir=save_path, file_type=format) and \
             check_cache:
             print(f'{webTitle} is already cached')
-            return save_path+webTitle+format
+            cached_path = os.path.join(save_path, webTitle) + f'.{format}'
+            return cached_path
         
         # count for scrolling
         counts = counter(driver, webname)
@@ -356,7 +354,7 @@ def get_reviews(url: str = None,
 
         # write reviews to csv file
         file = write_to_xlsx(data, webTitle, save_path, format)
-        print('Done!')
+        print(f'Your restaurant review file is saved to {file}')
         return file
     # except:
         # print('Failed to scrape web')
