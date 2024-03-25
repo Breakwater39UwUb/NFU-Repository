@@ -30,7 +30,7 @@ Scraped data from internet are saved in the [SaveDate](./SaveData/)
         |   +-- app.py
     ```
 
-- Download 
+- Download
 
 > If you met any error, contact [防波堤](mailto:41043152@gm.nfu.edu.tw)
 
@@ -56,13 +56,17 @@ Scraped data from internet are saved in the [SaveDate](./SaveData/)
 
 BERT multi class model
 
-- 7995(90% for training, 10% for validating) records for training
-- 800(10%) for testing
+- 8864 records
+  - 7178 (90%) for training
+  - 798 (10%) for validating
+  - 888 (10%) for testing
 
 BERT multi label model
 
-- 3346 records for training
-- 10% for testing
+- 3346 records
+  - (%)for training
+  - (%) for validating
+  - (10%) for testing
 
 ## Database implementation
 
@@ -95,5 +99,10 @@ BERT multi label model
     pip3 install torch torchvision torchaudio
     ```
 
+4. Web scraping take too long to get reviews on website
+
+    [This restaurant][restaurant_url1] takes 3 minutes to get 554 reviews, but 925 on the website.
+
 [pyside2_for_android]: https://stackoverflow.com/questions/70907303/pyside2-for-android-development "Android Development"
 [trained_model]: https://nfuedu-my.sharepoint.com/:u:/g/personal/41043152_nfu_edu_tw/EehfyMuKe0VFmVjRY1o0gYAB7gOqdc0cXsKPx_ZrZMEq2w "model link"
+[restaurant_url1]: https://www.google.com/maps/place/%E7%95%B0%E4%BA%BA%E9%A4%A8+%E6%9D%B1%E8%8B%B1%E5%BA%97/@24.14262,120.7056438,20z/data=!4m6!3m5!1s0x34693dc4fc54b2bd:0xb150f911a4f6a718!8m2!3d24.14262!4d120.7062393!16s%2Fg%2F11j5npjg01?entry=ttu "link for web scraping"
