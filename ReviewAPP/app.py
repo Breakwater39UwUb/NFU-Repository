@@ -11,11 +11,6 @@ platform = ''
 user_rating = 1	# may delete this
 bert_rating = 1	# may delete this
 
-bert_meals_rating = 0
-bert_serve_rating = 1
-bert_surroundings_rating = 2
-bert_price_rating = 3
-
 app = Flask(__name__,
 			template_folder=flask_template_path,
 			static_folder=flask_template_path,
@@ -48,8 +43,8 @@ def get_predict():
 	try:
 		# may remove the check_cache until client web have proper function to handle
 		review_file = get_reviews(url=scrape_url, webname=platform, format= 'json', check_cache=True)
-		print(f'Your restaurant review file is saved to {review_file}')
-		predictions = review_analyze(review_file)
+		predictions = review_analyze(file_path=review_file)
+		debug_type(predictions)
 		analysis = calculate_labels(predictions)
 		return render_template(analysis_page,
 						 str1=analysis[0], str2=analysis[1], str3=analysis[2], str4=analysis[3])
@@ -63,11 +58,12 @@ def calculate_labels(labels: list):
 
 		[food, price, service, environment]
 	'''
+
 	analysis = [0, 0, 0, 0]
 
 	for label in labels:
 		index = 0
-		for value in range(len(label)):
+		for value in label[0]:
 			if value:
 				analysis[index] += 1
 			index += 1
@@ -108,6 +104,15 @@ def read_review_file(FILE: str):
 			for line in data:
 				TEXT.append(line['comment'])
 		return TEXT
+
+def debug_type(var):
+	print('----------')
+	print(f'Type: {type(var)}')
+	if type(var) is list:
+		print(f'type(var[0]): {type(var[0])}')
+		print(f'var[0]: {var[0]}')
+	else:
+		print(f'value: {var}')
 
 if __name__ == "__main__":
 	app.run(port=8900)
