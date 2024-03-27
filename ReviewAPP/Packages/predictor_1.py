@@ -1,4 +1,4 @@
-# predict 1st level, which is garbage reviews
+# multiclass classification, which filter garbage reviews
 
 import torch
 import pickle
