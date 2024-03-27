@@ -14,7 +14,7 @@ from transformers import BertTokenizer, BertForSequenceClassification
 import pandas as pd
 import numpy as np
 import os, platform
-from Packages.bert_paths import PATH_multi_label_model
+from Packages.bert_paths import multi_label_model
 D = ''
 device = None
 
@@ -81,7 +81,7 @@ def review_analyze(TEXT: list = [], file_path: str = None):
     # Define tokenizer
     tokenizer = BertTokenizer.from_pretrained('bert-base-chinese')
 
-    model.load_state_dict(torch.load(PATH_multi_label_model, device))
+    model.load_state_dict(torch.load(multi_label_model, device))
 
     for i in range(len(TEXT)):
         labels, text = Predict(model, TEXT[i], tokenizer)

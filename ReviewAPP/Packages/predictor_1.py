@@ -19,9 +19,9 @@ def review_predict(q_inputs: list):
         
     # BERT
     model_setting = {
-        "model_name":"bert", 
-        "config_file_path":"trained_model/config.json", 
-        "model_file_path":"trained_model/pytorch_model.bin", 
+        "model_name":"bert",
+        "config_file_path":bert_paths.config_file,
+        "model_file_path":bert_paths.model_file,
         "vocab_file_path":bert_paths.vocab_file,
         "num_labels":5  # 分幾類
     }    

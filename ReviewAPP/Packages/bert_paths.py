@@ -1,3 +1,5 @@
-pkl_file = 'Src/data_features.pkl'
-vocab_file = 'Src/bert-base-chinese-vocab.txt'
-PATH_multi_label_model = 'trained_model/model'
+pkl_file = 'trained_model/data_features.pkl'
+vocab_file = 'trained_model/bert-base-chinese-vocab.txt'
+multi_label_model = 'trained_model/model'
+model_file = 'trained_model/pytorch_model.bin'
+config_file = 'trained_model/config.json'
