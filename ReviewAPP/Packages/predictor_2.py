@@ -1,4 +1,4 @@
-import csv
+import csv, json
 # PyTorch
 import torch
 import torch.nn as nn
@@ -18,13 +18,44 @@ from Packages.bert_paths import PATH_multi_label_model
 D = ''
 device = None
 
-def review_analyze(TEXT: list):
+def review_analyze(TEXT: list = [], file_path: str = None):
     '''BERT Predict Multi-labels
     
     TEXT: list of reviews
+    file: path to review
 
     returns list of tuples [(labels: list of int, text: list of string)]
+
+    Examples:
+    ```python
+    Passing a list of reviews
+    >>> review_analyze(TEXT=list_of_reviews)
+    Passing a file containing reviews(csv, json)
+    >>> review_analyze(file='SaveData/review.json')
+    ```
     '''
+
+    if file_path is not None:
+        # Read reviews from json
+        if file_path.split('.')[-1] == 'json':
+            file = open(file_path, 'r', encoding='utf-8')
+            lines = json.load(file)
+            for line in lines:
+                TEXT.append(line['comment'])
+            file.close()
+
+        # Read reviews from csv
+        if file_path.split('.')[-1] == 'csv':
+            file = open(file_path, 'r', encoding='utf-8')
+            lines = csv.reader(file)
+            for line in lines:
+                TEXT.append(line[1])
+            file.close()
+
+        # debug output
+        print(TEXT[0])
+        
+
 
     Predictions = []
 
