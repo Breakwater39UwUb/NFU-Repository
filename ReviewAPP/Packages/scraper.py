@@ -284,8 +284,12 @@ def get_reviews(url: str = None,
           * None: all the time
           * example:['1', '個月前', 'after']
     * check_cache: Whether to check cache or not
+    
+    urls to test check_cache
+        * https://www.google.com/maps/place/%E5%B0%8F%E8%B1%A1%E9%A4%90%E5%BB%B3/@24.1471015,120.6817869,17z/data=!3m1!4b1!4m6!3m5!1s0x34693d694363448f:0x89413bc624180d69!8m2!3d24.1470966!4d120.6843565!16s%2Fg%2F11b6q1y2q8?authuser=0&entry=ttu
+        * https://www.google.com/maps/place/%E6%99%A8%E9%96%93%E5%BB%9A%E6%88%BF%E6%97%A9%E5%8D%88%E9%A4%90+%E8%99%8E%E5%B0%BE%E7%A7%91%E5%A4%A7%E5%BA%97/@23.7037418,120.4346679,19.5z/data=!4m6!3m5!1s0x346eb0aaa1358941:0x2401c8b48788a7d4!8m2!3d23.7035352!4d120.4346529!16s%2Fg%2F11c5rp098z?hl=zh-tw&entry=ttu
 
-        Returns the path of saved file
+    Returns the path of saved file
     '''
     if url is None:
         raise Exception('url is None, string is required')
@@ -339,8 +343,8 @@ def get_reviews(url: str = None,
         webTitle = re.sub(r'< > : " / \ | ? * ｜', '', driver.title)
         if check_loacal_cache(query=webTitle, query_dir=save_path, file_type=format) and \
             check_cache:
-            print(f'{webTitle} is already cached')
             cached_path = os.path.join(save_path, webTitle) + f'.{format}'
+            print(f'Already cached: {cached_path}')
             return cached_path
         
         # count for scrolling
