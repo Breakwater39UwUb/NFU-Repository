@@ -1,40 +1,91 @@
 # ReviewAPP
 
+- [ReviewAPP](#reviewapp)
+  - [Brief Introduction](#brief-introduction)
+  - [Guide to install and development](#guide-to-install-and-development)
+    - [Install](#install)
+    - [Development](#development)
+  - [How to use](#how-to-use)
+  - [Todo](#todo)
+  - [Fix](#fix)
+  - [Dataset](#dataset)
+  - [Database implementation](#database-implementation)
+  - [Issue and work-around](#issue-and-work-around)
+
+## Brief Introduction
+
 Web implementates with flask
 
 ~~[pyside2_for_android][]~~
 
 Scraped data from internet are saved in the [SaveDate](./SaveData/)
 
-## Guide to debugging and development
+## Guide to install and development
 
-### 1. Make sure you have the URL host in [ngrok.txt](./ngrok.txt), for steps, see [here](./guide%20to%20test%20CloudSQL.md#set_ngrok_host)
+### Install
 
-### 2. if you see ```'Error to scrape the webdriver'``` in terminal, just try again
+1. Download this project.
 
-### 3. Properly sets the flask templates directory
-
-### 4. Download the [trained_model][] from OneDrive
-
-- Download the file from above link.
-- Extract the file to project root like this:
-
-    ```+-- Database: reviews
-        +-- ReviewAPP
-        |   +-- albert
-        |   +-- Images
-        |   +-- SaveData
-        |   +-- Src
-        |   +-- trained_model
-        |   +-- web
-        |   +-- app.py
+    ```bash
+    git clone https://github.com/Breakwater39UwUb/NFU-Repsitory.git
     ```
 
-- Download
+2. Go to ReviewAPP directory
+
+    ```bash
+    cd ./ReviewAPP
+    ```
+
+3. Create python virtual environment
+
+    ```bash
+    /ReviewAPP $ pip -m venv env
+    ```
+
+    Alternatively, you can create through VS Code.
+
+4. After creating the virtual environment, install packages
+
+    ```bash
+    /ReviewAPP $ pip install -r requirements.txt
+    ```
+
+5. Setup MySQL server connection configuration
+
+    Make sure you have the URL host in [ngrok.txt](./ngrok.txt),
+    for further steps, see [here][ref_sql]
+
+6. Download the trained_model from OneDrive
+
+   - Download the file from [this link][trained_model].
+   - Extract the file to project root like this:
+
+       ```text
+           +-- ReviewAPP
+           |   +-- albert
+           |   +-- Images
+           |   +-- SaveData
+           |   +-- Src
+           |   +-- trained_model
+           |   +-- web
+           |   +-- app.py
+       ```
+
+### Development
+
+If you see ```'Error to scrape the webdriver'``` in terminal, just try again
 
 > If you met any error, contact [防波堤](mailto:41043152@gm.nfu.edu.tw)
 
-## Web interface
+## How to use
+
+Run application
+
+```bash
+ReviewAPP $ python app.py
+```
+
+In browser, go to <http://127.0.0.1:8900>
 
 ## Todo
 
@@ -104,5 +155,6 @@ BERT multi label model
     [This restaurant][restaurant_url1] takes 3 minutes to get 554 reviews, but 925 on the website.
 
 [pyside2_for_android]: https://stackoverflow.com/questions/70907303/pyside2-for-android-development "Android Development"
-[trained_model]: https://nfuedu-my.sharepoint.com/:u:/g/personal/41043152_nfu_edu_tw/EehfyMuKe0VFmVjRY1o0gYAB7gOqdc0cXsKPx_ZrZMEq2w "model link"
-[restaurant_url1]: https://www.google.com/maps/place/%E7%95%B0%E4%BA%BA%E9%A4%A8+%E6%9D%B1%E8%8B%B1%E5%BA%97/@24.14262,120.7056438,20z/data=!4m6!3m5!1s0x34693dc4fc54b2bd:0xb150f911a4f6a718!8m2!3d24.14262!4d120.7062393!16s%2Fg%2F11j5npjg01?entry=ttu "link for web scraping"
+[trained_model]: https://nfuedu-my.sharepoint.com/:u:/g/personal/41043152_nfu_edu_tw/EehfyMuKe0VFmVjRY1o0gYAB7gOqdc0cXsKPx_ZrZMEq2w "Model link"
+[restaurant_url1]: https://www.google.com/maps/place/%E7%95%B0%E4%BA%BA%E9%A4%A8+%E6%9D%B1%E8%8B%B1%E5%BA%97/@24.14262,120.7056438,20z/data=!4m6!3m5!1s0x34693dc4fc54b2bd:0xb150f911a4f6a718!8m2!3d24.14262!4d120.7062393!16s%2Fg%2F11j5npjg01?entry=ttu "Link for web scraping"
+[ref_sql]: ./guide%20to%20test%20CloudSQL.md#set_ngrok_host "Reference on other Markdown"
