@@ -1,9 +1,11 @@
-# Before starting
+# Setup Remote MySQL
 
-this quide is suitable for vscode
+This guide is suitable for vscode
 
-if you encounter any problems, contact [breakwater39](mailto:41043152@gm.nfu.edu.tw)
-# Guidelines for connecting to remote MySQL Server [#](#set_ngrok_host)
+If you encounter any problems, contact [breakwater39](mailto:41043152@gm.nfu.edu.tw)
+
+## Guidelines
+
 ## step 1
 
 Check ngrok forward address and paste to [ngrok.txt](./ngrok.txt) file
@@ -27,6 +29,7 @@ in the terminal, check current directory is
     NFU-Repsitory\ReviewAPP>
 
 then create a python virtual environment by running these commands in terminal
+
 ```bash
 py -m venv env
 # activate python virtual environment
