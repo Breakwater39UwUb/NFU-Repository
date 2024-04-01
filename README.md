@@ -1,4 +1,4 @@
-# NFU-Repsitory
+# NFU-Repository
 A repository for university projects
 
 ## [Reviews Scraper](./Reviews%20Scraper/)
