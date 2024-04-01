@@ -84,6 +84,8 @@ def review_analyze(TEXT: list = [], file_path: str = None):
     model.load_state_dict(torch.load(multi_label_model, device))
 
     for i in range(len(TEXT)):
+        if len(TEXT[i]) > 512:
+            continue
         labels, text = Predict(model, TEXT[i], tokenizer)
         Predictions.append((labels, text))
 
