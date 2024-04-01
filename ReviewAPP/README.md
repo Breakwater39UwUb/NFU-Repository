@@ -27,7 +27,7 @@ Scraped data from internet are saved in the [SaveDate](./SaveData/)
 1. Download this project.
 
     ```bash
-    git clone https://github.com/Breakwater39UwUb/NFU-Repsitory.git
+    git clone https://github.com/Breakwater39UwUb/NFU-Repository.git
     ```
 
 2. Go to ReviewAPP directory
