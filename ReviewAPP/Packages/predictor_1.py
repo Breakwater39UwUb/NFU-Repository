@@ -83,7 +83,7 @@ def review_predict(q_inputs: list):
     # take the index of the highest prob as prediction output
     prediction = prob.max(1)[1]
     prediction = str(prediction.tolist()[0])
-    print(prediction)
+    # print(prediction)
     #prediction = prediction.split("tensor([")[1].split("],")[0]
     
     return(prediction)
