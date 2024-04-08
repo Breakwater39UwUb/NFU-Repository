@@ -5,6 +5,9 @@ import pickle
 from core import to_bert_ids, use_model
 from Packages import bert_paths
 
+global device 
+device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
+
 def review_predict(q_inputs: list):
     '''Returns original review and prediction
     q_inputs: list of strings
@@ -37,25 +40,51 @@ def review_predict(q_inputs: list):
     
     #
     model, tokenizer = use_model(**model_setting)
+    model.to(device)
     model.eval()
 
     #
-    ans_label = []
-    for q_input in q_inputs:
-        bert_ids = to_bert_ids(tokenizer,q_input)
-        assert len(bert_ids) <= 512
-        input_ids = torch.LongTensor(bert_ids).unsqueeze(0)
+    # ans_label = []
+    # for q_input in q_inputs:
+    #     bert_ids = to_bert_ids(tokenizer,q_input)
+    #     assert len(bert_ids) <= 512
+    #     input_ids = torch.LongTensor(bert_ids).unsqueeze(0)
 
-        # predict
-        outputs = model(input_ids)
-        predicts = outputs[:2]
-        predicts = predicts[0]
-        max_val = torch.max(predicts)
-        label = (predicts == max_val).nonzero().numpy()[0][1]
-        ans_label.append(answer_dic.to_text(label))
+    #     # predict
+    #     outputs = model(input_ids)
+    #     predicts = outputs[:2]
+    #     predicts = predicts[0]
+    #     max_val = torch.max(predicts)
+    #     label = (predicts == max_val).nonzero().numpy()[0][1]
+    #     ans_label.append(answer_dic.to_text(label))
         
-    if len(ans_label) == 1:
-        return ans_label[0]
+    # if len(ans_label) == 1:
+    #     return ans_label[0]
     
-    return ans_label
+    # return ans_label
+
+    text = q_inputs[0]
+    encoding = tokenizer(text, return_tensors='pt', padding=True, truncation=True)
+    input_ids = encoding['input_ids']
+    attention_mask = encoding['attention_mask']
+
+    # move to GPU if necessary
+    input_ids = input_ids.to(device)
+    attention_mask = attention_mask.to(device)
+
+    # generate prediction
+    outputs = model(input_ids, attention_mask=attention_mask)
+    #print(outputs)
+
+    # use Softmax to convert to probability
+    logits = outputs[0]
+    prob = torch.softmax(logits, dim=1)
+
+    # take the index of the highest prob as prediction output
+    prediction = prob.max(1)[1]
+    prediction = str(prediction.tolist()[0])
+    print(prediction)
+    #prediction = prediction.split("tensor([")[1].split("],")[0]
+    
+    return(prediction)
 
