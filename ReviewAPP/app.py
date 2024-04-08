@@ -25,11 +25,16 @@ def Home():
 def get_user_review():
 	'''
 	Show BERT prediction
+
+	Predict one review for 30 times and return the mode result
 	'''
 
 	user_rating = request.form['star'] + '星'
 	txt = [request.form['txt']]
-	bert_rating =  review_predict(txt) + '星'
+	answers = []
+	for t in range(30):
+		answers.append(review_predict(q_inputs=txt))
+	bert_rating =  max(set(answers), key=answers.count) + '星'
 
 	return render_template(predict_page, users = user_rating, berts = bert_rating)
 
