@@ -1,7 +1,7 @@
 import torch
 from torch.utils.data import TensorDataset
 import pickle
-from Packages import bert_paths
+from my_Packages import bert_paths
 
 def use_model(model_name, config_file_path, model_file_path, vocab_file_path, num_labels):
     # 選擇模型並加載設定

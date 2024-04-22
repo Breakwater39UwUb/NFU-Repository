@@ -14,7 +14,7 @@ from transformers import BertTokenizer, BertForSequenceClassification
 import pandas as pd
 import numpy as np
 import os, platform
-from Packages.bert_paths import multi_label_model
+from my_Packages.bert_paths import multi_label_model
 D = ''
 device = None
 

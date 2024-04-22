@@ -1,7 +1,7 @@
 import pymysql
 import csv
 import json
-from Packages.parse_ngrok import get_connection_args
+from my_Packages.parse_ngrok import get_connection_args
 
 def db_update(rating: int, text: str, db_name: str, ngrok_file: str | None = None):
     """Update database with new review

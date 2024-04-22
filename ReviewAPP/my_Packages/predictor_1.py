@@ -3,7 +3,7 @@
 import torch
 import pickle
 from core import to_bert_ids, use_model
-from Packages import bert_paths
+from my_Packages import bert_paths
 
 global device 
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')

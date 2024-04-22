@@ -1,8 +1,8 @@
 from flask import Flask, request, render_template, json, url_for
 import os
-from Packages.scraper import get_reviews
-from Packages.predictor_1 import review_predict
-from Packages.predictor_2 import review_analyze
+from my_Packages.scraper import get_reviews
+from my_Packages.predictor_1 import review_predict
+from my_Packages.predictor_2 import review_analyze
 flask_template_path = 'web/'	# web/templates/
 home_page = 'web.html'	# main.html
 predict_page = 'predict.html'
@@ -13,6 +13,7 @@ bert_rating = 1	# may delete this
 
 app = Flask(__name__,
 			template_folder=flask_template_path,
+			
 			static_folder=flask_template_path,
 			static_url_path='')
 app.debug = True
