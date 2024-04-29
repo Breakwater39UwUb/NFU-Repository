@@ -4,6 +4,7 @@
   - [Brief Introduction](#brief-introduction)
   - [Guide to install and development](#guide-to-install-and-development)
     - [Install](#install)
+      - [pytorch](#pytorch)
     - [Development](#development)
   - [How to use](#how-to-use)
   - [Todo](#todo)
@@ -70,6 +71,12 @@ Scraped data from internet are saved in the [SaveDate](./SaveData/)
            |   +-- web
            |   +-- app.py
        ```
+
+#### pytorch
+
+```bash
+pip install torch==2.2.1 torchvision==0.17.1 torchaudio==2.2.1 --index-url https://download.pytorch.org/whl/cu118
+```
 
 ### Development
 
