@@ -39,12 +39,25 @@ Scraped data from internet are saved in the [SaveDate](./SaveData/)
 
 3. Create python virtual environment
 
-    ```bash
-    /ReviewAPP $ pip -m venv env
-    ```
+    1. Create through python command
 
-    Alternatively, you can create through VS Code.
+        ```bash
+        /ReviewAPP $ python -m venv env
+        ```
 
+    2. Alternatively, you can create through VS Code.
+       1. <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd>
+       2. Enter `Create Environment`
+       3. Select `Venv`
+       4. Select `Python 3.9.7 64-bit` or other version
+       5. Select `requirements.txt`
+       6. Press <kbd>OK</kbd>
+       7. VS Code auto create environment with specified requirements packages.
+    3. Activate virtual environment
+       
+       ```bash
+       Set-ExecutionPolicy Unrestricted -Scope Process
+       ```
 4. After creating the virtual environment, install packages
 
     ```bash
@@ -62,14 +75,14 @@ Scraped data from internet are saved in the [SaveDate](./SaveData/)
    - Extract the file to project root like this:
 
        ```text
-           +-- ReviewAPP
-           |   +-- albert
-           |   +-- Images
-           |   +-- SaveData
-           |   +-- Src
-           |   +-- trained_model
-           |   +-- web
-           |   +-- app.py
+        +-- ReviewAPP
+        |   +-- albert
+        |   +-- Images
+        |   +-- SaveData
+        |   +-- Src
+        |   +-- trained_model
+        |   +-- web
+        |   +-- app.py
        ```
 
 #### pytorch
