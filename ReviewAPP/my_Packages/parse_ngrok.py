@@ -1,5 +1,5 @@
 import os
-def get_connection_args(filepath: str | None= None):
+def get_connection_args(filepath: str = None):
     """Returns the connection hostname and port
     filepath: None -> './ReviewAPP/ngrok.txt'
     """
