@@ -8,14 +8,22 @@ import selenium.common.exceptions
 from fake_useragent import UserAgent
 import pandas as pd
 from my_Packages.utils import check_loacal_cache
+from datetime import datetime
 
 rating_level_G = [0, 0, 0, 0, 0] # from star 1 to 5, google
 rating_level_F = [0, 0, 0, 0, 0] # from star 1 to 5, foodpanda
 time_filter = ['年前', '個月前', '週前', '天前']
-def get_data(driver, web, t_range):
+
+global webname_filter
+invalid_chars = '\n'
+invalid_char_pattern = '|'.join(map(re.escape, invalid_chars))
+webname_filter = re.compile(invalid_char_pattern)
+
+def get_data(web, t_range):
+    global driver
     print('get data...')
     if web == 'Foodpanda':
-        return get_foodpanda(driver, web)
+        return get_foodpanda(web)
     
     try:
         # xpath = '//*[@id="ChdDSUhNMG9nS0VJQ0FnSURXdF9fSDFnRRAB"]/span[2]/button'
@@ -31,18 +39,23 @@ def get_data(driver, web, t_range):
     lst_data = []
     for data in elements:
         try:
-            driver.implicitly_wait(.5)
+            driver.implicitly_wait(1.5)
             if t_range is None:
                 text = data.find_element(
                     By.XPATH, './/div[@class="MyEned"]').text
+            
             if t_range is not None:
-                if valid_time_interval(t_range, data.text) == False:
+                # get review time element, ex: "6 個月前"
+                time_to_check = data.find_element(
+                    By.XPATH, './/span[@class="rsqaWe"]').text
+                if valid_time_interval(t_range, time_to_check) == False:
                     continue
-                text = data.find_element(
-                    By.XPATH, './/div[@class="MyEned"]').text
+
+            review_time = time_to_check
         except:
             # text = ''
-            continue
+            raise
+            # continue
         # //*[@id="QA0Szd"]/div/div/div[1]/div[2]/div/div[1]/div/div/div[2]/div[8]/div[22]/div/div/div[4]/div[1]/span[1]
             
         score = data.find_element(
@@ -59,11 +72,12 @@ def get_data(driver, web, t_range):
         elif score[0] == '5':
             rating_level_G[4] += 1
 
-        lst_data.append([score[0], text])
+        lst_data.append([review_time, score[0], text])
 
     return lst_data
 
-def get_foodpanda(driver, web):
+def get_foodpanda(web):
+    global driver
     print('get_foodpanda...')
 
     xpath = '//div[@class="info-reviews-modal-review-card"]'
@@ -96,18 +110,27 @@ def get_foodpanda(driver, web):
 
 def valid_time_interval(time_interval:list[str], to_check:str):
     pos = 0
+    time = ''
     valid_num = int(time_interval[0])
     valid_time = time_interval[1]
     valid_interval = time_interval[2]
 
     # Find date in review text
     list_ = to_check.split()
-    for target in list_:
-        if time_interval[1] in target:
-            check_num = int(list_[pos-1])
-            check_time = target
-        pos += 1
+    # for target in list_:
+    #     if time_interval[1] in target:
+    #         check_num = int(list_[pos-1])
+    #         check_time = target
+    #         break
+    #     pos += 1
 
+    if list_[1] not in time_interval[1]:
+        return False
+    
+    check_num = int(list_[0])
+    check_time = list_[1]
+
+    # review: "time" ago != "valide time" ago
     if check_time != valid_time:
         return False
     if valid_interval == 'after':
@@ -118,8 +141,10 @@ def valid_time_interval(time_interval:list[str], to_check:str):
             return False
     return True
 
-def counter(driver, web):
+def counter(web):
     print('Jumping to review tab')
+    
+    global driver
     # driver.implicitly_wait(1)
     result = None
     if web == 'Googlemaps':
@@ -178,13 +203,15 @@ def counter(driver, web):
             result = result[x].split('\n')
             return int(int(result[0])/10)+1
 
-def scrolling(driver, counter, web):
+def scrolling(counter, web):
     print('scrolling...')
+
+    global driver
     if web == 'Foodpanda':
-        btn_name = 'bds-c-btn bds-c-btn-circular bds-c-btn-circular-contained bds-c-btn-circular--size-medium zi-surface-base bds-c-modal__close-button'
-        btn_path = '/html/body/div[5]/div/div[2]/div/div/div/div/div[1]/button'
-        div_path = '/html/body/div[5]/div/div[2]/div/div/div/div/div[1]'
-        div_name = 'bds-c-btn-cursor bds-c-modal__close-button-cursor'
+        # btn_name = 'bds-c-btn bds-c-btn-circular bds-c-btn-circular-contained bds-c-btn-circular--size-medium zi-surface-base bds-c-modal__close-button'
+        # btn_path = '/html/body/div[5]/div/div[2]/div/div/div/div/div[1]/button'
+        # div_path = '/html/body/div[5]/div/div[2]/div/div/div/div/div[1]'
+        # div_name = 'bds-c-btn-cursor bds-c-modal__close-button-cursor'
         element = driver.find_element(By.CLASS_NAME, 'bds-c-modal__content-window')
         review_block = driver.find_element(By.CLASS_NAME, 'info-reviews-block')
         size = element.size
@@ -257,7 +284,7 @@ def scrolling(driver, counter, web):
 def write_to_xlsx(data, filename, dir, format):
     filepath = os.path.join(dir, filename) + '.' + format
     print(f'write to {filepath}...')
-    cols = ['rating', 'comment']
+    cols = ['time','rating', 'comment']
     df = pd.DataFrame(data, columns=cols) # this insert the head
     # df = pd.DataFrame(data) # headless column name
     if format == 'csv':
@@ -266,7 +293,7 @@ def write_to_xlsx(data, filename, dir, format):
     if format == 'json':
         df.to_json(filepath, orient='records', indent=4, force_ascii=False)
     
-    return filename
+    return filepath
 
 def get_reviews(url: str = None,
                 webname: str = 'Googlemaps',
@@ -327,6 +354,7 @@ def get_reviews(url: str = None,
         ua = UserAgent()
         user_agent = ua.random
         options.add_argument(f'--user-agent={user_agent}')
+        global driver
         driver = webdriver.Chrome(options=options)
         # get web from the url
         driver.get(url) # uncomment this line
@@ -340,7 +368,8 @@ def get_reviews(url: str = None,
         
         # format the web title for further use
         # webTitle = driver.title.replace(' ', '').split('|')[0]
-        webTitle = re.sub(r'< > : " / \ | ? * ｜', '', driver.title)
+        global webname_filter
+        webTitle = webname_filter.sub('', driver.title)
         if check_loacal_cache(query=webTitle, query_dir=save_path, file_type=format) and \
             check_cache:
             cached_path = os.path.join(save_path, webTitle) + f'.{format}'
@@ -365,4 +394,3 @@ def get_reviews(url: str = None,
     finally:
         driver.quit()
         # os.system("taskkill /f /im chrome.exe")
-
