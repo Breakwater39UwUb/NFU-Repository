@@ -35,22 +35,23 @@ def get_data(web, t_range):
         pass
     
     # xpath = '//*[@id="QA0Szd"]/div/div/div[1]/div[2]/div/div[1]/div/div/div[2]/div[8]/div[1]'
-    elements = driver.find_elements(By.XPATH, '//div[@class="jftiEf fontBodyMedium "]')
+    elements = driver.find_elements(By.XPATH, './/div[@class="jftiEf fontBodyMedium "]')
     lst_data = []
     for data in elements:
         try:
             driver.implicitly_wait(1.5)
-            if t_range is None:
-                text = data.find_element(
-                    By.XPATH, './/div[@class="MyEned"]').text
+            
+            # Review content, string
+            text = data.find_element(
+                By.XPATH, './/div[@class="MyEned"]').text
+            # get review time element, ex: "6 個月前"
+            time_to_check = data.find_element(
+                By.XPATH, './/span[@class="rsqaWe"]').text
             
             if t_range is not None:
-                # get review time element, ex: "6 個月前"
-                time_to_check = data.find_element(
-                    By.XPATH, './/span[@class="rsqaWe"]').text
                 if valid_time_interval(t_range, time_to_check) == False:
                     continue
-
+            # Review time, string
             review_time = time_to_check
         except:
             # text = ''
@@ -61,16 +62,16 @@ def get_data(web, t_range):
         score = data.find_element(
             By.XPATH, './/span[@class="kvMYJc"]').get_attribute("aria-label")
 
-        if score[0] == '1':
-            rating_level_G[0] += 1
-        elif score[0] == '2':
-            rating_level_G[1] += 1
-        elif score[0] == '3':
-            rating_level_G[2] += 1
-        elif score[0] == '4':
-            rating_level_G[3] += 1
-        elif score[0] == '5':
-            rating_level_G[4] += 1
+        # if score[0] == '1':
+        #     rating_level_G[0] += 1
+        # elif score[0] == '2':
+        #     rating_level_G[1] += 1
+        # elif score[0] == '3':
+        #     rating_level_G[2] += 1
+        # elif score[0] == '4':
+        #     rating_level_G[3] += 1
+        # elif score[0] == '5':
+        #     rating_level_G[4] += 1
 
         lst_data.append([review_time, score[0], text])
 
@@ -149,7 +150,7 @@ def counter(web):
     result = None
     if web == 'Googlemaps':
         review_btn_xpath = '//div[@class="RWPxGd"]/button[2]'
-        class_name_1 = 'jANrlb'
+        class_name_1 = 'jANrlb '
         class_name_2 = 'fontBodySmall'
         x = 0
         try:
@@ -167,7 +168,7 @@ def counter(web):
             result = driver.find_element(By.CLASS_NAME, class_name_1).find_element(By.CLASS_NAME, class_name_2).text
         finally:
             if result is None:
-                return
+                return 1
             result = result.replace(',', '').replace('(', '').replace(')', '').replace('+', '')
             result = result.split(' ')
             result = result[x].split('\n')
@@ -377,13 +378,13 @@ def get_reviews(url: str = None,
             return cached_path
         
         # count for scrolling
-        counts = counter(driver, webname)
+        counts = counter(webname)
 
         # scroll to the bottom of the page
-        scrolling(driver, counts, webname)
+        scrolling(counts, webname)
 
         # get reviews on the web
-        data = get_data(driver, webname, time_range)
+        data = get_data(webname, time_range)
 
         # write reviews to csv file
         file = write_to_xlsx(data, webTitle, save_path, format)
