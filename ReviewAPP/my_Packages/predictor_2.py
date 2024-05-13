@@ -24,7 +24,8 @@ def review_analyze(TEXT: list = [], file_path: str = None):
     TEXT: list of reviews
     file: path to review
 
-    returns list of tuples [(labels: list of int, text: list of string)]
+    returns list of tuples
+        >>> [(label: list of int, text: list of string, time: list of time)]
 
     Examples:
     ```python
@@ -35,13 +36,16 @@ def review_analyze(TEXT: list = [], file_path: str = None):
     ```
     '''
 
+    TIME = []
     if file_path is not None:
+        TEXT = []
         # Read reviews from json
         if file_path.split('.')[-1] == 'json':
             file = open(file_path, 'r', encoding='utf-8')
             lines = json.load(file)
             for line in lines:
                 TEXT.append(line['comment'])
+                TIME.append(line['time'])
             file.close()
 
         # Read reviews from csv
@@ -50,6 +54,7 @@ def review_analyze(TEXT: list = [], file_path: str = None):
             lines = csv.reader(file)
             for line in lines:
                 TEXT.append(line[1])
+                TIME.append(line[2])
             file.close()
 
         # debug output
@@ -85,9 +90,9 @@ def review_analyze(TEXT: list = [], file_path: str = None):
 
     for i in range(len(TEXT)):
         if len(TEXT[i]) > 512:
-            continue
+            TEXT[i] = TEXT[i][0:512]
         labels, text = Predict(model, TEXT[i], tokenizer)
-        Predictions.append((labels, text))
+        Predictions.append((labels, text, TIME[i]))
 
     return Predictions
 
@@ -120,16 +125,17 @@ def Predict(model, text, tokenizer):
     AnswerLabel=[]
     HaveAnswer=0
 
-    for i in range(len(prediction[0])):
-        if prediction[0][i]==1:
-            HaveAnswer=1
-            AnswerLabel.append(text)
+    # for i in range(len(prediction[0])):
+    #     if prediction[0][i]==1:
+    #         HaveAnswer=1
+    #         AnswerLabel.append(text)
+    AnswerLabel.append(text)
 
-    if HaveAnswer==0:
-        AnswerLabel.append("No Answer")
+    # if HaveAnswer==0:
+    #     AnswerLabel.append("No Answer")
 
     Prediction=[]
     for i in range(len(prediction[0])):
         Prediction.append(int(prediction.tolist()[0][i]))
 
-    return Prediction,AnswerLabel
+    return Prediction, AnswerLabel
