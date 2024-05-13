@@ -25,16 +25,23 @@ def Home():
 def get_user_review():
     '''
     Show BERT prediction
-
-    Predict one review for 30 times and return the mode result
     '''
 
     user_rating = request.form['star'] + '星'
     txt = [request.form['txt']]
-    answers = []
-    for t in range(30):
-        answers.append(review_predict(q_inputs=txt))
-    bert_rating =  max(set(answers), key=answers.count) + '星'
+    # This loop is used to Quinary class
+    # answers = []
+    # for t in range(30):
+    #     answers.append(review_predict(q_inputs=txt))
+    # bert_rating =  max(set(answers), key=answers.count) + '星'
+    
+    answer = (review_predict(q_input=txt))
+    if answer == '0':
+        bert_rating = 'Negative (1, 2 star)'
+    if answer == '1':
+        bert_rating = 'Neutral (3 star)'
+    if answer == '2':
+        bert_rating = 'Positive (4, 5 star)'
 
     return render_template(predict_page, users = user_rating, berts = bert_rating)
 
@@ -45,6 +52,8 @@ def get_predict():
     calculate all label and show results on web
     '''
     
+    # TODO: format should select by user
+
     try:
         # may remove the check_cache until client web have proper function to handle
         global scrape_url
@@ -57,11 +66,13 @@ def get_predict():
     except:
         raise Exception(f'Failed to get review on\n{scrape_url}\n')
 
-def calculate_labels(labels: list):
+def calculate_labels(labels: list[tuple]):
     '''Calculate all labels and show results on web
 
-    sum of labels
+    labels: list of tuples
+        [(label, text, time), ]
 
+    4 labels:
         [food, price, service, environment]
     '''
 
