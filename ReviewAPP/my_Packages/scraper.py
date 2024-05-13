@@ -3,24 +3,30 @@ import os, re, math, time
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 import selenium.common.exceptions
 from fake_useragent import UserAgent
 import pandas as pd
 from my_Packages.utils import check_loacal_cache
-from datetime import datetime
+from datetime import datetime, timedelta
 
 rating_level_G = [0, 0, 0, 0, 0] # from star 1 to 5, google
 rating_level_F = [0, 0, 0, 0, 0] # from star 1 to 5, foodpanda
-time_filter = ['年前', '個月前', '週前', '天前']
+time_filter_zh = ['天前', '週前', '個月前', '年前']
+''''天前', '週前', '個月前', '年前'''
+time_filter_en = ['days', 'week', 'month', 'year']
 
-global webname_filter
-invalid_chars = '\n'
+
+invalid_chars = '<>:"/\|?*｜\n.'
 invalid_char_pattern = '|'.join(map(re.escape, invalid_chars))
 webname_filter = re.compile(invalid_char_pattern)
 
+change_comma = ','
+comma_filter = re.compile(change_comma)
+
 def get_data(web, t_range):
-    global driver
+    global driver, comma_filter
     print('get data...')
     if web == 'Foodpanda':
         return get_foodpanda(web)
@@ -42,8 +48,8 @@ def get_data(web, t_range):
             driver.implicitly_wait(1.5)
             
             # Review content, string
-            text = data.find_element(
-                By.XPATH, './/div[@class="MyEned"]').text
+            text = data.find_element(By.XPATH, './/div[@class="MyEned"]').text
+            text = comma_filter.sub('，', text)
             # get review time element, ex: "6 個月前"
             time_to_check = data.find_element(
                 By.XPATH, './/span[@class="rsqaWe"]').text
@@ -52,26 +58,15 @@ def get_data(web, t_range):
                 if valid_time_interval(t_range, time_to_check) == False:
                     continue
             # Review time, string
-            review_time = time_to_check
+            review_time = get_review_abs_time(time_to_check)
         except:
             # text = ''
-            raise
-            # continue
+            # raise
+            continue
         # //*[@id="QA0Szd"]/div/div/div[1]/div[2]/div/div[1]/div/div/div[2]/div[8]/div[22]/div/div/div[4]/div[1]/span[1]
             
         score = data.find_element(
             By.XPATH, './/span[@class="kvMYJc"]').get_attribute("aria-label")
-
-        # if score[0] == '1':
-        #     rating_level_G[0] += 1
-        # elif score[0] == '2':
-        #     rating_level_G[1] += 1
-        # elif score[0] == '3':
-        #     rating_level_G[2] += 1
-        # elif score[0] == '4':
-        #     rating_level_G[3] += 1
-        # elif score[0] == '5':
-        #     rating_level_G[4] += 1
 
         lst_data.append([review_time, score[0], text])
 
@@ -113,34 +108,38 @@ def valid_time_interval(time_interval:list[str], to_check:str):
     pos = 0
     time = ''
     valid_num = int(time_interval[0])
-    valid_time = time_interval[1]
+    valid_time_ago = time_interval[1]
     valid_interval = time_interval[2]
 
     # Find date in review text
-    list_ = to_check.split()
-    # for target in list_:
-    #     if time_interval[1] in target:
-    #         check_num = int(list_[pos-1])
-    #         check_time = target
-    #         break
-    #     pos += 1
+    review_rel_time = to_check.split()
 
-    if list_[1] not in time_interval[1]:
+    if review_rel_time[1] not in time_interval[1]:
         return False
-    
-    check_num = int(list_[0])
-    check_time = list_[1]
 
     # review: "time" ago != "valide time" ago
-    if check_time != valid_time:
+    if review_rel_time[1] != valid_time_ago:
         return False
     if valid_interval == 'after':
-        if check_num > valid_num:
+        if int(review_rel_time[0]) > valid_num:
             return False
     if valid_interval == 'before':
-        if check_num < valid_num:
+        if int(review_rel_time[0]) < valid_num:
             return False
     return True
+
+def get_review_abs_time(time_ago: str):
+    review_rel_time = time_ago.split()
+    time_now = datetime.now()
+    if review_rel_time[1] == time_filter_zh[0]:
+        new_time = time_now - timedelta(days=int(review_rel_time[0]))
+    if review_rel_time[1] == time_filter_zh[1]:
+        new_time = time_now - timedelta(weeks=int(review_rel_time[0]))
+    if review_rel_time[1] == time_filter_zh[2]:
+        new_time = time_now - timedelta(days=int(review_rel_time[0])*30)
+    if review_rel_time[1] == time_filter_zh[3]:
+        new_time = time_now - timedelta(days=int(review_rel_time[0])*365)
+    return new_time.strftime('%Y/%m')
 
 def counter(web):
     print('Jumping to review tab')
@@ -272,15 +271,40 @@ def scrolling(counter, web):
         scrollable_div = driver.find_element(
             By.XPATH, '//div[@class="lXJj5c Hk4XGb "]')
         
-        for _i in range(counter):
+        last_height = driver.execute_script('return document.getElementsByClassName("dS8AEf")[0].scrollHeight;', scrollable_div)
+        for _i in range(counter+1):
+        # while True:
             try:
+                # scrolling = driver.execute_script(
+                #     'document.getElementsByClassName("dS8AEf")[0].scrollTop = document.getElementsByClassName("dS8AEf")[0].scrollHeight',
+                #     scrollable_div
+                # )
+                # driver.implicitly_wait(5)
                 scrolling = driver.execute_script(
-                    'document.getElementsByClassName("dS8AEf")[0].scrollTop = document.getElementsByClassName("dS8AEf")[0].scrollHeight',
+                    'document.getElementsByClassName("dS8AEf")[0].scrollTop\
+                    = document.getElementsByClassName("dS8AEf")[0].scrollHeight',
                     scrollable_div
                 )
+                WebDriverWait(driver, 5).until(
+                    lambda driver: driver.execute_script('return document.getElementsByClassName("dS8AEf")[0].scrollHeight;', scrollable_div) > last_height
+                )
+
+                scroll_height = driver.execute_script('return document.getElementsByClassName("dS8AEf")[0].scrollHeight;', scrollable_div)
+                # print(f'--->now: {scroll_height}    last: {last_height}')
+                
+                # if scroll_height <= last_height:
+                #     break
+                # if scroll_height > last_height:
+                #     last_height = scroll_height
+
+                time.sleep(1)
+            except selenium.common.exceptions.StaleElementReferenceException:
+                time.sleep(1)
+                continue
+            except selenium.common.exceptions.TimeoutException:
+                continue
             except:
-                pass
-            time.sleep(1)
+                raise
 
 def write_to_xlsx(data, filename, dir, format):
     filepath = os.path.join(dir, filename) + '.' + format
@@ -318,6 +342,15 @@ def get_reviews(url: str = None,
         * https://www.google.com/maps/place/%E6%99%A8%E9%96%93%E5%BB%9A%E6%88%BF%E6%97%A9%E5%8D%88%E9%A4%90+%E8%99%8E%E5%B0%BE%E7%A7%91%E5%A4%A7%E5%BA%97/@23.7037418,120.4346679,19.5z/data=!4m6!3m5!1s0x346eb0aaa1358941:0x2401c8b48788a7d4!8m2!3d23.7035352!4d120.4346529!16s%2Fg%2F11c5rp098z?hl=zh-tw&entry=ttu
 
     Returns the path of saved file
+
+    Saved review format
+    ```json
+    {
+        "time":"2024/05",
+        "rating":"5",
+        "comment":"氣氛：5"
+    }
+    ```
     '''
     if url is None:
         raise Exception('url is None, string is required')
@@ -334,8 +367,8 @@ def get_reviews(url: str = None,
     if  time_range is not None:
         if not all(isinstance(elem, str) for elem in time_range):
             raise Exception(f'Argument format required list of strings')
-        elif time_range[1] not in time_filter:
-            raise Exception(f'Argument format must be one of {time_filter}')
+        elif time_range[1] not in time_filter_zh:
+            raise Exception(f'Argument format must be one of {time_filter_zh}')
 
     
     print(f'Find reviews on {url}...')
@@ -348,7 +381,8 @@ def get_reviews(url: str = None,
         options.add_experimental_option("excludeSwitches", ["enable-automation"])
         options.add_experimental_option('useAutomationExtension', False)
         options.add_argument("--lang=en-US")
-        options.add_experimental_option('prefs', {'intl.accept_languages': 'en,en_US'})
+        options.add_experimental_option('prefs', {'intl.accept_languages': 'en,en_US',
+                                                  'profile.managed_default_content_settings.images': 2})
         options.add_argument("--disable-blink-features")
         options.add_argument("--disable-blink-features=AutomationControlled")
         # options.add_extension('.\\Data_local\\Mouse-Coordinates.crx')
@@ -393,5 +427,6 @@ def get_reviews(url: str = None,
     # except:
         # print('Failed to scrape web')
     finally:
+        driver.close()
         driver.quit()
-        # os.system("taskkill /f /im chrome.exe")
+        os.system("taskkill /f /im chrome.exe")
