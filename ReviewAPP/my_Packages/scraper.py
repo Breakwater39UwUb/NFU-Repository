@@ -18,7 +18,7 @@ time_filter_zh = ['天前', '週前', '個月前', '年前']
 time_filter_en = ['days', 'week', 'month', 'year']
 
 
-invalid_chars = '<>:"/\|?*｜\n.'
+invalid_chars = '<>:"/\|?*｜\n. '
 invalid_char_pattern = '|'.join(map(re.escape, invalid_chars))
 webname_filter = re.compile(invalid_char_pattern)
 
