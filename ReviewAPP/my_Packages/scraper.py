@@ -139,6 +139,7 @@ def get_review_abs_time(time_ago: str):
         new_time = time_now - timedelta(days=int(review_rel_time[0])*30)
     if review_rel_time[1] == time_filter_zh[3]:
         new_time = time_now - timedelta(days=int(review_rel_time[0])*365)
+        return new_time.strftime('%Y/')
     return new_time.strftime('%Y/%m')
 
 def counter(web):
