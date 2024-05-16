@@ -51,6 +51,7 @@ def db_update(time: str,
 
 def db_upload_file(filename: str,
                    db_name: str = 'reviews',
+                   table_name: str = None,
                    ngrok_file: str = './ngrok.txt',
                    file_format: str = 'json'):
     """Upload reviews in given file
@@ -67,6 +68,7 @@ def db_upload_file(filename: str,
 
     try:
         forward_ip, forward_port = get_connection_args(ngrok_file)
+        global db
         db = pymysql.connect(host=forward_ip,
                             port=forward_port,
                             user="web",    # root
@@ -80,8 +82,9 @@ def db_upload_file(filename: str,
     cursor.execute("SET NAMES utf8mb4")
     cursor.execute("SET CHARACTER SET utf8mb4")
     cursor.execute("SET character_set_connection=utf8mb4")
-    tablename = utils.convert_to_tablename(filename)
-    command = f"CREATE TABLE IF NOT EXISTS {tablename}\
+    if table_name is None:
+        table_name = utils.convert_to_tablename(filename)
+    command = f"CREATE TABLE IF NOT EXISTS {table_name}\
         (time_range CHAR(8),\
         rating INTEGER,\
         content VARCHAR(530) PRIMARY KEY\
@@ -97,7 +100,7 @@ def db_upload_file(filename: str,
 
         for line in lines:
             # Update table
-            command = f"INSERT INTO {tablename}\
+            command = f"INSERT INTO {table_name}\
                 (time_range, rating, content) VALUES \
                 (%s, %s, %s)"
             
