@@ -54,10 +54,12 @@ Scraped data from internet are saved in the [SaveDate](./SaveData/)
        6. Press <kbd>OK</kbd>
        7. VS Code auto create environment with specified requirements packages.
     3. Activate virtual environment
-       
+
        ```bash
        Set-ExecutionPolicy Unrestricted -Scope Process
+       env\Scripts\activate
        ```
+
 4. After creating the virtual environment, install packages
 
     ```bash
