@@ -59,8 +59,6 @@ def review_analyze(TEXT: list = [], file_path: str = None):
 
         # debug output
         print(TEXT[0])
-        
-
 
     Predictions = []
 
@@ -91,8 +89,8 @@ def review_analyze(TEXT: list = [], file_path: str = None):
     for i in range(len(TEXT)):
         if len(TEXT[i]) > 512:
             TEXT[i] = TEXT[i][0:512]
-        labels, text = Predict(model, TEXT[i], tokenizer)
-        Predictions.append((labels, text, TIME[i]))
+        labels = Predict(model, TEXT[i], tokenizer)
+        Predictions.append((labels, TEXT[i], TIME[i]))
 
     return Predictions
 
@@ -122,14 +120,14 @@ def Predict(model, text, tokenizer):
     prediction[prediction > THRESHOLD] = 1
     prediction[prediction <= THRESHOLD] = 0
 
-    AnswerLabel=[]
+    # AnswerLabel=[]
     HaveAnswer=0
 
     # for i in range(len(prediction[0])):
     #     if prediction[0][i]==1:
     #         HaveAnswer=1
     #         AnswerLabel.append(text)
-    AnswerLabel.append(text)
+    # AnswerLabel.append(text)
 
     # if HaveAnswer==0:
     #     AnswerLabel.append("No Answer")
@@ -138,4 +136,4 @@ def Predict(model, text, tokenizer):
     for i in range(len(prediction[0])):
         Prediction.append(int(prediction.tolist()[0][i]))
 
-    return Prediction, AnswerLabel
+    return Prediction
