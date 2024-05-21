@@ -23,8 +23,19 @@ def Home():
 
 @app.route("/get_user_review", methods=['POST'])
 def get_user_review():
-    '''
-    Show BERT prediction
+    '''Show BERT multiclass classification prediction
+
+    Get rating and review from user by form.
+
+    Returns
+    user_rating: string
+        original user rating
+    bert_rating: string
+        number in range 0 to 2(class number)
+        
+        - '0', Negative (1, 2 star)
+        - '1', Neutral (3 star)
+        - '2', Positive (4, 5 star)
     '''
 
     user_rating = request.form['star'] + '星'
@@ -47,9 +58,14 @@ def get_user_review():
 
 @app.route("/get_predict")
 def get_predict():
-    '''Get reviews on the given url,
-    predict all labels of reviews and
-    calculate all label and show results on web
+    '''Show BERT multi-label classification prediction
+    
+    Get reviews from the given url and save them as csv or json files.
+    
+    Read and predict 4 labels of reviews from the files.
+    
+    return
+        calculate all label and show results on web
     '''
     
     # TODO: format should select by user

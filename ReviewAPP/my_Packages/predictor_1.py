@@ -42,16 +42,16 @@ def review_predict(q_input: str):
     '''Returns review prediction
     
     Parameters
-    ---
     q_input: string
-        review string
+        Review string, length less than 512.
+        String greater than 512 will cut
+        sub string the first 512 characters
 
     Returns
-    ---
     prediction: string
-        return star, like '1', '2', '3', '4', '5'
+        number in range (0, class-1)
     '''
-    #
+    # Unknown block
     # ans_label = []
     # for q_input in q_inputs:
     #     bert_ids = to_bert_ids(tokenizer,q_input)
