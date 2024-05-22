@@ -198,6 +198,7 @@
         }
     </style>
     <script data-source="gwd_webcomponents_v1_min.js" data-version="2" data-exports-type="gwd_webcomponents_v1" src="gwd_webcomponents_v1_min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
     <script data-source="gwdpage_min.js" data-version="13" data-exports-type="gwd-page" src="gwdpage_min.js"></script>
     <script data-source="gwdpagedeck_min.js" data-version="14" data-exports-type="gwd-pagedeck" src="gwdpagedeck_min.js"></script>
     <script type="text/javascript" gwd-events="handlers">
@@ -229,20 +230,47 @@
             <div class="gwd-page-content page1-content gwd-div-1tkm gwd-div-6s2o">
                 <gwd-imagebutton id="gwd-imagebutton_goto_home_2" up-image="assets/home_FILL0_wght400_GRAD0_opsz24.png" over-image="" down-image="" scaling="cover" class="gwd-imagebutton-1xwg"></gwd-imagebutton>
                 <div class="gwd-div-1xz7 star one two three four five">
-                    <label id="label_head" class="gwd-label-9v8c">Statistic result</label>
-                    <label id="label_2" class="gwd-label-19dp">價格標籤</label>
-                    <label id="label_1" class="gwd-label-1j2k">餐點標籤</label>
-                    <label id="label_tag1" class="gwd-label-1juo">{{ str1 }}</label>
-                    <label id="label_tag2" class="gwd-label-v9yc">{{ str2 }}</label>
-                    <label id="label_3" class="gwd-label-avc9">服務標籤</label>
-                    <label id="label_tag3" class="gwd-label-2gcm">{{ str3 }}</label>
-                    <label id="label_4" class="gwd-label-wqp6">環境標籤</label>
-                    <label id="label_tag4" class="gwd-label-6yzn">{{ str4 }}</label>
+                    <canvas id="myChart" width= 1221 height= 280 style="background-color: LightGray"></canvas>
                 </div>
             </div>
         </gwd-page>
     </gwd-pagedeck>
     <script type="text/javascript" id="gwd-init-code">
+        var ctx = document.getElementById("myChart");
+        let str1 = '{{ str1 }}'; 
+        let str2 = '{{ str2 }}'; 
+        let str3 = '{{ str3 }}'; 
+        let str4 = '{{ str4 }}'; 
+        myChart.setAttribute('width','600');    
+        myChart.setAttribute('height','1200'); 
+        var chart = new Chart(ctx, {
+        type: "pie", // 圖表類型
+        data: {
+            labels: [ "價格:"+str1+"筆", "餐點:"+str2+"筆", "服務:"+str3+"筆", "環境:"+str4+"筆"], //顯示區間名稱
+            datasets: [
+             {
+             label: "標籤名稱", // tootip 出現的名稱
+             data: [parseInt(str1), parseInt(str2), parseInt(str3), parseInt(str4),], // 資料
+
+
+             backgroundColor: [
+             "rgba(255, 99, 132, 0.2)", // 第一個 bar 顏色
+             "rgba(54, 162, 235, 0.2)", // 第二個 bar 顏色
+             "rgba(255, 206, 86, 0.2)", // 第三個 bar 顏色
+             "rgba(75, 192, 192, 0.2)", // 第四個 bar 顏色
+             ],
+             borderColor: [
+             "rgba(255,99,132,1)", // 第一個 bar 外框線顏色
+             "rgba(54, 162, 235, 1)", // 第二個 bar 外框線顏色
+             "rgba(255, 206, 86, 1)", // 第三個 bar 外框線顏色
+             "rgba(75, 192, 192, 1)", // 第四個 bar 外框線顏色
+             ],
+             borderWidth: 1// 外框線寬度
+             }
+           ]
+         }
+     });
+
         (function() {
             document.body.style.opacity = "0";
             var pageDeck = document.getElementById('pagedeck');
