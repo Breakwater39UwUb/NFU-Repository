@@ -25,7 +25,7 @@ def review_analyze(TEXT: list = [], file_path: str = None):
     file: path to review
 
     returns list of tuples
-        >>> [(label: list of int, text: list of string, time: list of time)]
+        >>> [(label: list[int], text: str, time: list[str])]
 
     Examples:
     ```python
