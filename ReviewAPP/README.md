@@ -74,14 +74,12 @@ Scraped data from internet are saved in the [SaveDate](./SaveData/)
 6. Download the trained_model from OneDrive
 
    - Download the file from [this link][trained_model].
+     - multi_label-model.zip
+     - trinary_model.zip
    - Extract the file to project root like this:
 
        ```text
         +-- ReviewAPP
-        |   +-- albert
-        |   +-- Images
-        |   +-- SaveData
-        |   +-- Src
         |   +-- trained_model
         |   +-- web
         |   +-- app.py
@@ -177,6 +175,6 @@ BERT multi label model
     [This restaurant][restaurant_url1] takes 3 minutes to get 554 reviews, but 925 on the website.
 
 [pyside2_for_android]: https://stackoverflow.com/questions/70907303/pyside2-for-android-development "Android Development"
-[trained_model]: https://nfuedu-my.sharepoint.com/:u:/g/personal/41043152_nfu_edu_tw/EehfyMuKe0VFmVjRY1o0gYAB7gOqdc0cXsKPx_ZrZMEq2w "Model link"
+[trained_model]: https://nfuedu-my.sharepoint.com/personal/41043152_nfu_edu_tw/_layouts/15/onedrive.aspx?id=%2Fpersonal%2F41043152%5Fnfu%5Fedu%5Ftw%2FDocuments%2FSchool%5Fproject%5F113 "Model link"
 [restaurant_url1]: https://www.google.com/maps/place/%E7%95%B0%E4%BA%BA%E9%A4%A8+%E6%9D%B1%E8%8B%B1%E5%BA%97/@24.14262,120.7056438,20z/data=!4m6!3m5!1s0x34693dc4fc54b2bd:0xb150f911a4f6a718!8m2!3d24.14262!4d120.7062393!16s%2Fg%2F11j5npjg01?entry=ttu "Link for web scraping"
 [ref_sql]: ./guide%20to%20test%20CloudSQL.md#set_ngrok_host "Reference on other Markdown"
