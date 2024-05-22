@@ -8,12 +8,7 @@ from my_Packages import bert_paths
 global device 
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
-def review_predict(q_inputs: list):
-    '''Returns original review and prediction
-    q_inputs: list of strings
-
-    returns list of prediction
-    '''
+def init_multi_class_model():
 
     # load and init
     pkl_file = open(bert_paths.pkl_file, 'rb')
@@ -26,8 +21,8 @@ def review_predict(q_inputs: list):
         "config_file_path":bert_paths.config_file,
         "model_file_path":bert_paths.model_file,
         "vocab_file_path":bert_paths.vocab_file,
-        "num_labels":5  # 分幾類
-    }    
+        "num_labels":bert_paths.ClassNum  # 分幾類
+    }
 
     # ALBERT
     # model_setting = {
@@ -38,12 +33,25 @@ def review_predict(q_inputs: list):
     #     "num_labels":149 # 分幾類
     # }
     
-    #
+    global model, tokenizer
     model, tokenizer = use_model(**model_setting)
     model.to(device)
     model.eval()
 
-    #
+def review_predict(q_input: str):
+    '''Returns review prediction
+    
+    Parameters
+    q_input: string
+        Review string, length less than 512.
+        String greater than 512 will cut
+        sub string the first 512 characters
+
+    Returns
+    prediction: string
+        number in range (0, class-1)
+    '''
+    # Unknown block
     # ans_label = []
     # for q_input in q_inputs:
     #     bert_ids = to_bert_ids(tokenizer,q_input)
@@ -63,8 +71,8 @@ def review_predict(q_inputs: list):
     
     # return ans_label
 
-    text = q_inputs[0]
-    encoding = tokenizer(text, return_tensors='pt', padding=True, truncation=True)
+    text = q_input[0]
+    encoding = tokenizer(text, return_tensors='pt', padding=True, truncation=True, max_length=512)
     input_ids = encoding['input_ids']
     attention_mask = encoding['attention_mask']
 
@@ -88,3 +96,4 @@ def review_predict(q_inputs: list):
     
     return(prediction)
 
+init_multi_class_model()

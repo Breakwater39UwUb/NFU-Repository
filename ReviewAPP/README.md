@@ -4,6 +4,7 @@
   - [Brief Introduction](#brief-introduction)
   - [Guide to install and development](#guide-to-install-and-development)
     - [Install](#install)
+      - [pytorch](#pytorch)
     - [Development](#development)
   - [How to use](#how-to-use)
   - [Todo](#todo)
@@ -38,11 +39,26 @@ Scraped data from internet are saved in the [SaveDate](./SaveData/)
 
 3. Create python virtual environment
 
-    ```bash
-    /ReviewAPP $ pip -m venv env
-    ```
+    1. Create through python command
 
-    Alternatively, you can create through VS Code.
+        ```bash
+        /ReviewAPP $ python -m venv env
+        ```
+
+    2. Alternatively, you can create through VS Code.
+       1. <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd>
+       2. Enter `Create Environment`
+       3. Select `Venv`
+       4. Select `Python 3.9.7 64-bit` or other version
+       5. Select `requirements.txt`
+       6. Press <kbd>OK</kbd>
+       7. VS Code auto create environment with specified requirements packages.
+    3. Activate virtual environment
+
+       ```bash
+       Set-ExecutionPolicy Unrestricted -Scope Process
+       env\Scripts\activate
+       ```
 
 4. After creating the virtual environment, install packages
 
@@ -61,15 +77,21 @@ Scraped data from internet are saved in the [SaveDate](./SaveData/)
    - Extract the file to project root like this:
 
        ```text
-           +-- ReviewAPP
-           |   +-- albert
-           |   +-- Images
-           |   +-- SaveData
-           |   +-- Src
-           |   +-- trained_model
-           |   +-- web
-           |   +-- app.py
+        +-- ReviewAPP
+        |   +-- albert
+        |   +-- Images
+        |   +-- SaveData
+        |   +-- Src
+        |   +-- trained_model
+        |   +-- web
+        |   +-- app.py
        ```
+
+#### pytorch
+
+```bash
+pip install torch==2.2.1 torchvision==0.17.1 torchaudio==2.2.1 --index-url https://download.pytorch.org/whl/cu118
+```
 
 ### Development
 

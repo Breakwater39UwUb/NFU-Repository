@@ -6,6 +6,7 @@ test.ipynb
 gwd_preview_web/
 gwd_workspace.json
 Data_local/
+sklearn-venv/
 
 .vscode/*
 !.vscode/settings.json
