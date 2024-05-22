@@ -147,5 +147,18 @@ def debug_type(var):
     else:
         print(f'value: {var}')
 
+@app.route("/get_chart_args", methods=['GET', 'POST'])
+def get_chart_args():
+    '''
+
+    get time range, check range within a year or not,
+    if picked across a year, alert it to only pick within a year
+    or range from one year ealier.
+    time range: [start, end]
+
+    choose one label type, food, price...
+
+    '''
+
 if __name__ == "__main__":
     app.run(port=8900)
