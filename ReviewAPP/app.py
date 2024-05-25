@@ -36,7 +36,7 @@ app.debug = True
 
 @app.route("/")
 def Home():
-    return render_template(home_page)
+    return render_template(home_page) 
 
 @app.route("/get_Star", methods=['GET','POST']) # Funtion to get Star value
 def get_Star():
@@ -130,23 +130,23 @@ def get_Url():
     try:
         # may remove the check_cache until client web have proper function to handle
         review_file = get_reviews(url=data_url, webname=platform, format= 'json', check_cache=True)
-        predictions = review_analyze(file_path=review_file)
-        filtered_data = [d for d in predictions  if d[2].split('/')[1] != '']
-        sort_by_label(filtered_data,0,'Food.png','web')
-        sort_by_label(filtered_data,1,'Price.png','web')
-        sort_by_label(filtered_data,2,'Service.png','web')
-        sort_by_label(filtered_data,3,'Conment.png','web')
-        debug_type(predictions)
-        analysis = calculate_labels(predictions)
-        return render_template(chart_html,
-                            str1=analysis[0], str2=analysis[1], str3=analysis[2], str4=analysis[3],
-                            Food = "image/Food.png",
-                            Price = "image/Price.png",
-                            Service = "image/Service.png",
-                            Conment = "image/Conment.png"
-                            )
     except:
         raise Exception(f'Failed to get review on\n{data_url}\n')
+    predictions = review_analyze(file_path=review_file)
+    filtered_data = [d for d in predictions  if d[2].split('/')[1] != '']
+    sort_by_label(filtered_data,0,'Food.png','web')
+    sort_by_label(filtered_data,1,'Price.png','web')
+    sort_by_label(filtered_data,2,'Service.png','web')
+    sort_by_label(filtered_data,3,'Conment.png','web')
+    debug_type(predictions)
+    analysis = calculate_labels(predictions)
+    return render_template(chart_html,
+                        str1=analysis[0], str2=analysis[1], str3=analysis[2], str4=analysis[3],
+                        Food = "image/Food.png",
+                        Price = "image/Price.png",
+                        Service = "image/Service.png",
+                        Conment = "image/Conment.png"
+                        )
 
 def calculate_labels(labels: list[tuple]):
     '''Calculate all labels and show results on web
