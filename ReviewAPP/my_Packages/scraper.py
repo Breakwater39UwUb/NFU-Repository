@@ -372,7 +372,7 @@ def get_reviews(url: str = None,
             raise Exception(f'Argument format must be one of {time_filter_zh}')
 
     
-    print(f'Find reviews on {url}...')
+    # print(f'Find reviews on {url}...')
 
     try:
         # setup webdriver options
@@ -409,7 +409,10 @@ def get_reviews(url: str = None,
         if check_loacal_cache(query=webTitle, query_dir=save_path, file_type=format) and \
             check_cache:
             cached_path = os.path.join(save_path, webTitle) + f'.{format}'
-            print(f'Already cached: {cached_path}')
+            try:
+                print(f'Already cached: {cached_path}')
+            except:
+                raise
             return cached_path
         
         # count for scrolling
@@ -430,4 +433,4 @@ def get_reviews(url: str = None,
     finally:
         driver.close()
         driver.quit()
-        os.system("taskkill /f /im chrome.exe")
+        # os.system("taskkill /f /im chrome.exe")

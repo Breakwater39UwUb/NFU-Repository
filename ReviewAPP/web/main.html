@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>美食評論系統</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
+        
+        <style>
+            *{
+                margin: 0;
+                padding: 0;
+                font-family: 'Poppins','sans-serif';
+                box-sizing: border-box;
+            }
+  
+            .button-container
+            {
+                width: 100%;
+                height: 100vh;
+                background-color: rgba(0, 0, 50, .4);
+                background-blend-mode: multiply;
+                background-image: url(image/background2.jpg);
+                background-size: cover;
+                background-position: center;
+                position: relative;
+            }  
+
+            
+
+            .form_box
+            {
+                width: 90%;
+                max-width: 450px;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%,-50%);
+                background: white;
+                padding: 50px 60px 70px;
+                text-align: center;;
+                position: none;
+            }
+
+            .form_box h1
+            {
+                font-size: 30px;
+                margin-bottom: 60px;
+                color:blue;
+                position: relative;
+            }
+
+            .form_box h1::after
+            {
+                content: ' ';
+                width: 30px;
+                height: 4px;
+                border-radius: 3px;
+                background: blue;
+                position: absolute;
+                bottom: -12px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .input-fieid{
+                background: #eaeaea;
+                margin: 15px 0;
+                border-radius: 3px;
+                display: flex;
+                align-items: center;
+                max-height: 65px;
+                transition: max-height 0.5s;
+                overflow: hidden;
+            }
+
+            input{
+                width: 100%;
+                background: transparent;
+                border: 0;
+                outline: 0;
+                padding: 18px 15px;
+            }
+
+            form p {
+                text-align: left;
+                font-size: 13px;
+            }
+
+            form p a{
+                text-decoration: none;
+                color: red;
+            }
+
+            a{
+                text-decoration: none;
+            }
+
+            .btn-field{
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+            }
+
+            .btn-field button{
+                flex-basis: 48%;
+                color: black;
+                height: 40px;
+                border-radius: 20px;
+                border: 0;
+                outline: 0;
+                cursor: pointer;
+                transition: background 1s;
+            }
+
+
+            .btn-field button.disable{
+                background: #eaeaea;
+                color: #555;
+            }
+
+            .btn-field h1{
+                display: none;
+            }
+
+            .header{
+                position: fixed;
+                height: 80px;
+                width: 100%;
+                z-index: 100;
+                padding: 0 20px;
+            }
+            .nav{
+                max-width: 1100px;
+                width: 100%;
+                margin: 0 auto;
+            }
+            .nav,
+            .nav_items{
+                display: flex;
+                height: 100%;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            .nav_logo{
+            font-size: 30px;
+            }
+
+            .nav_logo,
+            .nav_link,
+            .Open
+            {
+                color: black;
+                height: 100%;
+                font-size: 1.2rem;
+                padding: .7rem 1.5rem;
+            }
+
+
+            .nav_items{
+                column-gap: 25px;
+                font-size: 1.2rem;
+                color: black;
+            }
+
+            .nav_link{
+                color:white;
+            }
+
+            .nav_link:hover{
+                color:blue;
+            }
+
+            .Open{
+                padding: 6px 24px;
+                border: 2px soild #fff;
+                background: transparent;
+                border-radius: 6px;
+                cursor: pointer;
+                height:50px;
+                width: 200px;
+            }
+
+            .Open:active{
+                transform: scale(0.98);
+            }
+
+            .Close{
+                border: 2px soild #fff;
+                background: transparent;
+                cursor: pointer;
+            }
+
+            select option {
+                display: block;
+                font-size: 1.2rem;
+                color: black;
+            }
+            
+            select {
+                padding: .7rem 1.5rem;
+                font-size: 1.2rem;
+                color: black;
+            }
+
+
+        </style>
+
+    </head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+    
+    <body>
+        <header class = "header"><script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+            <nav class="nav" >
+              <a href="#" class="nav_logo" style="list-style-type:none;background-color:white">首頁 </a>
+              <ul class="nav_items" style="list-style-type:none;background-color:white">
+                <h1 id = "title" style="list-style-type:none;background-color:gray" >評論系統</h1>
+                <button type="button" class="Open" onclick="ShowDiv2() ">原始評論來源</button>
+                <select id="select1" onchange="toggleDiv()">
+                    <option >各項評論分析</option>
+                    <option value="myDiv6">服務評論分析</option>
+                    <option value="myDiv5">價格評論分析</option>
+                    <option value="myDiv4">環境評論分析</option>
+                    <option value="myDiv3">餐點評論分析</option>
+                </select>
+
+                <select id="select2" onchange="toggleDiv1()">
+                    <option >評論增量分析</option>
+                    <option value="myDiv7">服務評論分析</option>
+                    <option value="myDiv9">價格評論分析</option>
+                    <option value="myDiv10">環境評論分析</option>
+                    <option value="myDiv11">餐點評論分析</option>
+                </select>
+
+                <button type="button" class="Open" onclick="ShowDiv8()">評論好壞分析</button>
+
+                <button type="button" class="Open" onclick="ShowDiv9()">輸入網址</button>
+              </ul>
+            <nav>
+       </header>
+
+
+
+    <div id='login-form'class="button-container" >
+        <div style="display:none;" class="form_box" id = "myDiv">
+            <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
+
+            <form action="/get_url" method="POST" >
+                <div class = "input-group">
+                    <div class="input-fieid" >
+                        <input name="Comment" type = "hidden" id = "nameField" value="評論">
+                    </div>
+                </div>
+                
+                <div class = "input-group">
+                    <div class="input-fieid" >
+                        <input name="FoodpandaLink" type = "hidden" id = "nameField3" placeholder="Foodpanda網址">
+                    </div>
+                </div>
+                
+                <div class = "input-group">
+                    <div class="input-fieid">
+                        <input name="GoogleLink" type = "hidden" id = "nameField2"  placeholder="Google網址">
+                    </div>
+                </div>
+
+                <div class="btn-field">
+                    <button type="button"  id = "signupBtn">商家  </button>
+                    <h1 id = "Show">請選擇平台</h1>
+                </div>
+            </form>
+        </div>
+
+        <!-- Show preview predict form to get user review -->
+        <div style="display:none;" class="form_box" id = "myDiv8">
+            <form action="get_Change" method="POST" >     
+                <img src="image/background1.jpg" width="200" height="200">
+                <h1>輸入評分與評論</h1>
+
+                <textarea rows="10" cols="30" id = "myText">
+                    {{ berts }}
+                </textarea>
+                
+                <input type="text" id="txtbox" name="txtbox" oninput="updateTextArea()" placeholder="input Something" align="center"/>
+            
+                <div class="slidecontainer">
+                    <input type="range" min="1" max="5" value="1" class="slider" id="myRange">
+                </div>
+
+                <h4 id = "value"> 1 </h4>
+                <button onclick="sendData()" >Send Data</button> 
+                <div id="output"></div> 
+            </form>
+            <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button> 
+        </div>
+
+
+        <div style="display:none;" class="form_box" id = "myDiv9">
+            <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
+
+            <form action="get_Url" method="POST" >
+                <h1>輸入網址</h1>
+                
+                <textarea rows="10" cols="30" id = "myText" id="txtbox" name="txtbox"
+                    oninput="updateTextArea()" placeholder="input Something" align="center">
+                </textarea>
+            
+                <div class="Send-field">
+                    <button onclick="sendData()" align="center" >Send Data</button> 
+                    <div id="output"></div> 
+                </div>
+            </form>
+        </div>
+    </div> 
+    
+    </div>
+        <script>
+            $(function () {
+                var _link = $('<link href="test1.css" type="text/css" rel="stylesheet" />');
+                
+                _link.attr("title", "global");
+                
+                _link.appendTo("head");
+            });
+
+            const ctx6 = document.getElementById('chartJSContainer');
+            const ctx7 = document.getElementById('chartJSContainer2');
+            const ctx8 = document.getElementById('chartJSContainer3');
+            const ctx9 = document.getElementById('chartJSContainer4');
+
+            let SignupBtn = document.getElementById("signupBtn")
+            let Show = document.getElementById("Show")
+
+            let NameField = document.getElementById("nameField")
+            let NameField2 = document.getElementById("nameField2")
+            let NameField3 = document.getElementById("nameField3")
+            let Title = document.getElementById("title")
+            
+            var t=document.getElementById('txtbox').value;
+
+            var slider = document.getElementById("myRange");
+            var output = document.getElementById("demo");
+            value.innerHTML = slider.value; // Display the default slider value
+
+            // Update the current slider value (each time you drag the slider handle)
+            slider.oninput = function() {
+                value.innerHTML = this.value;
+            }
+          
+            function sendData() {
+                var txt = document.getElementById("txtbox").value;
+                var star = document.getElementById("myRange").value;
+                var passed = 1
+                $.ajax({
+                    url: ('/get_Commet'),
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(txt)
+                });
+
+                $.ajax({
+                    url: ('/get_Star'),
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(star)
+                });
+
+                $.ajax({
+                    url: ('/get_Passed'),
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(passed)
+                });
+            }
+
+            SignupBtn.onclick = function(){
+                Show.style.display = "block"
+                NameField2.type = "text";
+                NameField.type = "hidden";
+                NameField3.type = "text";
+            }
+
+            function toggleDiv() {
+                let value1 = document.getElementById("select1").value;
+                let div4 = document.getElementById("myDiv4");
+                let div5 = document.getElementById("myDiv5");
+                let div6 = document.getElementById("myDiv6");
+                let div3 = document.getElementById("myDiv3");
+            alert('請先輸入網址');
+        
+            if (value1 === "myDiv6") {
+                alert('請先輸入網址');
+            }
+
+            if (value1 === "myDiv5") {
+                alert('請先輸入網址');
+            }
+
+            if (value1 === "myDiv4") {
+                alert('請先輸入網址');
+            }
+
+            if (value1 === "myDiv3") {
+                alert('請先輸入網址');
+            }
+        }
+
+        function toggleDiv1() {
+            let value1 = document.getElementById("select2").value;
+            let div7 = document.getElementById("myDiv7");
+            let div9 = document.getElementById("myDiv9");
+            let div10 = document.getElementById("myDiv10");
+            let div11 = document.getElementById("myDiv11");
+            alert('請先輸入網址');
+            if (value1 === "myDiv7") {
+                alert('請先輸入網址');
+            }     
+            if (value1 === "myDiv9") {
+                alert('請先輸入網址');
+            } 
+            if (value1 === "myDiv10") {
+                alert('請先輸入網址');
+            } 
+            if (value1 === "myDiv11") {
+                alert('請先輸入網址');
+            } 
+        }
+        
+        function ShowDiv()
+        {
+            document.getElementById("myDiv").style.display = "";
+        }
+
+        function ShowDiv2()
+        {
+            alert('請先輸入網址');
+        }
+
+        function ShowDiv8()
+        {
+            document.getElementById("myDiv8").style.display = "";
+        }
+
+        function ShowDiv9()
+        {
+            document.getElementById("myDiv9").style.display = "";
+        }
+
+        function updateTextArea()
+        {
+            var inputField = document.getElementById("txtbox");
+            var textArea = document.getElementById("myText");
+            textArea.value = inputField.value; 
+        } 
+        if(textArea.value = " ")
+        {
+            alert("Must Input Something")
+        }
+        </script>
+    </body>
+</html>

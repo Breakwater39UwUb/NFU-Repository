@@ -10,13 +10,23 @@ from collections import defaultdict
 from my_Packages.scraper import get_reviews
 from my_Packages.predictor_1 import review_predict
 from my_Packages.predictor_2 import review_analyze
+import pandas as pd
+from pathlib import Path
 flask_template_path = 'web/'	# web/templates/
-home_page = 'web.html'	# main.html
+home_page = 'main.html'	# main.html
 predict_page = 'predict.html'
+new_predict_page = 'new_predict.html'
 analysis_page = 'analysis.html'
 platform = ''
-user_rating = 1	# may delete this
+chart_html= 'chart.html'
+user_rating = 1
 bert_rating = 1	# may delete this
+answer = ''
+bert_rating = ''
+id = 0
+global labels
+labels = {0: 'Food', 1: 'Price', 2: 'Service', 3: 'Environment'}
+
 
 app = Flask(__name__,
             template_folder=flask_template_path,
@@ -28,8 +38,42 @@ app.debug = True
 def Home():
     return render_template(home_page)
 
-@app.route("/get_user_review", methods=['POST'])
-def get_user_review():
+@app.route("/get_Star", methods=['GET','POST']) # Funtion to get Star value
+def get_Star():
+    '''Set platform to set scrape web
+    Foodpanda | Googlemaps
+    '''
+    global user_rating  
+    user_rating  = request.get_json()
+    print (user_rating)
+    return render_template(predict_page)
+
+@app.route("/get_Passed", methods=['GET','POST']) # Funtion to handle get Star value
+def get_Passed():
+    passed = request.get_json()
+    print (passed)
+    '''if(passed == 1):
+        path = 'image/'
+        file = Path('image/Food.png')
+        file2 = Path('image/Price.png')
+        file3 = Path('image/Service.png')
+        file4 = Path('image/Conment.png')
+        print('Sample Folder: ', os.listdir(path))
+        try:
+            file.unlink()
+            file2.unlink()
+            file3.unlink()
+            file4.unlink()
+            print('Delete File')
+            print('Sample Folder: ', os.listdir(path))
+        except OSError as e:
+            print (f"Delete Problem: {e.strerror}")'''
+
+    
+    return render_template(predict_page)
+
+@app.route('/get_Change', methods=['POST','GET'])  
+def get_Change():    
     '''Show BERT multiclass classification prediction
 
     Get rating and review from user by form.
@@ -44,50 +88,65 @@ def get_user_review():
         - '1', Neutral (3 star)
         - '2', Positive (4, 5 star)
     '''
+    if request.method == "POST":
+        data = request.form.get("txtbox") 
 
-    user_rating = request.form['star'] + '星'
-    txt = [request.form['txt']]
+    print(data)
+    answer = (review_predict(q_input=data))  
+    
+    global bert_rating
+    if answer == '0':
+        bert_rating = '負向(1,2 星)' # Negative (1, 2 star) 
+        #英文子太長超出去，所以改中文
+    if answer == '1':
+        bert_rating = '中立(3 星)' # Neutral (3 star)
+        #英文子太長超出去，所以改中文
+    if answer == '2':
+        bert_rating = '正向(4,5 星)' # Positive (4, 5 star)
+        #英文子太長超出去，所以改中文
+    
+    return render_template(new_predict_page, users = user_rating, berts = bert_rating, user_txt = data)
     # This loop is used to Quinary class
     # answers = []
     # for t in range(30):
     #     answers.append(review_predict(q_inputs=txt))
     # bert_rating =  max(set(answers), key=answers.count) + '星'
     
-    answer = (review_predict(q_input=txt))
-    if answer == '0':
-        bert_rating = 'Negative (1, 2 star)'
-    if answer == '1':
-        bert_rating = 'Neutral (3 star)'
-    if answer == '2':
-        bert_rating = 'Positive (4, 5 star)'
 
-    return render_template(predict_page, users = user_rating, berts = bert_rating)
+@app.route( "/get_Url" , methods=['POST','GET'])
+def get_Url():
 
-@app.route("/get_predict")
-def get_predict():
-    '''Show BERT multi-label classification prediction
-    
-    Get reviews from the given url and save them as csv or json files.
-    
-    Read and predict 4 labels of reviews from the files.
-    
-    return
-        calculate all label and show results on web
-    '''
     
     # TODO: format should select by user
+    global id
+    if request.method == "POST":
+        data_url = request.form.get("txtbox")  
+        id+=1
+    print(data_url)
 
+    if data_url is None :
+        raise ValueError('Please input a url under "Overview tab".')
+    
     try:
         # may remove the check_cache until client web have proper function to handle
-        global scrape_url
-        review_file = get_reviews(url=scrape_url, webname=platform, format= 'json', check_cache=True)
+        review_file = get_reviews(url=data_url, webname=platform, format= 'json', check_cache=True)
         predictions = review_analyze(file_path=review_file)
+        filtered_data = [d for d in predictions  if d[2].split('/')[1] != '']
+        sort_by_label(filtered_data,0,'Food.png','web')
+        sort_by_label(filtered_data,1,'Price.png','web')
+        sort_by_label(filtered_data,2,'Service.png','web')
+        sort_by_label(filtered_data,3,'Conment.png','web')
         debug_type(predictions)
         analysis = calculate_labels(predictions)
-        return render_template(analysis_page,
-                            str1=analysis[0], str2=analysis[1], str3=analysis[2], str4=analysis[3])
+        return render_template(chart_html,
+                            str1=analysis[0], str2=analysis[1], str3=analysis[2], str4=analysis[3],
+                            Food = "image/Food.png",
+                            Price = "image/Price.png",
+                            Service = "image/Service.png",
+                            Conment = "image/Conment.png"
+                            )
     except:
-        raise Exception(f'Failed to get review on\n{scrape_url}\n')
+        raise Exception(f'Failed to get review on\n{data_url}\n')
 
 def calculate_labels(labels: list[tuple]):
     '''Calculate all labels and show results on web
@@ -110,27 +169,9 @@ def calculate_labels(labels: list[tuple]):
 
     return analysis
 
-@app.route("/get_platform", methods=['GET','POST'])
-def get_platform():
-    '''Set platform to set scrape web
-    Foodpanda | Googlemaps
-    '''
 
-    global platform
-    platform = request.get_json()
-    return ('', 204)
 
-@app.route("/get_url", methods=['GET', 'POST'])
-def get_url():
-    '''Get url for web scraper
-    '''
-    
-    global scrape_url
-    scrape_url = request.get_json()
-    
-    if scrape_url is None :
-        raise ValueError('Please input a url under "Overview tab".')
-    return ('', 204)
+
 
 def read_review_file(FILE: str):
     '''Read lines from file for the BERT
@@ -197,7 +238,7 @@ def sort_by_month(data: list):
     plt.title('Data Count Over Time')
     plt.show()
 
-def sort_by_label(data: list, label: int):
+def sort_by_label(data: list, label: int, save_filename: str = None, save_folder: str = None):
     '''Count 1 label per month
     
     data: list of data
@@ -232,7 +273,12 @@ def sort_by_label(data: list, label: int):
     plt.ylabel('Data Count')
     plt.legend()
     plt.title('label Count per Time')
-    plt.show()
+    #plt.show()
+    if save_folder:
+        os.makedirs(save_folder, exist_ok=True)
+        save_path = os.path.join(save_folder, save_filename)
+        plt.savefig(save_path)
+
 
 def compare_labels(data: list, comp_labels: list):
     '''Compare data with given labels
@@ -279,7 +325,8 @@ def compare_labels(data: list, comp_labels: list):
     plt.legend()
     plt.title('Label Count per Time')
     plt.xticks(time_indices + bar_width, [time.strftime("%Y/%m") for time in all_times])
-    plt.show()
+    #plt.show()
+
 
 if __name__ == "__main__":
     app.run(port=8900)

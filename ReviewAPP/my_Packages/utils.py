@@ -29,3 +29,9 @@ def convert_to_tablename(filepath: str):
 
     table_name = '`' + filepath.split('/')[1].split('-')[0] + '`'
     return table_name
+
+# TODO: create a function to create filename with date range
+def gen_diagram_name(date_range: str):
+    filename = './SaveData/dia.png'
+    
+    return filename

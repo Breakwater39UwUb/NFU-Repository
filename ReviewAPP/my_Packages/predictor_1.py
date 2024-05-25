@@ -70,9 +70,8 @@ def review_predict(q_input: str):
     #     return ans_label[0]
     
     # return ans_label
-
-    text = q_input[0]
-    encoding = tokenizer(text, return_tensors='pt', padding=True, truncation=True, max_length=512)
+    
+    encoding = tokenizer(q_input, return_tensors='pt', padding=True, truncation=True, max_length=512)
     input_ids = encoding['input_ids']
     attention_mask = encoding['attention_mask']
 
