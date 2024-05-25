@@ -277,15 +277,15 @@
             <div style="display:none;" class="form_box" id = "myDiv8">      
                 
                  
-                <form action="get_Change" method="POST" >     
+                <form action="get_Change" onsubmit="return validateForm()"  name="myForm" method="POST" >     
                     <img src="image/background1.jpg" width="200" height="200">
                     <h1>虎尾餐廳</h1>
                     
-                    <textarea rows="10" cols="30" id = "myText">
+                    <textarea rows="10" cols="30" id = "myText2" >
                         {{ berts }}
                     </textarea>
                     
-                    <input type="text" id="txtbox" name="txtbox" oninput="updateTextArea()" placeholder="input Something" align="center"/>
+                    <input type="text" id="txtbox" name="txtbox"  onclick="IsEmpty()" oninput="updateTextArea()" placeholder="input Something" align="center"/>
                 
                     <div class="slidecontainer">
                         <input type="range" min="1" max="5" value="1" class="slider" id="myRange">
@@ -303,12 +303,12 @@
             <div style="display:none;" class="form_box" id = "myDiv9">      
                 
                 <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button> 
-                <form action="get_Url" method="POST" >     
+                <form action="get_Url" method="POST" name="myForm" onsubmit="return validateForm()" >     
                     <h1>輸入網址</h1>
                     
                     <textarea rows="10" cols="30" id = "myText" id="txtbox" name="txtbox" oninput="updateTextArea()" placeholder="input Something" align="center">
                          
-                    </textarea>
+                    </textarea> 
                 
                     <div class="Send-field">
                         <button onclick="sendData()" align="center" >Send Data</button> 
@@ -394,6 +394,11 @@
                 NameField3.type = "text";
             }  
 
+            if(t == ' ')
+            {
+                window.confirm("請輸入評論");
+            }
+
             function toggleDiv() {
             let value1 = document.getElementById("select1").value;
             let div4 = document.getElementById("myDiv4");
@@ -463,13 +468,18 @@
             function updateTextArea() 
             { 
             var inputField = document.getElementById("txtbox"); 
-            var textArea = document.getElementById("myText"); 
+            var textArea = document.getElementById("myText2"); 
             textArea.value = inputField.value; 
             } 
-            if(textArea.value = " ")
-            {
-                alert("Must Input Something")
+
+            function validateForm() {
+            var x = document.forms["myForm"]["txtbox"].value;
+            if (x == "") {
+                alert("Name must be filled out");
+                return false;
             }
+}
+
         </script>       
     </body>
 </html>

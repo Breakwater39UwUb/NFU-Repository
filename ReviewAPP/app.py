@@ -120,8 +120,8 @@ def get_Change():
     if answer == '2':
         bert_rating = '正向(4,5 星)' # Positive (4, 5 star)
         #英文子太長超出去，所以改中文
-    
-    return render_template(new_predict_page, users = user_rating, berts = bert_rating, user_txt = data)
+    if(data != " "):
+       return render_template(new_predict_page, users = user_rating, berts = bert_rating, user_txt = data)
     # This loop is used to Quinary class
     # answers = []
     # for t in range(30):
@@ -144,23 +144,26 @@ def get_Url():
         raise ValueError('Please input a url under "Overview tab".')
     
     try:
-        # may remove the check_cache until client web have proper function to handle
-        review_file = get_reviews(url=data_url, webname=platform, format= 'json', check_cache=True)
-        predictions = review_analyze(file_path=review_file)
-        filtered_data = [d for d in predictions  if d[2].split('/')[1] != '']
-        sort_by_label(filtered_data,0,'Food.png','web')
-        sort_by_label(filtered_data,1,'Price.png','web')
-        sort_by_label(filtered_data,2,'Service.png','web')
-        sort_by_label(filtered_data,3,'Conment.png','web')
-        debug_type(predictions)
-        analysis = calculate_labels(predictions)
-        return render_template(chart_html,
-                            str1=analysis[0], str2=analysis[1], str3=analysis[2], str4=analysis[3],
-                            Food = "image/Food.png",
-                            Price = "image/Price.png",
-                            Service = "image/Service.png",
-                            Conment = "image/Conment.png"
-                            )
+
+        if(data_url != " "):
+            # may remove the check_cache until client web have proper function to handle
+            review_file = get_reviews(url=data_url, webname=platform, format= 'json', check_cache=True)
+            predictions = review_analyze(file_path=review_file)
+            filtered_data = [d for d in predictions  if d[2].split('/')[1] != '']
+            sort_by_label(filtered_data,0,'Food.png','web')
+            sort_by_label(filtered_data,1,'Price.png','web')
+            sort_by_label(filtered_data,2,'Service.png','web')
+            sort_by_label(filtered_data,3,'Conment.png','web')
+            debug_type(predictions)
+            analysis = calculate_labels(predictions)
+            return render_template(chart_html,
+                                str1=analysis[0], str2=analysis[1], str3=analysis[2], str4=analysis[3],
+                                Food = "image/Food.png",
+                                Price = "image/Price.png",
+                                Service = "image/Service.png",
+                                Conment = "image/Conment.png"
+                                )
+        
     except:
         raise Exception(f'Failed to get review on\n{data_url}\n')
 
