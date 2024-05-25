@@ -24,6 +24,10 @@ bert_rating = 1	# may delete this
 answer = ''
 bert_rating = ''
 id = 0
+month_start = ' '
+year_start = ' '
+month_end =  ' '
+year_end =   ' '
 global labels
 labels = {0: 'Food', 1: 'Price', 2: 'Service', 3: 'Environment'}
 
@@ -135,10 +139,34 @@ def get_Url():
     
     # TODO: format should select by user
     global id
+    global month_start 
+    global year_start 
+    global month_end 
+    global year_end 
     if request.method == "POST":
-        data_url = request.form.get("txtbox")  
+        data_url = request.form.get("txtbox1")  
+        form_time_start = request.form.get('time_start') 
+        form_time_end = request.form.get('time_end')
+        year_start = form_time_start.split('-')[0] #2024
+        month_start =   form_time_start.split("-")[1] #07
+        year_end =  form_time_end.split('-')[0] #2024
+        month_end =   form_time_end.split("-")[1] #02
+        month_range = str(int(month_start)) + " " + str(int(month_end)) #7 2
         id+=1
+
+
     print(data_url)
+    print(form_time_start)
+    print(form_time_end)
+    print(month_start)
+    print('\n')
+    print(month_range)
+    print('\n')
+    print(year_start)
+    print('\n')
+    print(month_end)
+    print('\n')
+    print(year_end)
 
     if data_url is None :
         raise ValueError('Please input a url under "Overview tab".')

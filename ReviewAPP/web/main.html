@@ -202,6 +202,19 @@
                 color: black;
             }
 
+            input[type="date"]::-webkit-calendar-picker-indicator {
+                background: transparent;
+                bottom: 0;
+                color: transparent;
+                cursor: pointer;
+                height: auto;
+                left: 0;
+                position: absolute;
+                right: 0;
+                top: 0;
+                width: auto;
+            }
+
 
         </style>
 
@@ -279,7 +292,7 @@
                  
                 <form action="get_Change" onsubmit="return validateForm()"  name="myForm" method="POST" >     
                     <img src="image/background1.jpg" width="200" height="200">
-                    <h1>虎尾餐廳</h1>
+                    <h3>虎尾餐廳</h3>
                     
                     <textarea rows="10" cols="30" id = "myText2" >
                         {{ berts }}
@@ -303,10 +316,10 @@
             <div style="display:none;" class="form_box" id = "myDiv9">      
                 
                 <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button> 
-                <form action="get_Url" method="POST" name="myForm" onsubmit="return validateForm()" >     
-                    <h1>輸入網址</h1>
+                <form action="get_Url" method="POST" name="myForm1" onsubmit="return validateForm()" >     
+                    <h3>輸入網址</h3>
                     
-                    <textarea rows="10" cols="30" id = "myText" id="txtbox" name="txtbox" oninput="updateTextArea()" placeholder="input Something" align="center">
+                    <textarea rows="10" cols="30" id = "myText" id="txtbox1" name="txtbox1" oninput="updateTextArea()" placeholder="input Something" align="center">
                          
                     </textarea> 
                 
@@ -314,7 +327,11 @@
                         <button onclick="sendData()" align="center" >Send Data</button> 
                         <div id="output"></div> 
                     </div>
-               </form>
+                    <h3>輸入開始時間</h3>
+                    <input type="month" id="time_start" name="time_start">
+                    <h3>輸入結束時間</h3>
+                    <input type="month" id="time_end" name="time_end">
+
             </div>
         </div> 
 
@@ -472,13 +489,7 @@
             textArea.value = inputField.value; 
             } 
 
-            function validateForm() {
-            var x = document.forms["myForm"]["txtbox"].value;
-            if (x == "") {
-                alert(" must be filled out");
-                return false;
-            }
-}
+
 
         </script>       
     </body>
