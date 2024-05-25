@@ -264,7 +264,7 @@
                 </div>
 
                 <div class="btn-field">
-                    <button type="button"  id = "signupBtn">商家  </button>
+                    <button type="button"  id = "signupBtn">商家</button>
                     <h1 id = "Show">請選擇平台</h1>
                 </div>
             </form>
@@ -276,6 +276,10 @@
                 <img src="image/background1.jpg" width="200" height="200">
                 <h1>輸入評分與評論</h1>
 
+                <div>
+                    <label>test</label>
+                </div>
+
                 <textarea rows="10" cols="30" id = "myText">
                     {{ berts }}
                 </textarea>
@@ -283,10 +287,10 @@
                 <input type="text" id="txtbox" name="txtbox" oninput="updateTextArea()" placeholder="input Something" align="center"/>
             
                 <div class="slidecontainer">
-                    <input type="range" min="1" max="5" value="1" class="slider" id="myRange">
+                    <input type="range" id="myRange" min="1" max="5" value="5" step="1" class="slider">
+                    <h2 id = "value">5 星</h2>
                 </div>
 
-                <h4 id = "value"> 1 </h4>
                 <button onclick="sendData()" >Send Data</button> 
                 <div id="output"></div> 
             </form>
@@ -343,7 +347,7 @@
 
             // Update the current slider value (each time you drag the slider handle)
             slider.oninput = function() {
-                value.innerHTML = this.value;
+                value.innerHTML = this.value + " 星";
             }
           
             function sendData() {
