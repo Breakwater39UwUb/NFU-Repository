@@ -68,6 +68,17 @@ def get_Star():
     print (user_rating)
     return render_template(predict_page)
 
+@app.route("/get_Date", methods=['GET','POST']) # Funtion to get Star value
+def get_Date():
+    '''Set platform to set scrape web
+    Foodpanda | Googlemaps
+    '''
+    global dateTEST
+    dateTEST  = request.get_json()
+    print (dateTEST)
+    return render_template(predict_page)
+
+
 @app.route("/get_Passed", methods=['GET','POST']) # Funtion to handle get Star value
 def get_Passed():
     passed = request.get_json()
