@@ -24,6 +24,13 @@ bert_rating = 1	# may delete this
 answer = ''
 bert_rating = ''
 id = 0
+<<<<<<< HEAD
+=======
+month_start = ' '
+year_start = ' '
+month_end =  ' '
+year_end =   ' '
+>>>>>>> 05fde182fbb9a756ea3fe8a149e45ae9e0fbaf0a
 global labels
 labels = {0: 'Food', 1: 'Price', 2: 'Service', 3: 'Environment'}
 
@@ -36,8 +43,29 @@ app.debug = True
 
 @app.route("/")
 def Home():
+<<<<<<< HEAD
     return render_template(home_page) 
 
+=======
+    '''path = 'image/'
+
+    file = Path('image/Food.png')
+    file2 = Path('image/Price.png')
+    file3 = Path('image/Service.png')
+    file4 = Path('image/Conment.png')
+    print('Sample Folder: ', os.listdir(path))
+    try:
+        file.unlink()
+        file2.unlink()
+        file3.unlink()
+        file4.unlink()
+        print('Delete File')
+        print('Sample Folder: ', os.listdir(path))
+    except OSError as e:
+        print (f"Delete Problem: {e.strerror}")'''
+    return render_template('main.html')
+
+>>>>>>> 05fde182fbb9a756ea3fe8a149e45ae9e0fbaf0a
 @app.route("/get_Star", methods=['GET','POST']) # Funtion to get Star value
 def get_Star():
     '''Set platform to set scrape web
@@ -48,6 +76,20 @@ def get_Star():
     print (user_rating)
     return render_template(predict_page)
 
+<<<<<<< HEAD
+=======
+@app.route("/get_Date", methods=['GET','POST']) # Funtion to get Star value
+def get_Date():
+    '''Set platform to set scrape web
+    Foodpanda | Googlemaps
+    '''
+    global dateTEST
+    dateTEST  = request.get_json()
+    print (dateTEST)
+    return render_template(predict_page)
+
+
+>>>>>>> 05fde182fbb9a756ea3fe8a149e45ae9e0fbaf0a
 @app.route("/get_Passed", methods=['GET','POST']) # Funtion to handle get Star value
 def get_Passed():
     passed = request.get_json()
@@ -104,8 +146,13 @@ def get_Change():
     if answer == '2':
         bert_rating = '正向(4,5 星)' # Positive (4, 5 star)
         #英文子太長超出去，所以改中文
+<<<<<<< HEAD
     
     return render_template(new_predict_page, users = user_rating, berts = bert_rating, user_txt = data)
+=======
+    if(data != " "):
+       return render_template(new_predict_page, users = user_rating, berts = bert_rating, user_txt = data)
+>>>>>>> 05fde182fbb9a756ea3fe8a149e45ae9e0fbaf0a
     # This loop is used to Quinary class
     # answers = []
     # for t in range(30):
@@ -119,15 +166,48 @@ def get_Url():
     
     # TODO: format should select by user
     global id
+<<<<<<< HEAD
     if request.method == "POST":
         data_url = request.form.get("txtbox")  
         id+=1
     print(data_url)
 
+=======
+    global month_start 
+    global year_start 
+    global month_end 
+    global year_end 
+    if request.method == "POST":
+        data_url = request.form.get("txtbox1")  
+        form_time_start = request.form.get('time_start') 
+        form_time_end = request.form.get('time_end')
+        year_start = form_time_start.split('-')[0] #2024
+        month_start =   form_time_start.split("-")[1] #07
+        year_end =  form_time_end.split('-')[0] #2024
+        month_end =   form_time_end.split("-")[1] #02
+        month_range = str(int(month_start)) + " " + str(int(month_end)) #7 2
+        id+=1
+
+
+    print(data_url)
+    print(form_time_start)
+    print(form_time_end)
+    print(month_start)
+    print('\n')
+    print(month_range)
+    print('\n')
+    print(year_start)
+    print('\n')
+    print(month_end)
+    print('\n')
+    print(year_end)
+
+>>>>>>> 05fde182fbb9a756ea3fe8a149e45ae9e0fbaf0a
     if data_url is None :
         raise ValueError('Please input a url under "Overview tab".')
     
     try:
+<<<<<<< HEAD
         # may remove the check_cache until client web have proper function to handle
         review_file = get_reviews(url=data_url, webname=platform, format= 'json', check_cache=True)
     except:
@@ -147,6 +227,30 @@ def get_Url():
                         Service = "image/Service.png",
                         Conment = "image/Conment.png"
                         )
+=======
+
+        if(data_url != " "):
+            # may remove the check_cache until client web have proper function to handle
+            review_file = get_reviews(url=data_url, webname=platform, format= 'json', check_cache=True)
+            predictions = review_analyze(file_path=review_file)
+            filtered_data = [d for d in predictions  if d[2].split('/')[1] != '']
+            sort_by_label(filtered_data,0,'Food.png','web')
+            sort_by_label(filtered_data,1,'Price.png','web')
+            sort_by_label(filtered_data,2,'Service.png','web')
+            sort_by_label(filtered_data,3,'Conment.png','web')
+            debug_type(predictions)
+            analysis = calculate_labels(predictions)
+            return render_template(chart_html,
+                                str1=analysis[0], str2=analysis[1], str3=analysis[2], str4=analysis[3],
+                                Food = "image/Food.png",
+                                Price = "image/Price.png",
+                                Service = "image/Service.png",
+                                Conment = "image/Conment.png"
+                                )
+        
+    except:
+        raise Exception(f'Failed to get review on\n{data_url}\n')
+>>>>>>> 05fde182fbb9a756ea3fe8a149e45ae9e0fbaf0a
 
 def calculate_labels(labels: list[tuple]):
     '''Calculate all labels and show results on web
@@ -171,23 +275,6 @@ def calculate_labels(labels: list[tuple]):
 
 
 
-@app.route("/get_url", methods=['GET', 'POST'])
-def get_url():
-    '''Get url for web scraper
-    '''
-    
-    global scrape_url
-    scrape_url = request.get_json()
-    
-    if scrape_url is None :
-        raise ValueError('Please input a url under "Overview tab".')
-    
-    global platform
-    if 'google' in scrape_url:
-        platform = 'Googlemaps'
-    if 'foodpanda' in scrape_url:
-        platform = 'Foodpanda'
-    return ('', 204)
 
 def read_review_file(FILE: str):
     '''Read lines from file for the BERT
