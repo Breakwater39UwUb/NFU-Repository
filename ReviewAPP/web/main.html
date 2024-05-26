@@ -242,40 +242,6 @@
                 <button type="button" class="Open" onclick="ShowDiv8()">評論好壞分析</button>
 
                 <button type="button" class="Open" onclick="ShowDiv9()">輸入網址</button>
-<<<<<<< HEAD
-              </ul>
-            <nav>
-       </header>
-
-
-
-    <div id='login-form'class="button-container" >
-        <div style="display:none;" class="form_box" id = "myDiv">
-            <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
-
-            <form action="/get_url" method="POST" >
-                <div class = "input-group">
-                    <div class="input-fieid" >
-                        <input name="Comment" type = "hidden" id = "nameField" value="評論">
-                    </div>
-                </div>
-                
-                <div class = "input-group">
-                    <div class="input-fieid" >
-                        <input name="FoodpandaLink" type = "hidden" id = "nameField3" placeholder="Foodpanda網址">
-                    </div>
-                </div>
-                
-                <div class = "input-group">
-                    <div class="input-fieid">
-                        <input name="GoogleLink" type = "hidden" id = "nameField2"  placeholder="Google網址">
-                    </div>
-                </div>
-
-                <div class="btn-field">
-                    <button type="button"  id = "signupBtn">商家</button>
-                    <h1 id = "Show">請選擇平台</h1>
-=======
             </ul>
             <nav>
     </header>
@@ -312,134 +278,10 @@
                 <div class="btn-field">
                     <button type="button" id="signupBtn">商家  </button>
                     <h1 id="Show">請選擇平台</h1>
->>>>>>> 05fde182fbb9a756ea3fe8a149e45ae9e0fbaf0a
                 </div>
             </form>
         </div>
 
-<<<<<<< HEAD
-        <!-- Show preview predict form to get user review -->
-        <div style="display:none;" class="form_box" id = "myDiv8">
-            <form action="get_Change" method="POST" >     
-                <img src="image/background1.jpg" width="200" height="200">
-                <h1>輸入評分與評論</h1>
-
-                <div>
-                    <label>test</label>
-                </div>
-
-                <textarea rows="10" cols="30" id = "myText">
-                    {{ berts }}
-                </textarea>
-                
-                <input type="text" id="txtbox" name="txtbox" oninput="updateTextArea()" placeholder="input Something" align="center"/>
-            
-                <div class="slidecontainer">
-                    <input type="range" id="myRange" min="1" max="5" value="5" step="1" class="slider">
-                    <h2 id = "value">5 星</h2>
-                </div>
-
-                <button onclick="sendData()" >Send Data</button> 
-                <div id="output"></div> 
-            </form>
-            <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button> 
-        </div>
-
-
-        <div style="display:none;" class="form_box" id = "myDiv9">
-            <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
-
-            <form action="get_Url" method="POST" >
-                <h1>輸入網址</h1>
-                
-                <textarea rows="10" cols="30" id = "myText" id="txtbox" name="txtbox"
-                    oninput="updateTextArea()" placeholder="input Something" align="center">
-                </textarea>
-            
-                <div class="Send-field">
-                    <button onclick="sendData()" align="center" >Send Data</button> 
-                    <div id="output"></div> 
-                </div>
-            </form>
-        </div>
-    </div> 
-    
-    </div>
-        <script>
-            $(function () {
-                var _link = $('<link href="test1.css" type="text/css" rel="stylesheet" />');
-                
-                _link.attr("title", "global");
-                
-                _link.appendTo("head");
-            });
-
-            const ctx6 = document.getElementById('chartJSContainer');
-            const ctx7 = document.getElementById('chartJSContainer2');
-            const ctx8 = document.getElementById('chartJSContainer3');
-            const ctx9 = document.getElementById('chartJSContainer4');
-
-            let SignupBtn = document.getElementById("signupBtn")
-            let Show = document.getElementById("Show")
-
-            let NameField = document.getElementById("nameField")
-            let NameField2 = document.getElementById("nameField2")
-            let NameField3 = document.getElementById("nameField3")
-            let Title = document.getElementById("title")
-            
-            var t=document.getElementById('txtbox').value;
-
-            var slider = document.getElementById("myRange");
-            var output = document.getElementById("demo");
-            value.innerHTML = slider.value; // Display the default slider value
-
-            // Update the current slider value (each time you drag the slider handle)
-            slider.oninput = function() {
-                value.innerHTML = this.value + " 星";
-            }
-          
-            function sendData() {
-                var txt = document.getElementById("txtbox").value;
-                var star = document.getElementById("myRange").value;
-                var passed = 1
-                $.ajax({
-                    url: ('/get_Commet'),
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify(txt)
-                });
-
-                $.ajax({
-                    url: ('/get_Star'),
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify(star)
-                });
-
-                $.ajax({
-                    url: ('/get_Passed'),
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify(passed)
-                });
-            }
-
-            SignupBtn.onclick = function(){
-                Show.style.display = "block"
-                NameField2.type = "text";
-                NameField.type = "hidden";
-                NameField3.type = "text";
-            }
-
-            function toggleDiv() {
-                let value1 = document.getElementById("select1").value;
-                let div4 = document.getElementById("myDiv4");
-                let div5 = document.getElementById("myDiv5");
-                let div6 = document.getElementById("myDiv6");
-                let div3 = document.getElementById("myDiv3");
-            alert('請先輸入網址');
-        
-=======
         <div style="display:none;" class="form_box" id="myDiv8">
 
 
@@ -601,7 +443,6 @@
             let div3 = document.getElementById("myDiv3");
             alert('請先輸入網址');
 
->>>>>>> 05fde182fbb9a756ea3fe8a149e45ae9e0fbaf0a
             if (value1 === "myDiv6") {
                 alert('請先輸入網址');
             }
@@ -628,52 +469,6 @@
             alert('請先輸入網址');
             if (value1 === "myDiv7") {
                 alert('請先輸入網址');
-<<<<<<< HEAD
-            }     
-            if (value1 === "myDiv9") {
-                alert('請先輸入網址');
-            } 
-            if (value1 === "myDiv10") {
-                alert('請先輸入網址');
-            } 
-            if (value1 === "myDiv11") {
-                alert('請先輸入網址');
-            } 
-        }
-        
-        function ShowDiv()
-        {
-            document.getElementById("myDiv").style.display = "";
-        }
-
-        function ShowDiv2()
-        {
-            alert('請先輸入網址');
-        }
-
-        function ShowDiv8()
-        {
-            document.getElementById("myDiv8").style.display = "";
-        }
-
-        function ShowDiv9()
-        {
-            document.getElementById("myDiv9").style.display = "";
-        }
-
-        function updateTextArea()
-        {
-            var inputField = document.getElementById("txtbox");
-            var textArea = document.getElementById("myText");
-            textArea.value = inputField.value; 
-        } 
-        if(textArea.value = " ")
-        {
-            alert("Must Input Something")
-        }
-        </script>
-    </body>
-=======
             }
             if (value1 === "myDiv9") {
                 alert('請先輸入網址');
@@ -710,5 +505,4 @@
     </script>
 </body>
 
->>>>>>> 05fde182fbb9a756ea3fe8a149e45ae9e0fbaf0a
 </html>
