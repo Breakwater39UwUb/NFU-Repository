@@ -155,7 +155,7 @@ def get_Url():
     global month_end 
     global year_end 
     if request.method == "POST":
-        data_url = request.form.get("txtbox1")  
+        data_url = request.form.get("myTextarea")  
         form_time_start = request.form.get('time_start') 
         form_time_end = request.form.get('time_end')
         year_start = form_time_start.split('-')[0] #2024
@@ -183,8 +183,7 @@ def get_Url():
         raise ValueError('Please input a url under "Overview tab".')
     
     try:
-
-        if(data_url != " "):
+        if data_url != 1:
             # may remove the check_cache until client web have proper function to handle
             review_file = get_reviews(url=data_url, webname=platform, format= 'json', check_cache=True)
             predictions = review_analyze(file_path=review_file)

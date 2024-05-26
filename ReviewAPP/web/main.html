@@ -293,7 +293,7 @@
 
                     </textarea>
 
-                <input type="text" id="txtbox" name="txtbox" oninput="updateTextArea()" placeholder="input Something" align="center" />
+                <input type="text" id="txtbox" name="txtbox" oninput="updateTextArea()" placeholder="input Something" align="center" required/>
 
                 <div class="slidecontainer">
                     <input type="range" min="1" max="5" value="1" class="slider" id="myRange">
@@ -311,21 +311,18 @@
         <div style="display:none;" class="form_box" id="myDiv9">
 
             <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
-            <form action="get_Url" method="POST" name="myForm1">
+            <form action="get_Url" name="myForm1" method="POST" onsubmit="required()">
                 <h3>輸入網址</h3>
 
-                <textarea rows="10" cols="30" id="txtbox" name="txtbox1" oninput="updateTextArea()" placeholder="input Something" align="center" required>
-                         
-                    </textarea>
-
+                <textarea rows="10" cols="30" id="txtbox" name="myTextarea" placeholder="input Something" align="center" required></textarea>
                 <div class="Send-field">
                     <button type="submit" onclick="sendData()" align="center">Send Data</button>
                     <div id="output"></div>
                 </div>
                 <h3>輸入結束時間</h3>
-                <input type="month" id="time_start" name="time_start">
+                <input type="month" id="time_start" name="time_start" required>
                 <h3>輸入結束時間</h3>
-                <input type="month" id="time_end" name="time_end">
+                <input type="month" id="time_end" name="time_end" required>
             </form>
         </div>
     </div>
@@ -383,7 +380,10 @@
         dateend.min = newDate.getFullYear().toString() + "-0" + max.toString()
         dateend.value = ""
         var t = document.getElementById('txtbox').value;
-        let month1 = currentDate.getMonth() + 1
+
+
+
+
 
         var slider = document.getElementById("myRange");
         var output = document.getElementById("demo");
@@ -399,6 +399,9 @@
             var txt = document.getElementById("txtbox").value;
             var star = document.getElementById("myRange").value;
             var passed = 1
+
+
+
             $.ajax({
                 url: ('/get_Commet'),
                 type: 'POST',
@@ -426,6 +429,7 @@
                 contentType: 'application/json',
                 data: JSON.stringify(currentDate)
             });
+
         }
 
         SignupBtn.onclick = function() {
