@@ -171,7 +171,23 @@ def calculate_labels(labels: list[tuple]):
 
 
 
-
+@app.route("/get_url", methods=['GET', 'POST'])
+def get_url():
+    '''Get url for web scraper
+    '''
+    
+    global scrape_url
+    scrape_url = request.get_json()
+    
+    if scrape_url is None :
+        raise ValueError('Please input a url under "Overview tab".')
+    
+    global platform
+    if 'google' in scrape_url:
+        platform = 'Googlemaps'
+    if 'foodpanda' in scrape_url:
+        platform = 'Foodpanda'
+    return ('', 204)
 
 def read_review_file(FILE: str):
     '''Read lines from file for the BERT
