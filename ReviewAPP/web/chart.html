@@ -289,11 +289,7 @@
                 <img src="image/background1.jpg" width="200" height="200">
                 <h3>虎尾餐廳</h3>
 
-                <textarea rows="10" cols="30" id="myText2">
-
-                    </textarea>
-
-                <input type="text" id="txtbox" name="txtbox" oninput="updateTextArea()" placeholder="input Something" align="center" required/>
+                <textarea rows="10" cols="30" id="myText2" name="txtbox" required></textarea>
 
                 <div class="slidecontainer">
                     <input type="range" min="1" max="5" value="1" class="slider" id="myRange">
@@ -319,7 +315,7 @@
                     <button type="submit" onclick="sendData()" align="center" style="height:25px;width:120px">Send Data</button>
                     <div id="output"></div>
                 </div>
-                <h3>輸入開始時間</h3>
+                <h3>輸入結束時間</h3>
                 <input type="month" id="time_start" name="time_start" required>
                 <h3>輸入結束時間</h3>
                 <input type="month" id="time_end" name="time_end" required>
@@ -471,7 +467,7 @@
         <h1>餐點標籤數量統計</h1>
         <img src="Food.png" width="800" heigh="800" alt="一張圖片">
         <form action="#">
-            長條圆為該月份的評論數量，折線圖表示選擇的標籤在該月的數量
+            長條圆為該月份的評論數量 ， 折線圖表示選擇的標籤在該月的數量
         </form>
     </div>
 
