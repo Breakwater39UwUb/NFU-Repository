@@ -84,9 +84,7 @@ def check_month_range(time: datetime, time_range: str='all'):
     # substract one month from start date
     last_day_of_prev_month = start_date.replace(day=1) - timedelta(days=1)
     # Calculate the same day of the previous month
-    start_date = start_date.replace(day=min(start_date.day,
-                                            calendar.monthrange(last_day_of_prev_month.year,
-                                                                last_day_of_prev_month.month)[1]))
+    start_date = last_day_of_prev_month.replace(day=1)
 
     # EOM: End Of Month
     start_EOM = calendar.monthrange(start_date.year, start_date.month)[1]
