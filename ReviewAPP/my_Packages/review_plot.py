@@ -9,7 +9,8 @@ import pandas as pd
 from datetime import datetime, timedelta
 from collections import defaultdict
 from my_Packages.utils import check_month_range
-
+global labels
+labels = {0: 'Food', 1: 'Price', 2: 'Service', 3: 'Environment'}
 def sort_by_month(data: list):
     '''Count reviews per month
 
@@ -68,10 +69,12 @@ def plot_by_label(data: list,
     # Count the number of data points for each month
     for d in data:
         time = datetime.strptime(d[2], "%Y/%m")
-        counts[time] += 1
 
+        # Check if the data points are in the time range
         if check_month_range(time, time_range) is not True:
             continue
+
+        counts[time] += 1
 
         # count label
         if (d[0][label]):
@@ -88,7 +91,8 @@ def plot_by_label(data: list,
     # ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y/%m'))
 
     global labels
-    plt.bar(x=times, height=counts, width=10, color='red', label='Total')
+    print(f'debug-----------------------------------------------------------\n{times}\n{counts}')
+    plt.bar(times, counts, 10, color='red', label='Total')
     plt.plot(times, label_counts, label=f'Label: {labels[label]}')
     plt.xlabel('Month')
     plt.ylabel('Review Count')
