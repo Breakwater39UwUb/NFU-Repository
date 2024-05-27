@@ -15,8 +15,6 @@ platform = ''
 chart_html= 'chart.html'
 user_rating = 1
 answer = ''
-global labels
-labels = {0: 'Food', 1: 'Price', 2: 'Service', 3: 'Environment'}
 
 app = Flask(__name__,
             template_folder=flask_template_path,
@@ -88,14 +86,12 @@ def get_Change():
     if answer == '2':
         bert_rating = '正向(4,5 星)' # Positive (4, 5 star)
         #英文子太長超出去，所以改中文
-    print('-----------------------------------------------------------------------------------')
-    print(user_rating, data)
     return render_template(new_predict_page, users = user_rating, berts = bert_rating, user_txt = data)
 
 @app.route( "/get_Url" , methods=['POST','GET'])
 def get_Url():
     if request.method == "POST":
-        data_url = request.form.get("txtbox1")  
+        data_url = request.form.get("myTextarea")  
         form_time_start = request.form.get('time_start') 
         form_time_end = request.form.get('time_end')
         form_time_start, form_time_end = sort_times(form_time_start, form_time_end)
