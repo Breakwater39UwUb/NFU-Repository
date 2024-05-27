@@ -1,5 +1,9 @@
 # multiclass classification, which filter garbage reviews
 
+"""
+Using BERT to perform mult-class classification
+"""
+
 import torch
 import pickle
 from core import to_bert_ids, use_model
