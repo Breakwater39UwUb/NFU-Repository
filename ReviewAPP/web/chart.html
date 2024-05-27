@@ -1,218 +1,213 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>美食評論系統</title>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
+
+<head>
+    <title>美食評論系統</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', 'sans-serif';
+            box-sizing: border-box;
+        }
         
-        <style>
-            *{
-                margin: 0;
-                padding: 0;
-                font-family: 'Poppins','sans-serif';
-                box-sizing: border-box;
-            }
-  
-            .button-container
-            {
-                width: 100%;
-                height: 100vh;
-                background-color: rgba(0, 0, 50, .4);
-                background-blend-mode: multiply;
-                background-image: url(image/background2.jpg);
-                background-size: cover;
-                background-position: center;
-                position: relative;
-            }  
-
-            
-
-            .form_box
-            {
-                width: 90%;
-                max-width: 450px;
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%,-50%);
-                background: white;
-                padding: 50px 60px 70px;
-                text-align: center;;
-                position: none;
-            }
-
-            .form_box h1
-            {
-                font-size: 30px;
-                margin-bottom: 60px;
-                color:blue;
-                position: relative;
-            }
-
-
-            .form_box h1::after
-            {
-                content: ' ';
-                width: 30px;
-                height: 4px;
-                border-radius: 3px;
-                background: blue;
-                position: absolute;
-                bottom: -12px;
-                left: 50%;
-                transform: translateX(-50%);
-            }
-
-            .input-fieid{
-                background: #eaeaea;
-                margin: 15px 0;
-                border-radius: 3px;
-                display: flex;
-                align-items: center;
-                max-height: 65px;
-                transition: max-height 0.5s;
-                overflow: hidden;
-            }
-
-            input{
-                width: 100%;
-                background: transparent;
-                border: 0;
-                outline: 0;
-                padding: 18px 15px;
-            }
-
-            form p {
-                text-align: left;
-                font-size: 13px;
-            }
-
-            form p a{
-                text-decoration: none;
-                color: red;
-            }
-
-            a{
-                text-decoration: none;
-            }
-
-            .btn-field{
-                width: 100%;
-                display: flex;
-                justify-content: space-between;
-            }
-
-            .btn-field button{
-                flex-basis: 48%;
-                color: black;
-                height: 40px;
-                border-radius: 20px;
-                border: 0;
-                outline: 0;
-                cursor: pointer;
-                transition: background 1s;
-            }
-
-
-            .btn-field button.disable{
-                background: #eaeaea;
-                color: #555;
-            }
-
-            .btn-field h1{
-                display: none;
-            }
-
-            .header{
-                position: fixed;
-                height: 80px;
-                width: 100%;
-                z-index: 100;
-                padding: 0 20px;
-            }
-            .nav{
-                max-width: 1100px;
-                width: 100%;
-                margin: 0 auto;
-            }
-            .nav,
-            .nav_items{
-                display: flex;
-                height: 100%;
-                align-items: center;
-                justify-content: space-between;
-            }
-
-            .nav_logo{
+        .button-container {
+            width: 100%;
+            height: 100vh;
+            background-color: rgba(0, 0, 50, .4);
+            background-blend-mode: multiply;
+            background-image: url(image/background2.jpg);
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .form_box {
+            width: 90%;
+            max-width: 450px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 50px 60px 70px;
+            text-align: center;
+            ;
+            position: none;
+        }
+        
+        .form_box h1 {
             font-size: 30px;
-            }
+            margin-bottom: 60px;
+            color: blue;
+            position: relative;
+        }
+        
+        .form_box h1::after {
+            content: ' ';
+            width: 30px;
+            height: 4px;
+            border-radius: 3px;
+            background: blue;
+            position: absolute;
+            bottom: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .input-fieid {
+            background: #eaeaea;
+            margin: 15px 0;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            max-height: 65px;
+            transition: max-height 0.5s;
+            overflow: hidden;
+        }
+        
+        input {
+            width: 100%;
+            background: transparent;
+            border: 0;
+            outline: 0;
+            padding: 18px 15px;
+        }
+        
+        form p {
+            text-align: left;
+            font-size: 13px;
+        }
+        
+        form p a {
+            text-decoration: none;
+            color: red;
+        }
+        
+        a {
+            text-decoration: none;
+        }
+        
+        .btn-field {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .btn-field button {
+            flex-basis: 48%;
+            color: black;
+            height: 40px;
+            border-radius: 20px;
+            border: 0;
+            outline: 0;
+            cursor: pointer;
+            transition: background 1s;
+        }
+        
+        .btn-field button.disable {
+            background: #eaeaea;
+            color: #555;
+        }
+        
+        .btn-field h1 {
+            display: none;
+        }
+        
+        .header {
+            position: fixed;
+            height: 80px;
+            width: 100%;
+            z-index: 100;
+            padding: 0 20px;
+        }
+        
+        .nav {
+            max-width: 1100px;
+            width: 100%;
+            margin: 0 auto;
+        }
+        
+        .nav,
+        .nav_items {
+            display: flex;
+            height: 100%;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .nav_logo {
+            font-size: 30px;
+        }
+        
+        .nav_logo,
+        .nav_link,
+        .Open {
+            color: black;
+            height: 100%;
+            font-size: 1.2rem;
+            padding: .7rem 1.5rem;
+        }
+        
+        .nav_items {
+            column-gap: 25px;
+            font-size: 1.2rem;
+            color: black;
+        }
+        
+        .nav_link {
+            color: white;
+        }
+        
+        .nav_link:hover {
+            color: blue;
+        }
+        
+        .Open {
+            padding: 6px 24px;
+            border: 2px soild #fff;
+            background: transparent;
+            border-radius: 6px;
+            cursor: pointer;
+            height: 50px;
+            width: 200px;
+        }
+        
+        .Open:active {
+            transform: scale(0.98);
+        }
+        
+        .Close {
+            border: 2px soild #fff;
+            background: transparent;
+            cursor: pointer;
+        }
+        
+        select option {
+            display: block;
+            font-size: 1.2rem;
+            color: black;
+        }
+        
+        select {
+            padding: .7rem 1.5rem;
+            font-size: 1.2rem;
+            color: black;
+        }
+    </style>
+</head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
 
-            .nav_logo,
-            .nav_link,
-            .Open
-            {
-                color: black;
-                height: 100%;
-                font-size: 1.2rem;
-                padding: .7rem 1.5rem;
-            }
+<body>
 
-
-            .nav_items{
-                column-gap: 25px;
-                font-size: 1.2rem;
-                color: black;
-            }
-
-            .nav_link{
-                color:white;
-            }
-
-            .nav_link:hover{
-                color:blue;
-            }
-
-            .Open{
-                padding: 6px 24px;
-                border: 2px soild #fff;
-                background: transparent;
-                border-radius: 6px;
-                cursor: pointer;
-                height:50px;
-                width: 200px;
-            }
-
-            .Open:active{
-                transform: scale(0.98);
-            }
-
-            .Close{
-                border: 2px soild #fff;
-                background: transparent;
-                cursor: pointer;
-            }
-
-            select option {
-                display: block;
-                font-size: 1.2rem;
-                color: black;
-            }
-            
-            select {
-                padding: .7rem 1.5rem;
-                font-size: 1.2rem;
-                color: black;
-            }
-
-        </style>
-    </head>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
-    <body>
-
-        <header class = "header"><script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-            <nav class="nav" >
-              <a href="#" class="nav_logo" style="list-style-type:none;background-color:white">首頁 </a>
-              <ul class="nav_items" style="list-style-type:none;background-color:white">
-                <h1 id = "title" style="list-style-type:none;background-color:gray" >評論系統</h1>
+    <header class="header">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <nav class="nav">
+            <a href="#" class="nav_logo" style="list-style-type:none;background-color:white">首頁 </a>
+            <ul class="nav_items" style="list-style-type:none;background-color:white">
+                <h1 id="title" style="list-style-type:none;background-color:gray">評論系統</h1>
                 <button type="button" class="Open" onclick="ShowDiv2()">原始評論來源</button>
                 <select id="select1" onchange="toggleDiv()">
                     <option >各項評論分析</option>
@@ -233,131 +228,77 @@
                 <button type="button" class="Open" onclick="ShowDiv8()">評論好壞分析</button>
 
                 <button type="button" class="Open" onclick="ShowDiv13()">輸入網址</button>
-              </ul>
+            </ul>
             <nav>
-       </header>
+    </header>
 
 
 
-       <div id='login-form'class="button-container" >
+    <div id='login-form' class="button-container">
 
 
-            <div style="display:none;" class="form_box" id = "myDiv"> 
+        <div style="display:none;" class="form_box" id="myDiv">
 
-                <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>       
-                <form action="/comment" method="POST" >                          
-                    
-                    <div class = "input-group">
-                        <div class="input-fieid" >
-                           <input name="Comment" type = "hidden" id = "nameField" value="評論">
-                        </div>
+            <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
+            <form action="/comment" method="POST">
+
+                <div class="input-group">
+                    <div class="input-fieid">
+                        <input name="Comment" type="hidden" id="nameField" value="評論">
                     </div>
+                </div>
 
-                    <div class = "input-group">
-                        <div class="input-fieid" >
-                           <input name="FoodpandaLink" type = "hidden" id = "nameField3" placeholder="Foodpanda網址">
-                        </div>
+                <div class="input-group">
+                    <div class="input-fieid">
+                        <input name="FoodpandaLink" type="hidden" id="nameField3" placeholder="Foodpanda網址">
                     </div>
-        
-                    <div class = "input-group">
-                        <div class="input-fieid">
-                           <input name="GoogleLink" type = "hidden" id = "nameField2"  placeholder="Google網址">
-                        </div>
-                    </div>
+                </div>
 
-  
-                    <div class="btn-field">
-                        <button type="button"  id = "signupBtn">商家  </button>
-                        <h1 id = "Show">請選擇平台</h1>
+                <div class="input-group">
+                    <div class="input-fieid">
+                        <input name="GoogleLink" type="hidden" id="nameField2" placeholder="Google網址">
                     </div>
-               </form>
-            </div>
+                </div>
 
-            <div style="display:none;" class="form_box" id = "myDiv8">      
-                
-                <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>  
-                <form action="get_Change" method="POST" >     
-                    <img src="image/background1.jpg" width="200" height="200">
-                    <h1>虎尾餐廳</h1>
-                    <textarea rows="10" cols="30" id = "myText">
+                <div class="btn-field">
+                    <button type="button" id="signupBtn">商家  </button>
+                    <h1 id="Show">請選擇平台</h1>
+                </div>
+            </form>
+        </div>
+
+        <div style="display:none;" class="form_box" id="myDiv8">
+
+            <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
+            <form action="get_Change" method="POST">
+                <img src="image/background1.jpg" width="200" height="200">
+                <h3>虎尾餐廳</h3>
+                <textarea rows="10" cols="30" id="myText">
                         {{ berts }}
                     </textarea>
-                    
-                    <input type="text" id="txtbox" name="txtbox" oninput="updateTextArea()" placeholder="input Something" align="center"/>
-                
-                    <input type="hidden" min="1" max="5" value="1" oninput="rangeValue.innerText = this.value" name ="Star" 
-                    id = "sliderField">
-                    <p id="rangeValue">1</p>  
-                    
-                    <button >Send Data</button> 
-                    <div id="output"></div> 
 
-               </form>
-            </div>
- 
-            <div style="display:none;" class="form_box" id = "myDiv2"> 
-                <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>       
-                <form action="#">                         
+                <input type="text" id="txtbox" name="txtbox" oninput="updateTextArea()" placeholder="input Something" align="center" />
+
+                <input type="hidden" min="1" max="5" value="1" oninput="rangeValue.innerText = this.value" name="Star" id="sliderField">
+                <p id="rangeValue">1</p>
+
+                <button>Send Data</button>
+                <div id="output"></div>
+
+            </form>
+        </div>
+
+        <div style="display:none;" class="form_box" id="myDiv2">
+            <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
+            <form action="#">
                 <canvas id="myChart" width="200" height="200"></canvas>
-               </form>
-            </div>
+            </form>
+        </div>
 
-            <div style="display:none;" class="form_box" id = "myDiv3"> 
+        <div style="display:none;" class="form_box" id="myDiv3">
 
-                <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>       
-                <form action="#">    
-                    <table bgcolor="black" width="350">
-                        <tr bgcolor="grey">
-                            <th width="40">1星</th>
-                            <th width="40">2星</th>
-                            <th width="40">3星</th>
-                            <th width="40">4星</th>
-                            <th width="40">5星</th>
-                        </tr>
-                        <tr bgcolor="lightgrey" align="center">
-                            <td id="Value_f1">2</td>
-                            <td id="Value_f2">2</td>
-                            <td id="Value_f3">1</td>
-                            <td id="Value_f4">1</td>
-                            <td id="Value_f5">1</td>
-                        </tr>
-                    </table>                       
-                <canvas id="myChart2" width="200" height="200"></canvas>
-                    
-               </form>
-            </div>
-
-            <div style="display:none;" class="form_box" id = "myDiv4"> 
-
-                <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>       
-                <form action="#">   
-                    <table bgcolor="black" width="350">
-                        <tr bgcolor="grey">
-                            <th width="40">1星</th>
-                            <th width="40">2星</th>
-                            <th width="40">3星</th>
-                            <th width="40">4星</th>
-                            <th width="40">5星</th>
-                            
-                        </tr>
-                        <tr bgcolor="lightgrey" align="center">
-                            <td id="Value_e1">10</td>
-                            <td id="Value_e2">1</td>
-                            <td id="Value_e3">2</td>
-                            <td id="Value_e4">2</td>
-                            <td id="Value_e5">1</td>
-                        </tr>
-                    </table>                         
-                <canvas id="myChart3" width="200" height="200"></canvas>
-                    
-               </form>
-            </div>
-        </div> 
-
-        <div style="display:none;" class="form_box" id = "myDiv5"> 
-
-            <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>       
-            <form action="#"> 
+            <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
+            <form action="#">
                 <table bgcolor="black" width="350">
                     <tr bgcolor="grey">
                         <th width="40">1星</th>
@@ -365,175 +306,228 @@
                         <th width="40">3星</th>
                         <th width="40">4星</th>
                         <th width="40">5星</th>
-                        
                     </tr>
                     <tr bgcolor="lightgrey" align="center">
-                        <td id="Value_p1">13</td>
-                        <td id="Value_p2">6</td>
-                        <td id="Value_p3">3</td>
-                        <td id="Value_p4">2</td>
-                        <td id="Value_p5">2</td>
+                        <td id="Value_f1">2</td>
+                        <td id="Value_f2">2</td>
+                        <td id="Value_f3">1</td>
+                        <td id="Value_f4">1</td>
+                        <td id="Value_f5">1</td>
                     </tr>
-                </table>                    
-            <canvas id="myChart4" width="200" height="200"></canvas>
-                
-           </form>
+                </table>
+                <canvas id="myChart2" width="200" height="200"></canvas>
+
+            </form>
         </div>
 
-        <div style="display:none;" class="form_box" id = "myDiv13">      
-                
-            <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button> 
-            <form action="get_Url" method="POST" >     
-                <h1>輸入網址</h1>
-                
-                <textarea rows="10" cols="30" id = "myText" id="txtbox" name="txtbox" oninput="updateTextArea()" placeholder="input Something" align="center">
+        <div style="display:none;" class="form_box" id="myDiv4">
+
+            <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
+            <form action="#">
+                <table bgcolor="black" width="350">
+                    <tr bgcolor="grey">
+                        <th width="40">1星</th>
+                        <th width="40">2星</th>
+                        <th width="40">3星</th>
+                        <th width="40">4星</th>
+                        <th width="40">5星</th>
+
+                    </tr>
+                    <tr bgcolor="lightgrey" align="center">
+                        <td id="Value_e1">10</td>
+                        <td id="Value_e2">1</td>
+                        <td id="Value_e3">2</td>
+                        <td id="Value_e4">2</td>
+                        <td id="Value_e5">1</td>
+                    </tr>
+                </table>
+                <canvas id="myChart3" width="200" height="200"></canvas>
+
+            </form>
+        </div>
+    </div>
+
+    <div style="display:none;" class="form_box" id="myDiv5">
+
+        <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
+        <form action="#">
+            <table bgcolor="black" width="350">
+                <tr bgcolor="grey">
+                    <th width="40">1星</th>
+                    <th width="40">2星</th>
+                    <th width="40">3星</th>
+                    <th width="40">4星</th>
+                    <th width="40">5星</th>
+
+                </tr>
+                <tr bgcolor="lightgrey" align="center">
+                    <td id="Value_p1">13</td>
+                    <td id="Value_p2">6</td>
+                    <td id="Value_p3">3</td>
+                    <td id="Value_p4">2</td>
+                    <td id="Value_p5">2</td>
+                </tr>
+            </table>
+            <canvas id="myChart4" width="200" height="200"></canvas>
+
+        </form>
+    </div>
+
+    <div style="display:none;" class="form_box" id="myDiv13">
+
+        <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
+        <form action="get_Url" method="POST">
+            <h1>輸入網址</h1>
+
+            <textarea rows="10" cols="30" id="myText" id="txtbox" name="txtbox" oninput="updateTextArea()" placeholder="input Something" align="center">
                      
                 </textarea>
-            
-                <div class="Send-field">
-                    <button onclick="sendData()" align="center" >Send Data</button> 
-                    <div id="output"></div> 
-                </div>
-           </form>
-        </div>
 
-        <div style="display:none;" class="form_box" id = "myDiv6"> 
+            <div class="Send-field">
+                <button onclick="sendData()" align="center">Send Data</button>
+                <div id="output"></div>
+            </div>
+        </form>
+    </div>
 
-            <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>       
-            <form action="#">       
-                <table bgcolor="black" width="350">
-                    <tr bgcolor="grey">
-                        <th width="40">1星</th>
-                        <th width="40">2星</th>
-                        <th width="40">3星</th>
-                        <th width="40">4星</th>
-                        <th width="40">5星</th>
-                        
-                    </tr>
-                    <tr bgcolor="lightgrey" align="center">
-                        <td id="Value_S1">10</td>
-                        <td id="Value_S2">8</td>
-                        <td id="Value_S3">1</td>
-                        <td id="Value_S4">1</td>
-                        <td id="Value_S5">2</td>
-                    </tr>
-                </table>                     
+    <div style="display:none;" class="form_box" id="myDiv6">
+
+        <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
+        <form action="#">
+            <table bgcolor="black" width="350">
+                <tr bgcolor="grey">
+                    <th width="40">1星</th>
+                    <th width="40">2星</th>
+                    <th width="40">3星</th>
+                    <th width="40">4星</th>
+                    <th width="40">5星</th>
+
+                </tr>
+                <tr bgcolor="lightgrey" align="center">
+                    <td id="Value_S1">10</td>
+                    <td id="Value_S2">8</td>
+                    <td id="Value_S3">1</td>
+                    <td id="Value_S4">1</td>
+                    <td id="Value_S5">2</td>
+                </tr>
+            </table>
             <canvas id="myChart5" width="200" height="200"></canvas>
-                
-           </form>
-        </div>
 
-        <div style="display:none;" class="form_box" id = "myDiv7"> 
-            <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>  
-            <img src= "Service.png" width="400" heigh="600" alt="一張圖片" >     
-            <form action="#">     
-            <h1>X軸: 天 Y軸: 筆數</h1>        
-           </form>
-        </div>
+        </form>
+    </div>
 
-        <div style="display:none;" class="form_box" id = "myDiv9"> 
+    <div style="display:none;" class="form_box" id="myDiv7">
+        <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
+        <img src="Service.png" width="400" heigh="600" alt="一張圖片">
+        <h1>服務評論分析</h1>
+        <form action="#">
+            <h1>Y軸: 標籤在該月的數量 X軸: 該月份的評論數量</h1>
+        </form>
+    </div>
 
-            <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button> 
-            <img src= "Price.png"  width="400" heigh="600" alt="一張圖片">
-            <form action="#">   
-            <h1>X軸: 天 Y軸: 筆數</h1>                           
-           </form> 
-        </div>
+    <div style="display:none;" class="form_box" id="myDiv9">
 
-        <div style="display:none;" class="form_box" id = "myDiv10"> 
+        <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
+        <img src="Price.png" width="400" heigh="600" alt="一張圖片">
+        <h1>價格評論分析</h1>
+        <form action="#">
+            <h1>>Y軸: 標籤在該月的數量 X軸: 該月份的評論數量</h1>
+        </form>
+    </div>
 
-            <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button> 
-            <img src= "Conment.png" width="400" heigh="600" alt="一張圖片">      
-            <form action="#">   
-            <h1>X軸: 天 Y軸: 筆數</h1>                           
-           </form>
-        </div>
+    <div style="display:none;" class="form_box" id="myDiv10">
 
-        <div style="display:none;" class="form_box" id = "myDiv11"> 
+        <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
+        <img src="Conment.png" width="400" heigh="600" alt="一張圖片">
+        <h1>環境評論分析</h1>
+        <form action="#">
+            <h1>>Y軸: 標籤在該月的數量 X軸: 該月份的評論數量</h1>
+        </form>
+    </div>
 
-            <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button> 
-            <img src= "Food.png" width="400" heigh="600" alt="一張圖片">      
-            <form action="#">         
-            <h1>X軸: 天 Y軸: 筆數</h1>                     
-           </form>
-        </div>
+    <div style="display:none;" class="form_box" id="myDiv11">
 
-    </div> 
-      
-        <script>
+        <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
+        <h1>餐點評論分析</h1>
+        <img src="Food.png" width="400" heigh="600" alt="一張圖片">
+        <form action="#">
+            <h1>>Y軸: 標籤在該月的數量 X軸: 該月份的評論數量</h1>
+        </form>
+    </div>
 
-            
+    </div>
 
-            $(function () {
-                var _link = $('<link href="test1.css" type="text/css" rel="stylesheet" />');
-                
-                _link.attr("title", "global");
-                
-                _link.appendTo("head");
-            });
+    <script>
+        $(function() {
+            var _link = $('<link href="test1.css" type="text/css" rel="stylesheet" />');
 
-            
+            _link.attr("title", "global");
 
-
-            const ctx = document.getElementById('myChart')
-            const ctx2 = document.getElementById('myChart2')
-            const ctx3 = document.getElementById('myChart3')
-            const ctx4 = document.getElementById('myChart4')
-            const ctx5 = document.getElementById('myChart5')
-     
-            const ctx6 = document.getElementById('chartJSContainer');
-            const ctx7 = document.getElementById('chartJSContainer2');
-            const ctx8 = document.getElementById('chartJSContainer3');
-            const ctx9 = document.getElementById('chartJSContainer4');
-
-            let SignupBtn = document.getElementById("signupBtn")
-            let Show = document.getElementById("Show")
-
-            let NameField = document.getElementById("nameField")
-            let NameField2 = document.getElementById("nameField2")
-            let NameField3 = document.getElementById("nameField3")
-            let Title = document.getElementById("title")
-            let str1 = '{{ str1 }}'; 
-            let str2 = '{{ str2 }}'; 
-            let str3 = '{{ str3 }}'; 
-            let str4 = '{{ str4 }}'; 
-
-            var t=document.getElementById('txtbox').value;
+            _link.appendTo("head");
+        });
 
 
-    
-            SignupBtn.onclick = function(){
-                Show.style.display = "block"
-                NameField2.type = "text";
-                NameField.type = "hidden";
-                NameField3.type = "text";
-            }  
 
 
-            
+        const ctx = document.getElementById('myChart')
+        const ctx2 = document.getElementById('myChart2')
+        const ctx3 = document.getElementById('myChart3')
+        const ctx4 = document.getElementById('myChart4')
+        const ctx5 = document.getElementById('myChart5')
+
+        const ctx6 = document.getElementById('chartJSContainer');
+        const ctx7 = document.getElementById('chartJSContainer2');
+        const ctx8 = document.getElementById('chartJSContainer3');
+        const ctx9 = document.getElementById('chartJSContainer4');
+
+        let SignupBtn = document.getElementById("signupBtn")
+        let Show = document.getElementById("Show")
+
+        let NameField = document.getElementById("nameField")
+        let NameField2 = document.getElementById("nameField2")
+        let NameField3 = document.getElementById("nameField3")
+        let Title = document.getElementById("title")
+        let str1 = '{{ str1 }}';
+        let str2 = '{{ str2 }}';
+        let str3 = '{{ str3 }}';
+        let str4 = '{{ str4 }}';
+
+        var t = document.getElementById('txtbox').value;
+
+
+
+        SignupBtn.onclick = function() {
+            Show.style.display = "block"
+            NameField2.type = "text";
+            NameField.type = "hidden";
+            NameField3.type = "text";
+        }
+
+
+
         function toggleDiv() {
             let value1 = document.getElementById("select1").value;
             let div4 = document.getElementById("myDiv4");
             let div5 = document.getElementById("myDiv5");
             let div6 = document.getElementById("myDiv6");
             let div3 = document.getElementById("myDiv3");
-            
-        
+
+
             if (value1 === "myDiv6") {
                 div6.style.display = "block";
-            }     
+            }
 
             if (value1 === "myDiv5") {
                 div5.style.display = "block";
-            }  
+            }
 
             if (value1 === "myDiv4") {
                 div4.style.display = "block";
-            }  
+            }
 
             if (value1 === "myDiv3") {
                 div3.style.display = "block";
-            }  
+            }
         }
 
         function toggleDiv1() {
@@ -544,20 +538,20 @@
             let div11 = document.getElementById("myDiv11");
             if (value1 === "myDiv7") {
                 div7.style.display = "block";
-            }     
+            }
             if (value1 === "myDiv9") {
                 div9.style.display = "block";
-            } 
+            }
             if (value1 === "myDiv10") {
                 div10.style.display = "block";
-            } 
+            }
             if (value1 === "myDiv11") {
                 div11.style.display = "block";
-            } 
+            }
         }
 
 
-        $(function () {
+        $(function() {
             if (!!window.performance && window.performance.navigation.type === 0) {
                 console.log('Navigate');
                 //window.location.reload();
@@ -570,246 +564,241 @@
                 console.log('backforward');
                 //window.location.reload();
             }
-            
+
         })
-            
-            function ShowDiv() 
-            {
-                document.getElementById("myDiv").style.display = "";
-            }
 
-            function ShowDiv2() 
-            {
-                document.getElementById("myDiv2").style.display = "";
-            }
+        function ShowDiv() {
+            document.getElementById("myDiv").style.display = "";
+        }
 
-            function ShowDiv8() 
-            {
-                document.getElementById("myDiv8").style.display = "";
-            }
+        function ShowDiv2() {
+            document.getElementById("myDiv2").style.display = "";
+        }
 
-            function ShowDiv13() 
-            {
-                document.getElementById("myDiv13").style.display = "";
-            }
+        function ShowDiv8() {
+            document.getElementById("myDiv8").style.display = "";
+        }
 
-            function updateTextArea() 
-            { 
-            var inputField = document.getElementById("txtbox"); 
-            var textArea = document.getElementById("myText"); 
-            textArea.value = inputField.value; 
-            } 
+        function ShowDiv13() {
+            document.getElementById("myDiv13").style.display = "";
+        }
+
+        function updateTextArea() {
+            var inputField = document.getElementById("txtbox");
+            var textArea = document.getElementById("myText");
+            textArea.value = inputField.value;
+        }
 
 
-            var myChart = new Chart(ctx, {
+        var myChart = new Chart(ctx, {
             type: 'pie', //圖表類型
             data: {
                 //標題
-                labels: ["價格:"+str1+"筆", "餐點:"+str2+"筆", "服務:"+str3+"筆", "環境:"+str4+"筆"],
+                labels: ["價格:" + str1 + "筆", "餐點:" + str2 + "筆", "服務:" + str3 + "筆", "環境:" + str4 + "筆"],
                 datasets: [{
-                label: '# test', //標籤
-                data: [parseInt(str1), parseInt(str2), parseInt(str3), parseInt(str4),], //資料
-                //圖表背景色
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)'
+                    label: '# test', //標籤
+                    data: [parseInt(str1), parseInt(str2), parseInt(str3), parseInt(str4), ], //資料
+                    //圖表背景色
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)'
 
-                ],
-                //圖表外框線色
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)'
-                ],
-                //外框線寬度
-                borderWidth: 1
+                    ],
+                    //圖表外框線色
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)'
+                    ],
+                    //外框線寬度
+                    borderWidth: 1
                 }]
             }
-            });
+        });
 
-            var myChart = new Chart(ctx2 , {
+        var myChart = new Chart(ctx2, {
             type: 'pie', //圖表類型
             data: {
                 //標題
                 labels: ['餐點', '其他'],
                 datasets: [{
-                label: '# test', //標籤
-                data: [parseInt(str2),parseInt(str1)+parseInt(str4)+parseInt(str3)], //資料
-                //圖表背景色
-                backgroundColor: [
-                   'rgba(255, 99, 132, 0.2)',
-                   'rgba(54, 162, 235, 0.2)'
+                    label: '# test', //標籤
+                    data: [parseInt(str2), parseInt(str1) + parseInt(str4) + parseInt(str3)], //資料
+                    //圖表背景色
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)'
 
 
-                ],
-                //圖表外框線色
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)'
-                ],
-                //外框線寬度
-                borderWidth: 1
+                    ],
+                    //圖表外框線色
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)'
+                    ],
+                    //外框線寬度
+                    borderWidth: 1
                 }]
             }
 
-            });
+        });
 
-            var myChart = new Chart(ctx3 , {
+        var myChart = new Chart(ctx3, {
             type: 'pie', //圖表類型
             data: {
                 //標題
                 labels: ['環境', '其他'],
                 datasets: [{
-                label: '# test', //標籤
-                data: [parseInt(str4),parseInt(str1)+parseInt(str2)+parseInt(str3)], //資料
-                //圖表背景色
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)'
+                    label: '# test', //標籤
+                    data: [parseInt(str4), parseInt(str1) + parseInt(str2) + parseInt(str3)], //資料
+                    //圖表背景色
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)'
 
-                ],
-                //圖表外框線色
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)'
-                ],
-                //外框線寬度
-                borderWidth: 1
+                    ],
+                    //圖表外框線色
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)'
+                    ],
+                    //外框線寬度
+                    borderWidth: 1
                 }]
             }
-            });
+        });
 
 
-            var myChart = new Chart(ctx4 , {
+        var myChart = new Chart(ctx4, {
             type: 'pie', //圖表類型
             data: {
                 //標題
                 labels: ['價格', '其他'],
                 datasets: [{
-                label: '# test', //標籤
-                data: [parseInt(str1),parseInt(str4)+parseInt(str2)+parseInt(str3)], //資料
-                //圖表背景色
-                backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)'
-                ],
-                //圖表外框線色
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)'
-                ],
-                //外框線寬度
-                borderWidth: 1
+                    label: '# test', //標籤
+                    data: [parseInt(str1), parseInt(str4) + parseInt(str2) + parseInt(str3)], //資料
+                    //圖表背景色
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)'
+                    ],
+                    //圖表外框線色
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)'
+                    ],
+                    //外框線寬度
+                    borderWidth: 1
                 }]
             }
 
-            });
+        });
 
-            var myChart = new Chart(ctx5 , {
+        var myChart = new Chart(ctx5, {
             type: 'pie', //圖表類型
             data: {
                 //標題
                 labels: ['服務', '其他'],
                 datasets: [{
-                label: '# test', //標籤
-                data: [parseInt(str3), parseInt(str1)+parseInt(str2)+parseInt(str4) ], //資料
-                //圖表背景色
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)'
-                ],
-                //圖表外框線色
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)'
-                ],
-                //外框線寬度
-                borderWidth: 1
+                    label: '# test', //標籤
+                    data: [parseInt(str3), parseInt(str1) + parseInt(str2) + parseInt(str4)], //資料
+                    //圖表背景色
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)'
+                    ],
+                    //圖表外框線色
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)'
+                    ],
+                    //外框線寬度
+                    borderWidth: 1
                 }]
             }
 
-            });
+        });
 
-            const labels = ['第一天', '第二天', '第三天','第四天', '第五天', '第六天', '第七天'];
-            const yValues1 = [7, 8, 8,  9,  9,  9, 10];
+        const labels = ['第一天', '第二天', '第三天', '第四天', '第五天', '第六天', '第七天'];
+        const yValues1 = [7, 8, 8, 9, 9, 9, 10];
 
-            const yValues2 = [8, 9, 9, 10, 10, 10,  1];
+        const yValues2 = [8, 9, 9, 10, 10, 10, 1];
 
-            const yValues3 = [6, 9, 10, 9, 9, 9, 10, 1];
+        const yValues3 = [6, 9, 10, 9, 9, 9, 10, 1];
 
-            const yValues4 = [8, 9, 6, 7, 10, 9, 10, 2];
+        const yValues4 = [8, 9, 6, 7, 10, 9, 10, 2];
 
-            const options = {
-                labels: labels,
-                datasets: [{
-                    label: '服務',
-                    data: yValues1,
-                    borderColor: 'pink'
-                }]
-            
-            }
+        const options = {
+            labels: labels,
+            datasets: [{
+                label: '服務',
+                data: yValues1,
+                borderColor: 'pink'
+            }]
 
-            const config = {
+        }
+
+        const config = {
             type: 'line', // 设置图表类型
             data: options,
-            };
+        };
 
-            new Chart(ctx6, config);      
-            
-            const options1 = {
-                labels: labels,
-                datasets: [{
-                    label: '價格',
-                    data: yValues2,
-                    borderColor: 'Blue'
-                }]
-            
-            }
+        new Chart(ctx6, config);
 
-            const config1 = {
+        const options1 = {
+            labels: labels,
+            datasets: [{
+                label: '價格',
+                data: yValues2,
+                borderColor: 'Blue'
+            }]
+
+        }
+
+        const config1 = {
             type: 'line', // 设置图表类型
             data: options1,
-            };
+        };
 
-            new Chart(ctx7, config1);
+        new Chart(ctx7, config1);
 
-            const options2 = {
-                labels: labels,
-                datasets: [{
-                    label: '環境',
-                    data: yValues3,
-                    borderColor: 'orange'
-                }]
-            
-            }
+        const options2 = {
+            labels: labels,
+            datasets: [{
+                label: '環境',
+                data: yValues3,
+                borderColor: 'orange'
+            }]
 
-            const config2 = {
+        }
+
+        const config2 = {
             type: 'line', // 设置图表类型
             data: options2,
-            };
+        };
 
-            new Chart(ctx8, config2);           
+        new Chart(ctx8, config2);
 
-            const options3 = {
-                labels: labels,
-                datasets: [{
-                    label: '價格',
-                    data: yValues4,
-                    borderColor: 'Black'
-                }]
-            
-            }
+        const options3 = {
+            labels: labels,
+            datasets: [{
+                label: '價格',
+                data: yValues4,
+                borderColor: 'Black'
+            }]
 
-            const config3 = {
+        }
+
+        const config3 = {
             type: 'line', // 设置图表类型
             data: options3,
-            };
+        };
 
-            new Chart(ctx9, config3);   
+        new Chart(ctx9, config3);
+    </script>
+</body>
 
-        </script>       
-    </body>
 </html>
