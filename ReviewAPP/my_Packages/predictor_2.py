@@ -38,6 +38,7 @@ def review_analyze(TEXT: list = [], file_path: str = None):
 
     TIME = []
     if file_path is not None:
+        print(file_path)
         TEXT = []
         # Read reviews from json
         if file_path.split('.')[-1] == 'json':

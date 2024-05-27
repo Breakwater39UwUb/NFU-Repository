@@ -428,8 +428,9 @@ def get_reviews(url: str = None,
         file = write_to_xlsx(data, webTitle, save_path, format)
         print(f'Your restaurant review file is saved to {file}')
         return file
-    # except:
-        # print('Failed to scrape web')
+    except:
+        print('Failed to scrape web')
+        raise
     finally:
         driver.close()
         driver.quit()
