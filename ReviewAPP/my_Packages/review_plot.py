@@ -89,7 +89,7 @@ def plot_by_label(data: list,
     # ax.plot(times, counts)
     # ax.xaxis.set_major_locator(mdates.MonthLocator())
     # ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y/%m'))
-
+    
     global labels
     print(f'debug-----------------------------------------------------------\n{times}\n{counts}')
     plt.bar(times, counts, 10, color='red', label='Total')

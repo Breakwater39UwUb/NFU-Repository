@@ -222,21 +222,21 @@
             <a href="#" class="nav_logo" style="list-style-type:none;background-color:white">首頁 </a>
             <ul class="nav_items" style="list-style-type:none;background-color:white">
                 <h1 id="title" style="list-style-type:none;background-color:gray">評論系統</h1>
-                <button type="button" class="Open" onclick="ShowDiv2() ">評論標籤比例原餅圖</button>
+                <button type="button" class="Open" onclick="ShowDiv2() ">評論標籤比例園餅圖</button>
                 <select id="select1" onchange="toggleDiv()">
-                    <option >各項評論分析</option>
-                    <option value="myDiv6">服務評論分析</option>
-                    <option value="myDiv5">價格評論分析</option>
-                    <option value="myDiv4">環境評論分析</option>
-                    <option value="myDiv3">餐點評論分析</option>
+                    <option >各項標籤比例園餅圖</option>
+                    <option value="myDiv6">服務標籤比例園餅圖</option>
+                    <option value="myDiv5">價格標籤比例園餅圖</option>
+                    <option value="myDiv4">環境標籤比例園餅圖</option>
+                    <option value="myDiv3">餐點標籤比例園餅圖</option>
                 </select>
 
                 <select id="select2" onchange="toggleDiv1()">
-                    <option >評論增量分析</option>
-                    <option value="myDiv7">服務評論分析</option>
-                    <option value="myDiv9">價格評論分析</option>
-                    <option value="myDiv10">環境評論分析</option>
-                    <option value="myDiv11">餐點評論分析</option>
+                    <option >評論標籤趨勢圖</option>
+                    <option value="myDiv7">服務標籤趨勢圖</option>
+                    <option value="myDiv9">價格標籤趨勢圖</option>
+                    <option value="myDiv10">環境標籤趨勢圖</option>
+                    <option value="myDiv11">餐點標籤趨勢圖</option>
                 </select>
 
                 <button type="button" class="Open" onclick="ShowDiv8()">正負向判斷</button>
@@ -289,11 +289,7 @@
                 <img src="image/background1.jpg" width="200" height="200">
                 <h3>虎尾餐廳</h3>
 
-                <textarea rows="10" cols="30" id="myText2">
-
-                    </textarea>
-
-                <input type="text" id="txtbox" name="txtbox" oninput="updateTextArea()" placeholder="input Something" align="center" required/>
+                <textarea rows="10" cols="30" id="myText2" name="txtbox" required></textarea>
 
                 <div class="slidecontainer">
                     <input type="range" min="1" max="5" value="1" class="slider" id="myRange">
@@ -301,7 +297,7 @@
 
                 <h4 id="value"> 1 </h4>
 
-                <button onclick="sendData()">Send Data</button>
+                <button onclick="sendData()" style="height:25px;width:120px">Send Data</button>
                 <div id="output"></div>
             </form>
             <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
@@ -316,10 +312,10 @@
 
                 <textarea rows="10" cols="30" id="txtbox" name="myTextarea" placeholder="input Something" align="center" required></textarea>
                 <div class="Send-field">
-                    <button type="submit" onclick="sendData()" align="center">Send Data</button>
+                    <button type="submit" onclick="sendData()" align="center" style="height:25px;width:120px">Send Data</button>
                     <div id="output"></div>
                 </div>
-                <h3>輸入結束時間</h3>
+                <h3>輸入開始時間</h3>
                 <input type="month" id="time_start" name="time_start" required>
                 <h3>輸入結束時間</h3>
                 <input type="month" id="time_end" name="time_end" required>
