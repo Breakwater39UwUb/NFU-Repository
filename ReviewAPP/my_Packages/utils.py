@@ -8,14 +8,26 @@ def check_loacal_cache(query: str, query_dir: str = 'SaveData', file_type: str =
     query: target file
     query_dir: target directory
     file_type: target file extension
+
+    File name convention:
+
+    ```text
+    {title}_{type}_{time range}.json
+    title: restaurant name
+    type: 'all', 'filtered'
+        all time or filtered time range
+    time_range: '2024', '2023-03~2024-04'
+        depending on type, 
+    ```
     '''
+
     search = os.path.join(query_dir,'*')+'.'+file_type
     files = glob.glob(search)
     for file in files:
         if query in file:
-            return True
+            return query
 
-    return False
+    return None
 
 def convert_to_tablename(filepath: str):
     '''Convert file path to tablename
