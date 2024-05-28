@@ -1,6 +1,20 @@
 import glob, os, re, calendar
 from datetime import datetime, timedelta
 
+invalid_chars = '<>:"/\|?*｜\n. '
+invalid_char_pattern = '|'.join(map(re.escape, invalid_chars))
+webname_filter = re.compile(invalid_char_pattern)
+'''re object with pattern: '<>:"/\|?*｜\\n .\''''
+
+change_comma = ','
+comma_filter = re.compile(change_comma)
+'''re object with pattern: ',\''''
+
+time_filter_zh = ['天前', '週前', '個月前', '年前']
+''''天前', '週前', '個月前', '年前\''''
+time_filter_en = ['days', 'week', 'month', 'year']
+''''days', 'week', 'month', 'year\''''
+
 # TODO: Add check_sql_cache
 def check_loacal_cache(query: str, query_dir: str = 'SaveData', file_type: str = '.json'):
     '''Check if the given file is in local directory or database
@@ -25,7 +39,7 @@ def check_loacal_cache(query: str, query_dir: str = 'SaveData', file_type: str =
     files = glob.glob(search)
     for file in files:
         if query in file:
-            return query
+            return file
 
     return None
 
@@ -109,3 +123,41 @@ def check_month_range(time: datetime, time_range: str='all'):
     if time >= start_date and time <= end_date:
         return True
     return False
+
+def valid_time_interval(time_interval:list[str], to_check:str):
+    pos = 0
+    time = ''
+    valid_num = int(time_interval[0])
+    valid_time_ago = time_interval[1]
+    valid_interval = time_interval[2]
+
+    # Find date in review text
+    review_rel_time = to_check.split()
+
+    if review_rel_time[1] not in time_interval[1]:
+        return False
+
+    # review: "time" ago != "valide time" ago
+    if review_rel_time[1] != valid_time_ago:
+        return False
+    if valid_interval == 'after':
+        if int(review_rel_time[0]) > valid_num:
+            return False
+    if valid_interval == 'before':
+        if int(review_rel_time[0]) < valid_num:
+            return False
+    return True
+
+def get_review_abs_time(time_ago: str):
+    review_rel_time = time_ago.split()
+    time_now = datetime.now()
+    if review_rel_time[1] == time_filter_zh[0]:
+        new_time = time_now - timedelta(days=int(review_rel_time[0]))
+    if review_rel_time[1] == time_filter_zh[1]:
+        new_time = time_now - timedelta(weeks=int(review_rel_time[0]))
+    if review_rel_time[1] == time_filter_zh[2]:
+        new_time = time_now - timedelta(days=int(review_rel_time[0])*30)
+    if review_rel_time[1] == time_filter_zh[3]:
+        new_time = time_now - timedelta(days=int(review_rel_time[0])*365)
+        return new_time.strftime('%Y/')
+    return new_time.strftime('%Y/%m')

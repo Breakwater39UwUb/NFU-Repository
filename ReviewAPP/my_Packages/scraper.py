@@ -1,5 +1,5 @@
 # https://github.com/MajideND/scraping-reviews-from-googlemaps/blob/main/app.py
-import os, re, math, time
+import os, math, time
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
@@ -8,22 +8,11 @@ from selenium.webdriver.common.by import By
 import selenium.common.exceptions
 from fake_useragent import UserAgent
 import pandas as pd
-from my_Packages.utils import check_loacal_cache
-from datetime import datetime, timedelta
+from my_Packages.utils import check_loacal_cache, get_review_abs_time, valid_time_interval
+from my_Packages.utils import webname_filter, comma_filter, time_filter_zh, time_filter_en
 
 rating_level_G = [0, 0, 0, 0, 0] # from star 1 to 5, google
 rating_level_F = [0, 0, 0, 0, 0] # from star 1 to 5, foodpanda
-time_filter_zh = ['天前', '週前', '個月前', '年前']
-''''天前', '週前', '個月前', '年前'''
-time_filter_en = ['days', 'week', 'month', 'year']
-
-
-invalid_chars = '<>:"/\|?*｜\n. '
-invalid_char_pattern = '|'.join(map(re.escape, invalid_chars))
-webname_filter = re.compile(invalid_char_pattern)
-
-change_comma = ','
-comma_filter = re.compile(change_comma)
 
 def get_data(web, t_range):
     global driver, comma_filter
@@ -103,44 +92,6 @@ def get_foodpanda(web):
         lst_data.append([text, rating])
 
     return lst_data
-
-def valid_time_interval(time_interval:list[str], to_check:str):
-    pos = 0
-    time = ''
-    valid_num = int(time_interval[0])
-    valid_time_ago = time_interval[1]
-    valid_interval = time_interval[2]
-
-    # Find date in review text
-    review_rel_time = to_check.split()
-
-    if review_rel_time[1] not in time_interval[1]:
-        return False
-
-    # review: "time" ago != "valide time" ago
-    if review_rel_time[1] != valid_time_ago:
-        return False
-    if valid_interval == 'after':
-        if int(review_rel_time[0]) > valid_num:
-            return False
-    if valid_interval == 'before':
-        if int(review_rel_time[0]) < valid_num:
-            return False
-    return True
-
-def get_review_abs_time(time_ago: str):
-    review_rel_time = time_ago.split()
-    time_now = datetime.now()
-    if review_rel_time[1] == time_filter_zh[0]:
-        new_time = time_now - timedelta(days=int(review_rel_time[0]))
-    if review_rel_time[1] == time_filter_zh[1]:
-        new_time = time_now - timedelta(weeks=int(review_rel_time[0]))
-    if review_rel_time[1] == time_filter_zh[2]:
-        new_time = time_now - timedelta(days=int(review_rel_time[0])*30)
-    if review_rel_time[1] == time_filter_zh[3]:
-        new_time = time_now - timedelta(days=int(review_rel_time[0])*365)
-        return new_time.strftime('%Y/')
-    return new_time.strftime('%Y/%m')
 
 def counter(web):
     print('Jumping to review tab')
@@ -367,7 +318,6 @@ def get_reviews(url: str = None,
         elif time_range[1] not in time_filter_zh:
             raise Exception(f'Argument format must be one of {time_filter_zh}')
 
-    
     # print(f'Find reviews on {url}...')
 
     try:
