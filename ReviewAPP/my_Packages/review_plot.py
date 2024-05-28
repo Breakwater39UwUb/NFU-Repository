@@ -87,8 +87,8 @@ def plot_by_label(data: list,
     times, label_counts = zip(*sorted(label_counts.items()))
     fig, ax = plt.subplots(figsize=(12, 6))
     # ax.plot(times, counts)
-    # ax.xaxis.set_major_locator(mdates.MonthLocator())
-    # ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y/%m'))
+    ax.xaxis.set_major_locator(mdates.MonthLocator())
+    ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y/%m'))
     
     global labels
     print(f'debug-----------------------------------------------------------\n{times}\n{counts}')
