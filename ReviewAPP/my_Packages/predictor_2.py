@@ -1,22 +1,20 @@
-import csv, json
+'''Multi-label classification
+
+'''
 # PyTorch
 import torch
-import torch.nn as nn
-import torch.optim as optim
-from torch.utils.data import DataLoader
-from torch.utils.data.dataset import random_split
-import torch.utils.data as data
+# import torch.nn as nn
+# import torch.optim as optim
+# from torch.utils.data import DataLoader
+# from torch.utils.data.dataset import random_split
+# import torch.utils.data as data
 
 # BERT Related Libraries
 from transformers import BertTokenizer, BertForSequenceClassification
 
 # Python
-import pandas as pd
-import numpy as np
-import os, platform
+import os, csv, json
 from my_Packages.bert_paths import multi_label_model
-D = ''
-device = None
 
 def review_analyze(TEXT: list = [], file_path: str = None):
     '''BERT Predict Multi-labels
@@ -38,7 +36,6 @@ def review_analyze(TEXT: list = [], file_path: str = None):
 
     TIME = []
     if file_path is not None:
-        print(file_path)
         TEXT = []
         # Read reviews from json
         if file_path.split('.')[-1] == 'json':
@@ -65,20 +62,13 @@ def review_analyze(TEXT: list = [], file_path: str = None):
 
     # ML Parameters
     LabelNum = 4
-    global D
-    if (platform.processor() == 'arm'):
-        D = 'mps'
-    else:
-        D = 'cuda'
-
-    global device
-    device = torch.device(D)
-    print("using device",device)
 
     # hard code the label dimension to be 4 (because the data has 4 classes)
     num_labels = LabelNum
 
     # Define model
+    global device
+    set_device_by_platform()
     model = BertForSequenceClassification.from_pretrained('bert-base-chinese', num_labels=LabelNum)
     model.to(device)
 
@@ -138,3 +128,14 @@ def Predict(model, text, tokenizer):
         Prediction.append(int(prediction.tolist()[0][i]))
 
     return Prediction
+
+def set_device_by_platform():
+    global device
+    if torch.backends.mps.is_available():
+        D = 'mps'
+    elif torch.cuda.is_available():
+        D = 'cuda'
+    else:
+        D = 'cpu'
+    device = torch.device(D)
+    print("using device",device)
