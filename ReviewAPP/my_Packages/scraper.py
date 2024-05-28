@@ -324,7 +324,7 @@ def write_to_xlsx(data, filename, dir, format):
 def get_reviews(url: str = None,
                 webname: str = 'Googlemaps',
                 save_path: str = 'SaveData',
-                format: str = None,
+                format: str = 'json',
                 time_range: list[str] = None,
                 check_cache: bool = False):
     '''
@@ -358,11 +358,7 @@ def get_reviews(url: str = None,
     elif type(url) is not str:
         raise Exception('url must be a string')
 
-    if format is None:
-        format = 'csv'
-    elif type(format) is not str:
-        raise Exception('format must be a string')
-    elif format not in ['csv', 'json']:
+    if format not in ['csv', 'json']:
         raise Exception('format must be csv or json')
     
     if  time_range is not None:
@@ -403,17 +399,15 @@ def get_reviews(url: str = None,
             pass
         
         # format the web title for further use
-        # webTitle = driver.title.replace(' ', '').split('|')[0]
         global webname_filter
         webTitle = webname_filter.sub('', driver.title)
-        if check_loacal_cache(query=webTitle, query_dir=save_path, file_type=format) and \
-            check_cache:
-            cached_path = os.path.join(save_path, webTitle) + f'.{format}'
-            try:
-                print(f'Already cached: {cached_path}')
-            except:
-                raise
-            return cached_path
+        if check_cache:
+            cached_path = check_loacal_cache(query=webTitle, query_dir=save_path, file_type=format)
+            # cached_path = os.path.join(save_path, webTitle) + f'.{format}'
+            print(f'Already cached: {cached_path}')
+
+            if cached_path is not None:
+                return cached_path
         
         # count for scrolling
         counts = counter(webname)

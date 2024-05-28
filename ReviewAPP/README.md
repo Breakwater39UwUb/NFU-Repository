@@ -12,6 +12,7 @@
   - [Dataset](#dataset)
   - [Database implementation](#database-implementation)
   - [Issue and work-around](#issue-and-work-around)
+  - [git commands](#git-commands)
 
 ## Brief Introduction
 
@@ -93,7 +94,23 @@ pip install torch==2.2.1 torchvision==0.17.1 torchaudio==2.2.1 --index-url https
 
 ### Development
 
-If you see ```'Error to scrape the webdriver'``` in terminal, just try again
+User send url to API `get_Url`,
+then check if local cache is expired,
+scrape web if expired, else use cached.
+
+Cached file saves review time, text and labels.
+
+File name convention:
+
+```text
+{title}_{type}_{time range}.json
+
+title: restaurant name
+type: 'all', 'filtered'
+  all time or filtered time range
+time_range: '2024', '2023-03~2024-04'
+  depending on type, 
+```
 
 > If you met any error, contact [防波堤](mailto:41043152@gm.nfu.edu.tw)
 
@@ -176,6 +193,46 @@ BERT multi label model
 4. Web scraping take too long to get reviews on website
 
     [This restaurant][restaurant_url1] takes 3 minutes to get 554 reviews, but 925 on the website.
+
+## git commands
+
+1. Marked assume-unchanged.
+
+    This will tell git you want to start ignoring the changes to the file
+
+    ```bash
+    git update-index --assume-unchanged path/to/file
+    ```
+
+    When you want to start keeping track again
+
+    ```bash
+    git update-index --no-assume-unchanged path/to/file
+    ```
+
+1. Show marked assume-unchanged.
+
+    You can use `git ls-files -v`. If the character printed is lower-case, the file is marked assume-unchanged.
+
+    To print just the files that are unchanged use:
+
+    ```bash
+    git ls-files -v | grep '^[[:lower:]]'
+    ```
+
+    To embrace your lazy programmer, turn this into a git alias. Edit your .gitconfig file to add this snippet:
+
+    ```conf
+    [alias]
+        ignored = !git ls-files -v | grep "^[[:lower:]]"
+    ```
+
+    Now typing `git ignored` will give you output like this:
+
+    ```bash
+    h path/to/ignored.file
+    h another/ignored.file
+    ```
 
 [pyside2_for_android]: https://stackoverflow.com/questions/70907303/pyside2-for-android-development "Android Development"
 [trained_model]: https://nfuedu-my.sharepoint.com/personal/41043152_nfu_edu_tw/_layouts/15/onedrive.aspx?id=%2Fpersonal%2F41043152%5Fnfu%5Fedu%5Ftw%2FDocuments%2FSchool%5Fproject%5F113 "Model link"

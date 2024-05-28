@@ -92,22 +92,20 @@ def get_Change():
 def get_Url():
     if request.method == "POST":
         data_url = request.form.get("myTextarea")  
+        if data_url is None :
+            raise ValueError('Please input a url under "Overview tab".')
+        
         form_time_start = request.form.get('time_start') 
         form_time_end = request.form.get('time_end')
         form_time_start, form_time_end = sort_times(form_time_start, form_time_end)
-        # month_range: '2003-05 2004-03
+        # month_range: '2003-05 2004-03'
         month_range = f'{form_time_start} {form_time_end}'
-        print('\n----------------------------------------------------------------')
-        print(form_time_end)
-        print('\n----------------------------------------------------------------')
 
-    if data_url is None :
-        raise ValueError('Please input a url under "Overview tab".')
     
     try:
         # TODO: file format should select by user
         # may remove the check_cache until client web have proper function to handle
-        review_file = get_reviews(url=data_url, webname=platform, format= 'json', check_cache=True)
+        review_file = get_reviews(url=data_url, webname=platform, format='json', check_cache=True)
     except:
         return ('', 500)
     
