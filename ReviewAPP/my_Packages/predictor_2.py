@@ -56,7 +56,7 @@ def review_analyze(TEXT: list = [], file_path: str = None):
             file.close()
 
         # debug output
-        print(TEXT[0])
+        # print(TEXT[0])
 
     Predictions = []
 
@@ -82,7 +82,7 @@ def review_analyze(TEXT: list = [], file_path: str = None):
             TEXT[i] = TEXT[i][0:512]
         labels = Predict(model, TEXT[i], tokenizer)
         Predictions.append((labels, TEXT[i], TIME[i]))
-
+    save_predictions(Predictions, file_path)
     return Predictions
 
 def Predict(model, text, tokenizer):
@@ -139,3 +139,19 @@ def set_device_by_platform():
         D = 'cpu'
     device = torch.device(D)
     print("using device",device)
+
+def save_predictions(data: list, save_path: str):
+    '''Save predictions to json file
+    
+    save_path: /SaveData/SHOPNAME/SHOPNAME.json
+    '''
+
+    save_path = save_path.split(os.path.sep)
+    dir_ = os.path.sep.join(save_path[:-1])
+    file = 'prediction_' + save_path[1] + '.json'
+    save_path = os.path.sep.join([dir_, file])
+
+    SAVES = [{'labels': row[0], 'content': row[1], 'time_range': row[2]} for row in data]
+
+    with open(save_path, 'w', encoding='utf-8') as file:
+        json.dump(SAVES, file, ensure_ascii=False, indent=4)
