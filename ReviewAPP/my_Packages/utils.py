@@ -1,4 +1,4 @@
-import glob, os, re, calendar
+import glob, os, re, calendar, logging
 from datetime import datetime, timedelta
 
 invalid_chars = '<>:"/\|?*｜\n. '
@@ -64,10 +64,20 @@ def gen_diagram_name(date_range: str):
     
     return filename
 
-# TODO: create directory name by restaurant
-def create_dir(name: str, path: str='SaveData'):
-    if not os.path.exists(name):
-        os.makedirs(name)
+def create_dir(name: str, parent_dir: str='SaveData'):
+    '''Create directory for review files and charts
+    
+    name: restaurant name
+    parent_dir: parent directory, default is 'SaveData'
+
+    >>> ex:
+    name = '麥當勞-虎尾新興餐廳-Google地圖'
+    return 'SaveData\\麥當勞-虎尾新興餐廳-Google地圖'
+    '''
+    target_dir = os.path.join(parent_dir, name)
+    if not os.path.exists(target_dir):
+        os.makedirs(target_dir)
+    return target_dir
 
 def sort_times(start_time: str, end_time: str):
     '''Sort time
@@ -166,3 +176,27 @@ def get_review_abs_time(time_ago: str):
         new_time = time_now - timedelta(days=int(review_rel_time[0])*365)
         return new_time.strftime('%Y/')
     return new_time.strftime('%Y/%m')
+
+class Debug_Logger:
+    def __init__(self, logger_name, log_level=logging.DEBUG):
+        self.logger = logging.getLogger(logger_name)
+        self.logger.setLevel(log_level)
+        self._setup_console_handler()
+
+    def _setup_console_handler(self):
+        console_handler = logging.StreamHandler()
+        console_handler.setLevel(logging.DEBUG)
+        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+        console_handler.setFormatter(formatter)
+        self.logger.addHandler(console_handler)
+
+    def log(self, message, level=logging.INFO):
+        '''
+        level:
+            CRITICAL: 50
+            ERROR: 40
+            WARNING: 30
+            INFO: 20
+            DEBUG: 10
+        '''
+        self.logger.log(level, message)
