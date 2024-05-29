@@ -360,6 +360,7 @@ def get_reviews(url: str = None,
         * https://www.google.com/maps/place/%E6%99%A8%E9%96%93%E5%BB%9A%E6%88%BF%E6%97%A9%E5%8D%88%E9%A4%90+%E8%99%8E%E5%B0%BE%E7%A7%91%E5%A4%A7%E5%BA%97/@23.7037418,120.4346679,19.5z/data=!4m6!3m5!1s0x346eb0aaa1358941:0x2401c8b48788a7d4!8m2!3d23.7035352!4d120.4346529!16s%2Fg%2F11c5rp098z?hl=zh-tw&entry=ttu
 
     Returns the path of saved file
+    >>> ex: 'SaveData\虎尾小籠包(虎尾站)-Google地圖\虎尾小籠包(虎尾站)-Google地圖.json'
 
     Saved review format
     ```json
