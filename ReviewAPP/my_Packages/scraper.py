@@ -39,6 +39,10 @@ def get_data(web, t_range):
             # Review content, string
             text = data.find_element(By.XPATH, './/div[@class="MyEned"]').text
             text = comma_filter.sub('，', text)
+            
+            # TODO: Add function to check if current review is duplicated from newest data in database.
+            # if current review is duplicated, break loop.
+
             # get review time element, ex: "6 個月前"
             time_to_check = data.find_element(
                 By.XPATH, './/span[@class="rsqaWe"]').text
@@ -94,8 +98,6 @@ def get_foodpanda(web):
     return lst_data
 
 def counter(web):
-    print('Jumping to review tab')
-    
     global driver
     # driver.implicitly_wait(1)
     result = None
@@ -105,10 +107,19 @@ def counter(web):
         class_name_2 = 'fontBodySmall'
         x = 0
         try:
+            # TODO: Change print statement to logging or delete
+            print('Jumping to review tab')
             reviewBTN = driver.find_element(By.XPATH, review_btn_xpath)
             reviewBTN.click()
             driver.implicitly_wait(2)
             result = driver.find_element(By.CLASS_NAME, class_name_1).find_element(By.CLASS_NAME, class_name_2).text
+
+            # click newest button
+            order_btn = driver.find_element(By.CLASS_NAME, 'g88MCb S9kvJb ')
+            order_btn[2].click()
+            drop_menu = driver.find_element(By.CLASS_NAME, 'fxNQSd')[1]
+            drop_menu.click()
+            time.sleep(1.5)
         except selenium.common.exceptions.StaleElementReferenceException as sere:
             print(sere, sere.args)
         except selenium.common.exceptions.NoSuchElementException as nsee:
@@ -259,6 +270,8 @@ def scrolling(counter, web):
                 raise
 
 def write_to_xlsx(data, filename, dir, format):
+    # TODO: create directory named by title if not exists
+    # save file into this directory
     filepath = os.path.join(dir, filename) + '.' + format
     print(f'write to {filepath}...')
     cols = ['time','rating', 'comment']
@@ -364,6 +377,14 @@ def get_reviews(url: str = None,
 
         # scroll to the bottom of the page
         scrolling(counts, webname)
+
+        # TODO: Add function to get newest data from database
+        # SELECT 
+        #     content
+        # FROM
+        #     reviews.晨間廚房早午餐虎尾科大店
+        # ORDER BY time_range DESC
+        # LIMIT 1;
 
         # get reviews on the web
         data = get_data(webname, time_range)
