@@ -22,16 +22,13 @@ def db_update(time: str,
     No returns
     """
 
-    try:
-        forward_ip, forward_port = get_connection_args(ngrok_file)
-        db = pymysql.connect(host=forward_ip,
-                            port=forward_port,
-                            user="web",    # root
-                            database=db_name,
-                            password="password",   # 239mikuNFU@~@
-                            charset='utf8mb4')
-    except pymysql.err.OperationalError as err:
-        print(f'Error connecting to MySQL database, check your ngrok host and port.\nhost: {forward_ip}\nport: {forward_port}')
+    db = init_db(ngrok_file, db_name)
+
+    if db is None:
+        log = utils.Debug_Logger('init_db')
+        log.log('Failed to connect to MySQL database.', 30)
+        return
+        
     try:
         cursor = db.cursor()
 
@@ -44,7 +41,7 @@ def db_update(time: str,
         db.commit()
     except pymysql.IntegrityError as e:
         if e.args[0] == DUP_ENTRY:
-            print(e)
+            log.log(e)
             pass
     finally:
         db.close()
@@ -65,18 +62,13 @@ def db_upload_file(filename: str,
 
     if file_format not in ['csv', 'json']:
         raise Exception('file_format must be csv or json')
+    
+    db = init_db(ngrok_file, db_name)
+    log = utils.Debug_Logger('init_db')
 
-    try:
-        forward_ip, forward_port = get_connection_args(ngrok_file)
-        global db
-        db = pymysql.connect(host=forward_ip,
-                            port=forward_port,
-                            user="web",    # root
-                            database=db_name,
-                            password="password",   # 239mikuNFU@~@
-                            charset='utf8mb4')
-    except pymysql.err.OperationalError as err:
-        print(f'Error connecting to MySQL database, check your ngrok host and port.\nhost: {forward_ip}\nport: {forward_port}')
+    if db is None:
+        log.log('Failed to connect to MySQL database.', 30)
+        return
 
     cursor = db.cursor()
     cursor.execute("SET NAMES utf8mb4")
@@ -120,7 +112,108 @@ def db_upload_file(filename: str,
                 db.commit()
             except pymysql.IntegrityError as e:
                 if e.args[0] == DUP_ENTRY:
-                    print(e)
+                    log.log(e)
                     pass
         db.close()
-        print(f'{filename} uploaded successfully.')
+        log.log(f'{filename} uploaded successfully.')
+
+def fetch_by_range(time_range: str, table: str):
+    '''Download reviews from given table within given time range
+    
+    time_range: string, ex: '2024/02 2024/05'
+    '''
+
+    db = init_db()
+    if db is None:
+        return
+    cursor = db.cursor()
+    command = f"SELECT * FROM `{table}`\
+            WHERE time_range >= %s AND \
+            time_range <= %s \
+            ORDER BY time_range DESC"
+    cursor.execute(command, time_range)
+    reviews = cursor.fetchall()
+    db.close()
+
+    path = table + '.json'
+    
+    with open(path, 'w', encoding='utf-8') as file:
+        json.dump(reviews, file, ensure_ascii=False, indent=4)
+
+def fetch_all(table: str):
+    '''Download all reviews from given table'''
+
+    db = init_db()
+    if db is None:
+        return
+    cursor = db.cursor()
+    command = f"SELECT * FROM `{table}`"
+    cursor.execute(command)
+    reviews = cursor.fetchall()
+    db.close()
+
+    path = table + '.json'
+    
+    with open(path, 'w', encoding='utf-8') as file:
+        json.dump(reviews, file, ensure_ascii=False, indent=4)
+    print(f'Table saved to: {path}')
+
+def get_top_review(table_name: str):
+    if table_name is None:
+        raise ValueError('Must given table name exist in database.')
+    
+    db = init_db()
+    if db is None:
+        return
+    cursor = db.cursor()
+    cursor.execute(f"SELECT content FROM `{table_name}` ORDER BY time_range DESC LIMIT 1;")
+    newest = cursor.fetchone()
+    db.close()
+    return newest
+
+def check_exist_table(table_name: str):
+    '''Check if the table is exist in database
+    
+    table_name: web title from web scraper
+    '''
+
+    table_name = table_name.split('-Google')[0]
+    db = init_db()
+    if db is None:
+        return
+    cursor = db.cursor()
+    cursor.execute(f"SHOW TABLES LIKE '{table_name}'")
+    result = cursor.fetchone()
+    db.close()
+    if result is None:
+        return False
+    return True
+
+def init_db(ngrok_file: str = './ngrok.txt',
+            db_name: str = 'reviews'):
+    try:
+        forward_ip, forward_port = get_connection_args(ngrok_file)
+    except:
+        forward_ip, forward_port = 'localhost', 3306
+    
+    try:
+        return pymysql.connect(host=forward_ip,
+                            port=forward_port,
+                            user="web",    # root
+                            database=db_name,
+                            password="password",   # 239mikuNFU@~@
+                            charset='utf8mb4')
+    except pymysql.err.OperationalError as err:
+        log = utils.Debug_Logger('init_db')
+        log.log(f'Error connecting to MySQL database, check your ngrok host and port.\nhost: {forward_ip}\nport: {forward_port}', 30)
+    
+    try:
+        log.log(f'Trying localhost:3306')
+        return pymysql.connect(host='localhost',
+                            port=3306,
+                            user="web",    # root
+                            database=db_name,
+                            password="password",   # 239mikuNFU@~@
+                            charset='utf8mb4')
+    except:
+        return None
