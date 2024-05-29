@@ -18,6 +18,8 @@
 
 Web implementates with flask
 
+Scraper is forked and modified from [MajideND][scraper reference]
+
 ~~[pyside2_for_android][]~~
 
 Scraped data from internet are saved in the [SaveDate](./SaveData/)
@@ -238,3 +240,4 @@ BERT multi label model
 [trained_model]: https://nfuedu-my.sharepoint.com/personal/41043152_nfu_edu_tw/_layouts/15/onedrive.aspx?id=%2Fpersonal%2F41043152%5Fnfu%5Fedu%5Ftw%2FDocuments%2FSchool%5Fproject%5F113 "Model link"
 [restaurant_url1]: https://www.google.com/maps/place/%E7%95%B0%E4%BA%BA%E9%A4%A8+%E6%9D%B1%E8%8B%B1%E5%BA%97/@24.14262,120.7056438,20z/data=!4m6!3m5!1s0x34693dc4fc54b2bd:0xb150f911a4f6a718!8m2!3d24.14262!4d120.7062393!16s%2Fg%2F11j5npjg01?entry=ttu "Link for web scraping"
 [ref_sql]: ./guide%20to%20test%20CloudSQL.md#set_ngrok_host "Reference on other Markdown"
+[scraper reference]: https://github.com/MajideND/scraping-reviews-from-googlemaps
