@@ -8,14 +8,23 @@ from selenium.webdriver.common.by import By
 import selenium.common.exceptions
 from fake_useragent import UserAgent
 import pandas as pd
-from my_Packages.utils import check_loacal_cache, get_review_abs_time, valid_time_interval
-from my_Packages.utils import webname_filter, comma_filter, time_filter_zh, time_filter_en
+from my_Packages import utils
+from my_Packages.utils import (
+    check_loacal_cache,
+    get_review_abs_time,
+    valid_time_interval,
+    create_dir
+)
+from my_Packages.db_update import(
+    check_exist_table,
+    get_top_review
+)
 
 rating_level_G = [0, 0, 0, 0, 0] # from star 1 to 5, google
 rating_level_F = [0, 0, 0, 0, 0] # from star 1 to 5, foodpanda
 
 def get_data(web, t_range):
-    global driver, comma_filter
+    global driver
     print('get data...')
     if web == 'Foodpanda':
         return get_foodpanda(web)
@@ -32,16 +41,23 @@ def get_data(web, t_range):
     # xpath = '//*[@id="QA0Szd"]/div/div/div[1]/div[2]/div/div[1]/div/div/div[2]/div[8]/div[1]'
     elements = driver.find_elements(By.XPATH, './/div[@class="jftiEf fontBodyMedium "]')
     lst_data = []
+
+    if check_exist_table(web):
+        newest_review = get_top_review(web)
+    else:
+        newest_review = None
     for data in elements:
         try:
             driver.implicitly_wait(1.5)
             
             # Review content, string
             text = data.find_element(By.XPATH, './/div[@class="MyEned"]').text
-            text = comma_filter.sub('，', text)
+            text = utils.comma_filter.sub('，', text)
             
-            # TODO: Add function to check if current review is duplicated from newest data in database.
+            # Add function to check if current review is duplicated from newest data in database.
             # if current review is duplicated, break loop.
+            if newest_review is not None and text == newest_review:
+                break
 
             # get review time element, ex: "6 個月前"
             time_to_check = data.find_element(
@@ -113,21 +129,44 @@ def counter(web):
             reviewBTN.click()
             driver.implicitly_wait(2)
             result = driver.find_element(By.CLASS_NAME, class_name_1).find_element(By.CLASS_NAME, class_name_2).text
-
+            
             # click newest button
-            order_btn = driver.find_element(By.CLASS_NAME, 'g88MCb S9kvJb ')
-            order_btn[2].click()
-            drop_menu = driver.find_element(By.CLASS_NAME, 'fxNQSd')[1]
-            drop_menu.click()
-            time.sleep(1.5)
+            # driver.execute_script('document.getElementsByClassName("g88MCb S9kvJb ")[2].click();')
+            # time.sleep(0.1)
+            # driver.execute_script('document.getElementsByClassName("fxNQSd")[1].click();')
+            # print('Clicking sort by newest button')
+            # xpath = '//*[@id="QA0Szd"]/div/div/div[1]/div[2]/div/div[1]/div/div/div[2]/div[7]/div[2]/button'
+            # order_btn = driver.find_element(By.XPATH, xpath)
+            # order_btn.click()
+            # time.sleep(0.5)
+            # drop_menu = driver.find_element(By.XPATH, '//*[@id="action-menu"]/div[2]')
+            # drop_menu.click()
+            # time.sleep(2)
+            # order_btn = driver.find_elements(By.XPATH, '//button[@class="g88MCb S9kvJb"]')
+            # order_btn[2].click()
+            # time.sleep(0.5)
+            # drop_menu = driver.find_elements(By.XPATH, '//button[@class="fxNQSd"]')[1]
+            # drop_menu.click()
+            # time.sleep(1.5)
         except selenium.common.exceptions.StaleElementReferenceException as sere:
             print(sere, sere.args)
         except selenium.common.exceptions.NoSuchElementException as nsee:
             print(nsee, nsee.args)
+        except:
+            raise
         else:
-            reviewBTN = driver.find_element(By.XPATH, review_btn_xpath)
-            reviewBTN.click()
-            result = driver.find_element(By.CLASS_NAME, class_name_1).find_element(By.CLASS_NAME, class_name_2).text
+            pass
+            # reviewBTN = driver.find_element(By.XPATH, review_btn_xpath)
+            # reviewBTN.click()
+            # result = driver.find_element(By.CLASS_NAME, class_name_1).find_element(By.CLASS_NAME, class_name_2).text
+
+            # xpath = '//*[@id="QA0Szd"]/div/div/div[1]/div[2]/div/div[1]/div/div/div[2]/div[7]/div[2]/button'
+            # order_btn = driver.find_element(By.XPATH, xpath)
+            # order_btn.click()
+            # time.sleep(0.5)
+            # drop_menu = driver.find_element(By.XPATH, '//*[@id="action-menu"]/div[2]')
+            # drop_menu.click()
+            # time.sleep(2)
         finally:
             if result is None:
                 return 1
@@ -234,45 +273,59 @@ def scrolling(counter, web):
         scrollable_div = driver.find_element(
             By.XPATH, '//div[@class="lXJj5c Hk4XGb "]')
         
-        last_height = driver.execute_script('return document.getElementsByClassName("dS8AEf")[0].scrollHeight;', scrollable_div)
+        # last_height = driver.execute_script('return document.getElementsByClassName("dS8AEf")[0].scrollHeight;', scrollable_div)
         for _i in range(counter+1):
         # while True:
             try:
-                # scrolling = driver.execute_script(
-                #     'document.getElementsByClassName("dS8AEf")[0].scrollTop = document.getElementsByClassName("dS8AEf")[0].scrollHeight',
-                #     scrollable_div
-                # )
-                # driver.implicitly_wait(5)
-                scrolling = driver.execute_script(
+                driver.execute_script(
                     'document.getElementsByClassName("dS8AEf")[0].scrollTop\
                     = document.getElementsByClassName("dS8AEf")[0].scrollHeight',
                     scrollable_div
                 )
-                WebDriverWait(driver, 5).until(
-                    lambda driver: driver.execute_script('return document.getElementsByClassName("dS8AEf")[0].scrollHeight;', scrollable_div) > last_height
-                )
 
-                scroll_height = driver.execute_script('return document.getElementsByClassName("dS8AEf")[0].scrollHeight;', scrollable_div)
-                # print(f'--->now: {scroll_height}    last: {last_height}')
-                
-                # if scroll_height <= last_height:
-                #     break
-                # if scroll_height > last_height:
-                #     last_height = scroll_height
+                # scrolling = driver.execute_script(
+                #     'document.getElementsByClassName("dS8AEf")[0].scrollTop\
+                #     = document.getElementsByClassName("dS8AEf")[0].scrollHeight',
+                #     scrollable_div
+                # )
+                # WebDriverWait(driver, 5).until(
+                #     lambda driver: driver.execute_script('return document.getElementsByClassName("dS8AEf")[0].scrollHeight;', scrollable_div) > last_height
+                # )
+
+                # scroll_height = driver.execute_script('return document.getElementsByClassName("dS8AEf")[0].scrollHeight;', scrollable_div)
 
                 time.sleep(1)
-            except selenium.common.exceptions.StaleElementReferenceException:
-                time.sleep(1)
+            except selenium.common.exceptions.StaleElementReferenceException as sere:
+                time.sleep(2)
+                # print(sere)
                 continue
-            except selenium.common.exceptions.TimeoutException:
+            except selenium.common.exceptions.TimeoutException as te:
+                # print(te)
                 continue
             except:
                 raise
+        # for _i in range(counter):
+        #     try:
+        #         scrolling = driver.execute_script(
+        #             'document.getElementsByClassName("dS8AEf")[0].scrollTop = document.getElementsByClassName("dS8AEf")[0].scrollHeight',
+        #             scrollable_div
+        #         )
+        #     except:
+        #         pass
+        #     time.sleep(1)
 
 def write_to_xlsx(data, filename, dir, format):
-    # TODO: create directory named by title if not exists
+    '''Write reviews into formatted file
+
+    data: list of reviews
+    filename: web title
+    dir: parameter from get_review, default: 'SaveData'
+    format: 'csv' or 'json'
+    '''
+    # create directory named by title if not exists
+    sub_dir = create_dir(filename)
     # save file into this directory
-    filepath = os.path.join(dir, filename) + '.' + format
+    filepath = os.path.join(sub_dir, filename) + '.' + format
     print(f'write to {filepath}...')
     cols = ['time','rating', 'comment']
     df = pd.DataFrame(data, columns=cols) # this insert the head
@@ -328,8 +381,8 @@ def get_reviews(url: str = None,
     if  time_range is not None:
         if not all(isinstance(elem, str) for elem in time_range):
             raise Exception(f'Argument format required list of strings')
-        elif time_range[1] not in time_filter_zh:
-            raise Exception(f'Argument format must be one of {time_filter_zh}')
+        elif time_range[1] not in utils.time_filter_zh:
+            raise Exception(f'Argument format must be one of {utils.time_filter_zh}')
 
     # print(f'Find reviews on {url}...')
 
@@ -341,8 +394,8 @@ def get_reviews(url: str = None,
         options.add_experimental_option("excludeSwitches", ["enable-automation"])
         options.add_experimental_option('useAutomationExtension', False)
         options.add_argument("--lang=en-US")
-        options.add_experimental_option('prefs', {'intl.accept_languages': 'en,en_US',
-                                                  'profile.managed_default_content_settings.images': 2})
+        # options.add_experimental_option('prefs', {'intl.accept_languages': 'en,en_US',
+        #                                           'profile.managed_default_content_settings.images': 2})
         options.add_argument("--disable-blink-features")
         options.add_argument("--disable-blink-features=AutomationControlled")
         # options.add_extension('.\\Data_local\\Mouse-Coordinates.crx')
@@ -362,8 +415,7 @@ def get_reviews(url: str = None,
             pass
         
         # format the web title for further use
-        global webname_filter
-        webTitle = webname_filter.sub('', driver.title)
+        webTitle = utils.webname_filter.sub('', driver.title)
         if check_cache:
             cached_path = check_loacal_cache(query=webTitle, query_dir=save_path, file_type=format)
             # cached_path = os.path.join(save_path, webTitle) + f'.{format}'
@@ -377,14 +429,6 @@ def get_reviews(url: str = None,
 
         # scroll to the bottom of the page
         scrolling(counts, webname)
-
-        # TODO: Add function to get newest data from database
-        # SELECT 
-        #     content
-        # FROM
-        #     reviews.晨間廚房早午餐虎尾科大店
-        # ORDER BY time_range DESC
-        # LIMIT 1;
 
         # get reviews on the web
         data = get_data(webname, time_range)
