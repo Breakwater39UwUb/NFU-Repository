@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template, json, url_for
 import os
-from my_Packages.utils import sort_times
+from my_Packages import utils
 import my_Packages.review_plot as rplt
 from my_Packages.scraper import get_reviews
 from my_Packages.predictor_1 import review_predict
@@ -97,7 +97,7 @@ def get_Url():
         
         form_time_start = request.form.get('time_start') 
         form_time_end = request.form.get('time_end')
-        form_time_start, form_time_end = sort_times(form_time_start, form_time_end)
+        form_time_start, form_time_end = utils.sort_times(form_time_start, form_time_end)
         # month_range: '2003-05 2004-03'
         month_range = f'{form_time_start} {form_time_end}'
 
