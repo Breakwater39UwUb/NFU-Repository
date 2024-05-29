@@ -55,7 +55,7 @@ def convert_to_tablename(filepath: str):
         >>> `table_name`
     '''
 
-    table_name = '`' + filepath.split('/')[1].split('-')[0] + '`'
+    table_name = '`' + filepath.split('/')[2].split('-Google')[0] + '`'
     return table_name
 
 # TODO: create a function to create filename with date range
@@ -63,6 +63,11 @@ def gen_diagram_name(date_range: str):
     filename = './SaveData/dia.png'
     
     return filename
+
+# TODO: create directory name by restaurant
+def create_dir(name: str, path: str='SaveData'):
+    if not os.path.exists(name):
+        os.makedirs(name)
 
 def sort_times(start_time: str, end_time: str):
     '''Sort time
