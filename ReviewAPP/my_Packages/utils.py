@@ -15,7 +15,6 @@ time_filter_zh = ['天前', '週前', '個月前', '年前']
 time_filter_en = ['days', 'week', 'month', 'year']
 ''''days', 'week', 'month', 'year\''''
 
-# TODO: Add check_sql_cache
 def check_loacal_cache(query: str, query_dir: str = 'SaveData', file_type: str = 'json'):
     '''Check if the given file is in local directory or database
     
@@ -68,8 +67,14 @@ def convert_to_tablename(filepath: str):
     return table_name
 
 # TODO: create a function to create filename with date range
-def gen_diagram_name(date_range: str):
-    filename = './SaveData/dia.png'
+def gen_diagram_name(name: str, chart_type: str, date_range: str):
+    '''Return {name}_{chart_type}_{date_range}.png'''
+
+    name = name.split(os.path.sep)
+    dir_ = os.path.sep.join(name[:-1])
+    file = '_'.join([name[1], chart_type, date_range])
+    file += '.png'
+    filename = os.path.sep.join([dir_, file])
     
     return filename
 
