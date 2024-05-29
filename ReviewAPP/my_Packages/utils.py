@@ -16,12 +16,13 @@ time_filter_en = ['days', 'week', 'month', 'year']
 ''''days', 'week', 'month', 'year\''''
 
 # TODO: Add check_sql_cache
-def check_loacal_cache(query: str, query_dir: str = 'SaveData', file_type: str = '.json'):
+def check_loacal_cache(query: str, query_dir: str = 'SaveData', file_type: str = 'json'):
     '''Check if the given file is in local directory or database
     
     query: target file
     query_dir: target directory
     file_type: target file extension
+        'json' or 'csv'
 
     File name convention:
 
@@ -36,6 +37,14 @@ def check_loacal_cache(query: str, query_dir: str = 'SaveData', file_type: str =
     '''
 
     search = os.path.join(query_dir,'*')+'.'+file_type
+    files = glob.glob(search)
+    for file in files:
+        if query in file:
+            return file
+        
+    # Search for subdirectory
+    search = os.path.join(query_dir, query, '*') + f'.{file_type}'
+    '''search = query_dir/query/*.type'''
     files = glob.glob(search)
     for file in files:
         if query in file:
