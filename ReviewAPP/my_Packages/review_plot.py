@@ -11,6 +11,10 @@ from collections import defaultdict
 from my_Packages.utils import check_month_range
 global labels
 labels = {0: 'Food', 1: 'Price', 2: 'Service', 3: 'Environment'}
+FOOD = 0
+PRICE = 1
+SERVICE = 2
+ENV = 3
 def sort_by_month(data: list):
     '''Count reviews per month
 
