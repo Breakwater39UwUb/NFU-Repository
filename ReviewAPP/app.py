@@ -14,7 +14,6 @@ analysis_page = 'analysis.html'
 platform = ''
 chart_html= 'chart.html'
 user_rating = 1
-answer = ''
 
 app = Flask(__name__,
             template_folder=flask_template_path,
@@ -30,7 +29,7 @@ def Home():
 def get_Star():
     '''Get user review rating for multi-class classification'''
     global user_rating
-    user_rating  = request.get_json()
+    user_rating  = int(request.get_json())
     return render_template(predict_page)
 
 # TODO: Remove this API due to it is not accessed
@@ -73,19 +72,14 @@ def get_Change():
     '''
     if request.method == "POST":
         data = request.form.get("txtbox")
-        print(data)
     answer = review_predict(q_input=data)
     
-    # TODO: Change return string for better presentation of results
-    if answer == '0':
-        bert_rating = '負向(1,2 星)' # Negative (1, 2 star) 
-        #英文子太長超出去，所以改中文
-    if answer == '1':
-        bert_rating = '中立(3 星)' # Neutral (3 star)
-        #英文子太長超出去，所以改中文
-    if answer == '2':
-        bert_rating = '正向(4,5 星)' # Positive (4, 5 star)
-        #英文子太長超出去，所以改中文
+    if answer in utils.rating_dict:
+        bert_rating, valid_ratings = utils.rating_dict[answer]
+        if user_rating in valid_ratings:
+            bert_rating += '且評分與評論相符。'
+        else:
+            bert_rating += '但評分與評論不符。'
     return render_template(new_predict_page, users = user_rating, berts = bert_rating, user_txt = data)
 
 @app.route( "/get_Url" , methods=['POST','GET'])
