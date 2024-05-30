@@ -6,6 +6,7 @@ import logging
 import json, csv
 from datetime import datetime, timedelta
 
+
 invalid_chars = '<>:"/\|?*｜\n. '
 invalid_char_pattern = '|'.join(map(re.escape, invalid_chars))
 webname_filter = re.compile(invalid_char_pattern)
@@ -111,18 +112,19 @@ def gen_diagram_name(name: str, chart_type: str, date_range: str):
     date_range: date range
         'YYYY-MM YYYY-MM'
 
-    Return {name}_{chart_type}_{date_range}.png
+    Return web/charts/{name}_{chart_type}_{date_range}.png
     '''
 
+    date_range = date_range.replace(' ', '_')
     name = name.split(os.path.sep)
-    dir_ = os.path.sep.join(name[:-1])
+    dir_ = create_dir(name[1], ['web', 'charts'])
     file = '_'.join([name[1], chart_type, date_range])
     file += '.png'
     filename = os.path.sep.join([dir_, file])
     
     return filename
 
-def create_dir(name: str, parent_dir: str='SaveData'):
+def create_dir(name: str, parent_dir: str|list='SaveData'):
     '''Create directory for review files and charts
     
     name: restaurant name
@@ -132,7 +134,9 @@ def create_dir(name: str, parent_dir: str='SaveData'):
     name = '麥當勞-虎尾新興餐廳-Google地圖'
     return 'SaveData\\麥當勞-虎尾新興餐廳-Google地圖'
     '''
-    target_dir = os.path.join(parent_dir, name)
+    
+    parent_dir.append(name)
+    target_dir = os.path.sep.join(parent_dir)
     if not os.path.exists(target_dir):
         os.makedirs(target_dir)
     return target_dir
@@ -259,15 +263,18 @@ def read_predictions(FILE_PATH: str):
         >>> SaveData/{name}/prediction_{name}_{chart_type}_{time_range}.json
     '''
 
-    TEXT = []
+    REVIEW = []
     file_type = FILE_PATH.split('.')[-1]
 
     if file_type == 'json':
         with open(FILE_PATH, 'r', encoding='utf-8') as file:
-            data = json.load(file)
-            for line in data:
-                TEXT.append(line['comment'])
-        return TEXT
+            lines = json.load(file)
+            for line in lines:
+                LABEL = line['labels']
+                TEXT = line['content']
+                TIME = line['time_range']
+                REVIEW.append((LABEL, TEXT, TIME))
+    return REVIEW
 
 class Debug_Logger:
     '''Custom logger class'''
