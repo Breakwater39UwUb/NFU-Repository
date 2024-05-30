@@ -51,6 +51,30 @@ def check_loacal_cache(query: str, query_dir: str = 'SaveData', file_type: str =
 
     return None
 
+def check_predict_cache(query: str,
+                        query_dir: str = 'SaveData',
+                        file_type: str = 'json'):
+    '''Check saved predictions
+    
+    query: shop name to search
+    query_dir: parent path
+    file_type: serialized prediction file
+
+    return: cache path
+    '''
+
+    # ['SaveData', 'name', 'name.json']
+    query = query.split(os.path.sep)
+    dir_ = os.path.sep.join(query[:-1])
+    file = 'prediction_'
+
+    # SaveData/name/prediction_*
+    query = os.path.sep.join([dir_, file]) + '*'
+    files = glob.glob(query)
+    if files != []:
+        return files[0]
+    return None
+
 def convert_to_tablename(filepath: str):
     '''Convert file path to tablename
     filepath: like './SaveData/review-Google地圖.json'
