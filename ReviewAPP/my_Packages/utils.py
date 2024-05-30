@@ -98,7 +98,16 @@ def convert_to_tablename(filepath: str):
 
 # TODO: create a function to create filename with date range
 def gen_diagram_name(name: str, chart_type: str, date_range: str):
-    '''Return {name}_{chart_type}_{date_range}.png'''
+    '''Generate diagram name with arguments.
+    
+    name: web title, which is restaurant name
+    chart_type: chart type
+        'BAR', 'PLOT'
+    date_range: date range
+        'YYYY-MM YYYY-MM'
+
+    Return {name}_{chart_type}_{date_range}.png
+    '''
 
     name = name.split(os.path.sep)
     dir_ = os.path.sep.join(name[:-1])
@@ -184,6 +193,12 @@ def check_month_range(time: datetime, time_range: str='all'):
     return False
 
 def valid_time_interval(time_interval:list[str], to_check:str):
+    '''Check if time interval.
+    
+    time_interval: list containing start and end time.
+
+    to_check: time to check.
+    '''
     pos = 0
     time = ''
     valid_num = int(time_interval[0])
@@ -208,6 +223,17 @@ def valid_time_interval(time_interval:list[str], to_check:str):
     return True
 
 def get_review_abs_time(time_ago: str):
+    '''Returns the absolute month.
+
+    If time is earlier than 1 year, only return the year, 'YYYY/'.
+    If time is less than 1 year, get 'YYYY/MM'.
+    
+    time_ago: relative time string
+        ex: '5 days ago', '1 month ago'
+    
+    return absolute month
+    >>> 'YYYY/MM' or 'YYYY/'
+    '''
     review_rel_time = time_ago.split()
     time_now = datetime.now()
     if review_rel_time[1] == time_filter_zh[0]:
@@ -222,6 +248,8 @@ def get_review_abs_time(time_ago: str):
     return new_time.strftime('%Y/%m')
 
 class Debug_Logger:
+    '''Custom logger class'''
+
     def __init__(self, logger_name, log_level=logging.DEBUG):
         self.logger = logging.getLogger(logger_name)
         self.logger.setLevel(log_level)
