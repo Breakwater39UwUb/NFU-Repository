@@ -18,53 +18,36 @@
             height: 100vh;
             background-color: rgba(0, 0, 50, .4);
             background-blend-mode: multiply;
-            background-image: url(image/background2.jpg);
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(image/background2.jpg);
             background-size: cover;
             background-position: center;
             position: relative;
         }
         
         .form_box {
-            width: 90%;
-            max-width: 450px;
+            width: 30%;
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             background: white;
-            padding: 50px 60px 70px;
+            padding: 3% 4% 9%;
             text-align: center;
             ;
             position: none;
         }
         
         .form_box h1 {
-            font-size: 30px;
-            margin-bottom: 60px;
+            font-size: 200%;
+            margin-bottom: 60%;
             color: blue;
             position: relative;
         }
         
-        .form_box h1::after {
-            content: ' ';
-            width: 30px;
-            height: 4px;
-            border-radius: 3px;
-            background: blue;
-            position: absolute;
-            bottom: -12px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-        
         .input-fieid {
             background: #eaeaea;
-            margin: 15px 0;
-            border-radius: 3px;
             display: flex;
             align-items: center;
-            max-height: 65px;
-            transition: max-height 0.5s;
             overflow: hidden;
         }
         
@@ -73,12 +56,11 @@
             background: transparent;
             border: 0;
             outline: 0;
-            padding: 18px 15px;
         }
         
         form p {
             text-align: left;
-            font-size: 13px;
+            font-size: 20%;
         }
         
         form p a {
@@ -99,8 +81,8 @@
         .btn-field button {
             flex-basis: 48%;
             color: black;
-            height: 40px;
-            border-radius: 20px;
+            height: 40%;
+            border-radius: 20%;
             border: 0;
             outline: 0;
             cursor: pointer;
@@ -118,16 +100,14 @@
         
         .header {
             position: fixed;
-            height: 80px;
+            height: 10%;
             width: 100%;
+            background: white;
             z-index: 100;
-            padding: 0 20px;
         }
         
         .nav {
-            max-width: 1100px;
-            width: 100%;
-            margin: 0 auto;
+            width: 7000%;
         }
         
         .nav,
@@ -139,7 +119,9 @@
         }
         
         .nav_logo {
-            font-size: 30px;
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
         }
         
         .nav_logo,
@@ -147,13 +129,12 @@
         .Open {
             color: black;
             height: 100%;
-            font-size: 1.2rem;
-            padding: .7rem 1.5rem;
+            white-space: nowrap;
         }
         
         .nav_items {
-            column-gap: 25px;
-            font-size: 1.2rem;
+            column-gap: 3%;
+            font-size: 130%;
             color: black;
         }
         
@@ -166,13 +147,13 @@
         }
         
         .Open {
-            padding: 6px 24px;
+            padding: 1.2% 1.5%;
             border: 2px soild #fff;
             background: transparent;
             border-radius: 6px;
             cursor: pointer;
-            height: 50px;
-            width: 200px;
+            text-align: center;
+            height: 65%;
         }
         
         .Open:active {
@@ -180,21 +161,26 @@
         }
         
         .Close {
-            border: 2px soild #fff;
             background: transparent;
             cursor: pointer;
         }
         
         select option {
             display: block;
-            font-size: 1.2rem;
-            color: black;
+            font-size: 100%;
         }
         
         select {
-            padding: .7rem 1.5rem;
-            font-size: 1.2rem;
-            color: black;
+            font-size: 100%;
+            padding: 1.37% 1.37%;
+            border: 2px soild #fff;
+            background: transparent;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        
+        .title {
+            white-space: nowrap;
         }
         
         input[type="date"]::-webkit-calendar-picker-indicator {
@@ -219,16 +205,16 @@
     <header class="header">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <nav class="nav">
-            <a href="#" class="nav_logo" style="list-style-type:none;background-color:white">首頁 </a>
             <ul class="nav_items" style="list-style-type:none;background-color:white">
-                <h1 id="title" style="list-style-type:none;background-color:gray">評論系統</h1>
-                <button type="button" class="Open" onclick="ShowDiv2() ">評論標籤比例園餅圖</button>
+                <a href="#" class="nav_logo" id="logo" style="list-style-type:none;background-color:#fff font size = 7">首頁</a>
+                <h1 id="title" class="title">評論系統</h1>
+                <button type="button" align="center" valign="center" class="Open" onclick="ShowDiv2() " id="button3">評論標籤比例</button>
                 <select id="select1" onchange="toggleDiv()">
-                    <option >評論標籤比例園餅圖</option>
-                    <option value="myDiv6">服務標籤比例園餅圖</option>
-                    <option value="myDiv5">價格標籤比例園餅圖</option>
-                    <option value="myDiv4">環境標籤比例園餅圖</option>
-                    <option value="myDiv3">餐點標籤比例園餅圖</option>
+                    <option >各項標籤比例</option>
+                    <option value="myDiv6">服務標籤比例</option>
+                    <option value="myDiv5">價格標籤比例</option>
+                    <option value="myDiv4">環境標籤比例</option>
+                    <option value="myDiv3">餐點標籤比例</option>
                 </select>
 
                 <select id="select2" onchange="toggleDiv1()">
@@ -239,11 +225,11 @@
                     <option value="myDiv11">餐點標籤趨勢圖</option>
                 </select>
 
-                <button type="button" class="Open" onclick="ShowDiv8()">正負向判斷</button>
+                <button type="button" class="Open" id="button1" onclick="ShowDiv8()">正負向判斷</button>
 
-                <button type="button" class="Open" onclick="ShowDiv9()">輸入網址</button>
+                <button type="button" class="Open" id="button2" onclick="ShowDiv9()">輸入網址</button>
             </ul>
-            <nav>
+        </nav>
     </header>
 
 
@@ -297,7 +283,7 @@
 
                 <h4 id="value"> 1 </h4>
 
-                <button onclick="sendData()" style="height:25px;width:120px">Send Data</button>
+                <button onclick="sendData()" style="height:25px;width:120px">送出</button>
                 <div id="output"></div>
             </form>
             <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
@@ -310,9 +296,9 @@
             <form action="get_Url" name="myForm1" method="POST" onsubmit="required()">
                 <h3>輸入網址</h3>
 
-                <textarea rows="10" cols="30" id="txtbox" name="myTextarea" placeholder="input Something" align="center" required></textarea>
+                <textarea rows="10" cols="30" id="txtbox" name="myTextarea" placeholder="輸入店家網址" align="center" required></textarea>
                 <div class="Send-field">
-                    <button type="submit" onclick="sendData()" align="center" style="height:25px;width:120px">Send Data</button>
+                    <button type="submit" onclick="sendData()" align="center" style="height:25px;width:120px">送出</button>
                     <div id="output"></div>
                 </div>
                 <h3>輸入結束時間</h3>
@@ -378,7 +364,16 @@
         var t = document.getElementById('txtbox').value;
 
 
+        document.getElementById("logo").style.fontSize = "140%";
+        document.getElementById("logo").style.width = "500%";
+        document.getElementById("title").style.width = "500%";
+        document.getElementById("button1").style.width = "500%";
+        document.getElementById("button2").style.width = "500%";
+        document.getElementById("button3").style.width = "500%";
 
+        document.getElementById("button1").style.fontSize = "100%";
+        document.getElementById("button2").style.fontSize = "100%";
+        document.getElementById("button3").style.fontSize = "100%";
 
 
         var slider = document.getElementById("myRange");
@@ -395,6 +390,8 @@
             var txt = document.getElementById("txtbox").value;
             var star = document.getElementById("myRange").value;
             var passed = 1
+
+
 
 
 

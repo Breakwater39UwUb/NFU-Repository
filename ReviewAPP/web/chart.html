@@ -25,50 +25,36 @@
         }
         
         .form_box {
-            width: 135%;
-            max-width: 900px;
+            width: 60%;
             position: absolute;
-            top: 50%;
             left: 50%;
+            top: 50%;
             transform: translate(-50%, -50%);
             background: white;
-            padding: 50px 60px 70px;
+            padding: 3% 4% 9%;
             text-align: center;
             ;
             position: none;
         }
         
         .form_box1 {
-            width: 90%;
-            max-width: 450px;
+            width: 30%;
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             background: white;
-            padding: 50px 60px 70px;
+            padding: 3% 4% 9%;
             text-align: center;
             ;
             position: none;
         }
         
         .form_box h1 {
-            font-size: 30px;
-            margin-bottom: 60px;
+            top: 60%;
+            font-size: 200%;
             color: blue;
             position: relative;
-        }
-        
-        .form_box h1::after {
-            content: ' ';
-            width: 30px;
-            height: 4px;
-            border-radius: 3px;
-            background: blue;
-            position: absolute;
-            bottom: -12px;
-            left: 50%;
-            transform: translateX(-50%);
         }
         
         .input-fieid {
@@ -134,14 +120,12 @@
             position: fixed;
             height: 80px;
             width: 100%;
+            background: white;
             z-index: 100;
-            padding: 0 20px;
         }
         
         .nav {
-            max-width: 1100px;
             width: 100%;
-            margin: 0 auto;
         }
         
         .nav,
@@ -153,7 +137,8 @@
         }
         
         .nav_logo {
-            font-size: 30px;
+            display: flex;
+            align-items: center;
         }
         
         .nav_logo,
@@ -210,6 +195,19 @@
             font-size: 1.2rem;
             color: black;
         }
+        
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            background: transparent;
+            bottom: 0;
+            color: transparent;
+            cursor: pointer;
+            height: auto;
+            left: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: auto;
+        }
     </style>
 </head>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
@@ -219,16 +217,16 @@
     <header class="header">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <nav class="nav">
-            <a href="#" class="nav_logo" style="list-style-type:none;background-color:white">首頁 </a>
             <ul class="nav_items" style="list-style-type:none;background-color:white">
-                <h1 id="title" style="list-style-type:none;background-color:gray">評論系統</h1>
-                <button type="button" class="Open" onclick="ShowDiv2() ">評論標籤比例園餅圖</button>
+                <a href="#" class="nav_logo" id="logo" style="list-style-type:none;background-color:white">首頁 </a>
+                <h1 id="title">評論系統</h1>
+                <button type="button" class="Open" onclick="ShowDiv2() ">評論標籤比例</button>
                 <select id="select1" onchange="toggleDiv()">
-                    <option >各項標籤比例園餅圖</option>
-                    <option value="myDiv6">服務標籤比例園餅圖</option>
-                    <option value="myDiv5">價格標籤比例園餅圖</option>
-                    <option value="myDiv4">環境標籤比例園餅圖</option>
-                    <option value="myDiv3">餐點標籤比例園餅圖</option>
+                    <option >各項標籤比例</option>
+                    <option value="myDiv6">服務標籤比例</option>
+                    <option value="myDiv5">價格標籤比例</option>
+                    <option value="myDiv4">環境標籤比例</option>
+                    <option value="myDiv3">餐點標籤比例</option>
                 </select>
 
                 <select id="select2" onchange="toggleDiv1()">
@@ -297,7 +295,7 @@
 
                 <h4 id="value"> 1 </h4>
 
-                <button onclick="sendData()" style="height:25px;width:120px">Send Data</button>
+                <button onclick="sendData()" style="height:25px;width:120px">送出</button>
                 <div id="output"></div>
             </form>
             <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
@@ -312,7 +310,7 @@
 
                 <textarea rows="10" cols="30" id="txtbox" name="myTextarea" placeholder="input Something" align="center" required></textarea>
                 <div class="Send-field">
-                    <button type="submit" onclick="sendData()" align="center" style="height:25px;width:120px">Send Data</button>
+                    <button type="submit" onclick="sendData()" align="center" style="height:25px;width:120px">送出</button>
                     <div id="output"></div>
                 </div>
                 <h3>輸入結束時間</h3>
@@ -434,20 +432,18 @@
 
     <div style="display:none;" class="form_box" id="myDiv7">
         <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
-        <h1>服務標籤數量統計</h1>
-        <img src="Service.png" width="800" heigh="800" alt="一張圖片">
         <form action="#">
-            長條圆為該月份的評論數量，折線圖表示選擇的標籤在該月的數量
+            <h1>服務標籤數量統計</h1>
+            <img src="Service.png" width="800" heigh="800" alt="一張圖片"> 長條圆為該月份的評論數量，折線圖表示選擇的標籤在該月的數量
         </form>
     </div>
 
     <div style="display:none;" class="form_box" id="myDiv9">
 
         <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
-        <h1>價格標籤數量統計</h1>
-        <img src="Price.png" width="800" heigh="800" alt="一張圖片">
         <form action="#">
-            長條圆為該月份的評論數量，折線圖表示選擇的標籤在該月的數量
+            <h1>價格標籤數量統計</h1>
+            <img src="Price.png" width="800" heigh="800" alt="一張圖片"> 長條圆為該月份的評論數量，折線圖表示選擇的標籤在該月的數量
         </form>
     </div>
 
@@ -464,10 +460,9 @@
     <div style="display:none;" class="form_box" id="myDiv11">
 
         <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
-        <h1>餐點標籤數量統計</h1>
-        <img src="Food.png" width="800" heigh="800" alt="一張圖片">
         <form action="#">
-            長條圆為該月份的評論數量 ， 折線圖表示選擇的標籤在該月的數量
+            <h1>餐點標籤數量統計</h1>
+            <img src="Food.png" width="800" heigh="800" alt="一張圖片"> 長條圆為該月份的評論數量 ， 折線圖表示選擇的標籤在該月的數量
         </form>
     </div>
 
@@ -544,6 +539,8 @@
             NameField.type = "hidden";
             NameField3.type = "text";
         }
+
+        document.getElementById("logo").style.fontSize = "140%";
 
 
 
