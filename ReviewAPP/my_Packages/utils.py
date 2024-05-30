@@ -15,6 +15,12 @@ time_filter_zh = ['天前', '週前', '個月前', '年前']
 time_filter_en = ['days', 'week', 'month', 'year']
 ''''days', 'week', 'month', 'year\''''
 
+rating_dict = {
+    '0': ('負向評論，', (1, 2)),
+    '1': ('中立評論，', (3,)),
+    '2': ('正向評論，', (4, 5))
+}
+
 def check_loacal_cache(query: str, query_dir: str = 'SaveData', file_type: str = 'json'):
     '''Check if the given file is in local directory or database
     
