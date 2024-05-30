@@ -110,12 +110,16 @@ def get_Url():
         return ('', 500)
     
     # TODO: Change filename to dynamic to avoid redundant image creation
-    predictions = review_analyze(file_path=review_file)
+    # Check prediction cache for plot
+    if utils.check_loacal_cache('predictions_' + review_file) is None:
+        predictions = review_analyze(file_path=review_file)
     filtered_data = [d for d in predictions  if d[2].split('/')[1] != '']
-    rplt.plot_by_label(filtered_data, 0, month_range, 'Food.png','web')
-    rplt.plot_by_label(filtered_data, 1, month_range, 'Price.png','web')
-    rplt.plot_by_label(filtered_data, 2, month_range, 'Service.png','web')
-    rplt.plot_by_label(filtered_data, 3, month_range, 'Conment.png','web')
+
+    # TODO: Read cached predictions file to plot charts
+    rplt.plot_by_label(filtered_data, rplt.FOOD, month_range, 'Food.png')
+    rplt.plot_by_label(filtered_data, rplt.PRICE, month_range, 'Price.png')
+    rplt.plot_by_label(filtered_data, rplt.SERVICE, month_range, 'Service.png')
+    rplt.plot_by_label(filtered_data, rplt.ENV, month_range, 'Conment.png')
     debug_type(predictions)
     analysis = calculate_labels(predictions)
     return render_template(chart_html,
