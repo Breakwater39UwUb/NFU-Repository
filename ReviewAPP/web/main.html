@@ -488,13 +488,16 @@
 
         function ShowDiv8() {
             document.getElementById("myDiv8").style.display = "";
+
         }
 
         function ShowDiv9() {
             document.getElementById("myDiv9").style.display = "";
+            document.getElementById("myDiv8").style.display = 'none';
         }
 
         function updateTextArea() {
+            document.getElementById("myDiv9").style.display = 'none';
             var inputField = document.getElementById("txtbox");
             var textArea = document.getElementById("myText2");
             textArea.value = inputField.value

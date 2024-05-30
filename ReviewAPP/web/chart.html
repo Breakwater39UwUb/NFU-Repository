@@ -18,17 +18,17 @@
             height: 100vh;
             background-color: rgba(0, 0, 50, .4);
             background-blend-mode: multiply;
-            background-image: url(image/background2.jpg);
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(image/background2.jpg);
             background-size: cover;
             background-position: center;
             position: relative;
         }
         
         .form_box {
-            width: 60%;
+            width: 70%;
             position: absolute;
+            top: 10%;
             left: 50%;
-            top: 50%;
             transform: translate(-50%, -50%);
             background: white;
             padding: 3% 4% 9%;
@@ -51,20 +51,16 @@
         }
         
         .form_box h1 {
-            top: 60%;
             font-size: 200%;
+            margin-bottom: 60%;
             color: blue;
             position: relative;
         }
         
         .input-fieid {
             background: #eaeaea;
-            margin: 15px 0;
-            border-radius: 3px;
             display: flex;
             align-items: center;
-            max-height: 65px;
-            transition: max-height 0.5s;
             overflow: hidden;
         }
         
@@ -73,12 +69,11 @@
             background: transparent;
             border: 0;
             outline: 0;
-            padding: 18px 15px;
         }
         
         form p {
             text-align: left;
-            font-size: 13px;
+            font-size: 20%;
         }
         
         form p a {
@@ -99,8 +94,8 @@
         .btn-field button {
             flex-basis: 48%;
             color: black;
-            height: 40px;
-            border-radius: 20px;
+            height: 40%;
+            border-radius: 20%;
             border: 0;
             outline: 0;
             cursor: pointer;
@@ -118,14 +113,14 @@
         
         .header {
             position: fixed;
-            height: 80px;
+            height: 10%;
             width: 100%;
             background: white;
             z-index: 100;
         }
         
         .nav {
-            width: 100%;
+            width: 700%;
         }
         
         .nav,
@@ -139,6 +134,7 @@
         .nav_logo {
             display: flex;
             align-items: center;
+            white-space: nowrap;
         }
         
         .nav_logo,
@@ -146,13 +142,12 @@
         .Open {
             color: black;
             height: 100%;
-            font-size: 1.2rem;
-            padding: .7rem 1.5rem;
+            white-space: nowrap;
         }
         
         .nav_items {
-            column-gap: 25px;
-            font-size: 1.2rem;
+            column-gap: 3%;
+            font-size: 130%;
             color: black;
         }
         
@@ -165,13 +160,13 @@
         }
         
         .Open {
-            padding: 6px 24px;
+            padding: 1.2% 1.5%;
             border: 2px soild #fff;
             background: transparent;
             border-radius: 6px;
             cursor: pointer;
-            height: 50px;
-            width: 200px;
+            text-align: center;
+            height: 65%;
         }
         
         .Open:active {
@@ -179,21 +174,26 @@
         }
         
         .Close {
-            border: 2px soild #fff;
             background: transparent;
             cursor: pointer;
         }
         
         select option {
             display: block;
-            font-size: 1.2rem;
-            color: black;
+            font-size: 100%;
         }
         
         select {
-            padding: .7rem 1.5rem;
-            font-size: 1.2rem;
-            color: black;
+            font-size: 100%;
+            padding: 1.37% 1.37%;
+            border: 2px soild #fff;
+            background: transparent;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        
+        .title {
+            white-space: nowrap;
         }
         
         input[type="date"]::-webkit-calendar-picker-indicator {
@@ -210,6 +210,7 @@
         }
     </style>
 </head>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
 
 <body>
@@ -219,8 +220,8 @@
         <nav class="nav">
             <ul class="nav_items" style="list-style-type:none;background-color:white">
                 <a href="#" class="nav_logo" id="logo" style="list-style-type:none;background-color:white">首頁 </a>
-                <h1 id="title">評論系統</h1>
-                <button type="button" class="Open" onclick="ShowDiv2() ">評論標籤比例</button>
+                <h1 id="title" class="title">評論系統</h1>
+                <button type="button" class="Open" onclick="ShowDiv2() " id="button3">評論標籤比例</button>
                 <select id="select1" onchange="toggleDiv()">
                     <option >各項標籤比例</option>
                     <option value="myDiv6">服務標籤比例</option>
@@ -237,9 +238,9 @@
                     <option value="myDiv11">餐點標籤趨勢圖</option>
                 </select>
 
-                <button type="button" class="Open" onclick="ShowDiv8()">正負向判斷</button>
+                <button type="button" class="Open" id="button1" onclick="ShowDiv8()">正負向判斷</button>
 
-                <button type="button" class="Open" onclick="ShowDiv13()">輸入網址</button>
+                <button type="button" class="Open" id="button2" onclick="ShowDiv13()">輸入網址</button>
             </ul>
             <nav>
     </header>
@@ -431,38 +432,42 @@
     </div>
 
     <div style="display:none;" class="form_box" id="myDiv7">
-        <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
         <form action="#">
             <h1>服務標籤數量統計</h1>
             <img src="Service.png" width="800" heigh="800" alt="一張圖片"> 長條圆為該月份的評論數量，折線圖表示選擇的標籤在該月的數量
         </form>
+        <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
     </div>
 
     <div style="display:none;" class="form_box" id="myDiv9">
 
-        <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
+
+        <h1>價格標籤數量統計</h1>
+        <img src="Price.png" width="800" heigh="800" alt="一張圖片">
         <form action="#">
-            <h1>價格標籤數量統計</h1>
-            <img src="Price.png" width="800" heigh="800" alt="一張圖片"> 長條圆為該月份的評論數量，折線圖表示選擇的標籤在該月的數量
+            長條圆為該月份的評論數量，折線圖表示選擇的標籤在該月的數量
         </form>
+        <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
     </div>
 
     <div style="display:none;" class="form_box" id="myDiv10">
 
-        <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
+
         <h1>環境標籤數量統計</h1>
         <img src="Conment.png" width="800" heigh="800" alt="一張圖片">
         <form action="#">
             長條圆為該月份的評論數量，折線圖表示選擇的標籤在該月的數量
         </form>
+        <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
     </div>
 
     <div style="display:none;" class="form_box" id="myDiv11">
 
         <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
+        <h1>餐點標籤數量統計</h1>
+        <img src="Food.png" width="800" heigh="800" alt="一張圖片">
         <form action="#">
-            <h1>餐點標籤數量統計</h1>
-            <img src="Food.png" width="800" heigh="800" alt="一張圖片"> 長條圆為該月份的評論數量 ， 折線圖表示選擇的標籤在該月的數量
+            長條圆為該月份的評論數量 ， 折線圖表示選擇的標籤在該月的數量
         </form>
     </div>
 
@@ -541,6 +546,15 @@
         }
 
         document.getElementById("logo").style.fontSize = "140%";
+        document.getElementById("logo").style.width = "500%";
+        document.getElementById("title").style.width = "500%";
+        document.getElementById("button1").style.width = "500%";
+        document.getElementById("button2").style.width = "500%";
+        document.getElementById("button3").style.width = "500%";
+
+        document.getElementById("button1").style.fontSize = "100%";
+        document.getElementById("button2").style.fontSize = "100%";
+        document.getElementById("button3").style.fontSize = "100%";
 
 
 
@@ -553,19 +567,64 @@
 
 
             if (value1 === "myDiv6") {
+
                 div6.style.display = "block";
+                div5.style.display = 'none';
+                div4.style.display = 'none';
+                div3.style.display = 'none';
+                div7.style.display = 'none';
+                div9.style.display = 'none';
+                div10.style.display = 'none';
+                div11.style.display = 'none';
+                div2.style.display = 'none';
+                div8.style.display = 'none';
+                div13.style.display = 'none';
+
             }
 
             if (value1 === "myDiv5") {
+
+                div6.style.display = 'none';
                 div5.style.display = "block";
+                div4.style.display = 'none';
+                div3.style.display = 'none';
+                div7.style.display = 'none';
+                div9.style.display = 'none';
+                div10.style.display = 'none';
+                div11.style.display = 'none';
+                div2.style.display = 'none';
+                div8.style.display = 'none';
+                div13.style.display = 'none';
             }
 
             if (value1 === "myDiv4") {
+
+                div6.style.display = 'none';
+                div5.style.display = 'none';
                 div4.style.display = "block";
+                div3.style.display = 'none';
+                div7.style.display = 'none';
+                div9.style.display = 'none';
+                div10.style.display = 'none';
+                div11.style.display = 'none';
+                div2.style.display = 'none';
+                div8.style.display = 'none';
+                div13.style.display = 'none';
             }
 
             if (value1 === "myDiv3") {
+
+                div6.style.display = 'none';
+                div5.style.display = 'none';
+                div4.style.display = 'none';
                 div3.style.display = "block";
+                div7.style.display = 'none';
+                div9.style.display = 'none';
+                div10.style.display = 'none';
+                div11.style.display = 'none';
+                div2.style.display = 'none';
+                div8.style.display = 'none';
+                div13.style.display = 'none';
             }
         }
 
@@ -576,35 +635,61 @@
             let div10 = document.getElementById("myDiv10");
             let div11 = document.getElementById("myDiv11");
             if (value1 === "myDiv7") {
+
                 div7.style.display = "block";
+                div9.style.display = 'none';
+                div10.style.display = 'none';
+                div11.style.display = 'none';
+                div2.style.display = 'none';
+                div8.style.display = 'none';
+                div13.style.display = 'none';
+                div6.style.display = 'none';
+                div5.style.display = 'none';
+                div4.style.display = 'none';
+                div3.style.display = 'none';
             }
             if (value1 === "myDiv9") {
                 div9.style.display = "block";
+                div10.style.display = 'none';
+                div11.style.display = 'none';
+                div2.style.display = 'none';
+                div8.style.display = 'none';
+                div13.style.display = 'none';
+                div6.style.display = 'none';
+                div5.style.display = 'none';
+                div4.style.display = 'none';
+                div3.style.display = 'none';
+                div7.style.display = 'none';
             }
             if (value1 === "myDiv10") {
+
                 div10.style.display = "block";
+                div11.style.display = 'none';
+                div2.style.display = 'none';
+                div8.style.display = 'none';
+                div13.style.display = 'none';
+                div6.style.display = 'none';
+                div5.style.display = 'none';
+                div4.style.display = 'none';
+                div3.style.display = 'none';
+                div7.style.display = 'none';
+                div9.style.display = 'none';
             }
             if (value1 === "myDiv11") {
+
                 div11.style.display = "block";
+                div2.style.display = 'none';
+                div8.style.display = 'none';
+                div13.style.display = 'none';
+                div6.style.display = 'none';
+                div5.style.display = 'none';
+                div4.style.display = 'none';
+                div3.style.display = 'none';
+                div7.style.display = 'none';
+                div9.style.display = 'none';
+                div10.style.display = 'none';
             }
         }
-
-
-        $(function() {
-            if (!!window.performance && window.performance.navigation.type === 0) {
-                console.log('Navigate');
-                //window.location.reload();
-            }
-            if (!!window.performance && window.performance.navigation.type === 1) {
-                console.log('Reloading');
-                //window.location.reload();
-            }
-            if (!!window.performance && window.performance.navigation.type === 2) {
-                console.log('backforward');
-                //window.location.reload();
-            }
-
-        })
 
         function ShowDiv() {
             document.getElementById("myDiv").style.display = "";
@@ -612,14 +697,74 @@
 
         function ShowDiv2() {
             document.getElementById("myDiv2").style.display = "";
+            let div7 = document.getElementById("myDiv7");
+            let div9 = document.getElementById("myDiv9");
+            let div10 = document.getElementById("myDiv10");
+            let div11 = document.getElementById("myDiv11");
+            let div4 = document.getElementById("myDiv4");
+            let div5 = document.getElementById("myDiv5");
+            let div6 = document.getElementById("myDiv6");
+            let div3 = document.getElementById("myDiv3");
+            let div13 = document.getElementById("myDiv13");
+            let div8 = document.getElementById("myDiv8");
+            div6.style.display = 'none';
+            div5.style.display = 'none';
+            div4.style.display = 'none';
+            div3.style.display = 'none';
+            div7.style.display = 'none';
+            div9.style.display = 'none';
+            div10.style.display = 'none';
+            div11.style.display = 'none';
+            div8.style.display = 'none';
+            div13.style.display = 'none';
         }
 
         function ShowDiv8() {
             document.getElementById("myDiv8").style.display = "";
+            let div7 = document.getElementById("myDiv7");
+            let div9 = document.getElementById("myDiv9");
+            let div10 = document.getElementById("myDiv10");
+            let div11 = document.getElementById("myDiv11");
+            let div4 = document.getElementById("myDiv4");
+            let div5 = document.getElementById("myDiv5");
+            let div6 = document.getElementById("myDiv6");
+            let div3 = document.getElementById("myDiv3");
+            let div13 = document.getElementById("myDiv13");
+            let div2 = document.getElementById("myDiv2");
+            div6.style.display = 'none';
+            div5.style.display = 'none';
+            div4.style.display = 'none';
+            div3.style.display = 'none';
+            div7.style.display = 'none';
+            div9.style.display = 'none';
+            div10.style.display = 'none';
+            div11.style.display = 'none';
+            div2.style.display = 'none';
+            div13.style.display = 'none';
         }
 
         function ShowDiv13() {
             document.getElementById("myDiv13").style.display = "";
+            let div7 = document.getElementById("myDiv7");
+            let div9 = document.getElementById("myDiv9");
+            let div10 = document.getElementById("myDiv10");
+            let div11 = document.getElementById("myDiv11");
+            let div4 = document.getElementById("myDiv4");
+            let div5 = document.getElementById("myDiv5");
+            let div6 = document.getElementById("myDiv6");
+            let div3 = document.getElementById("myDiv3");
+            let div2 = document.getElementById("myDiv2");
+            let div8 = document.getElementById("myDiv8");
+            div6.style.display = 'none';
+            div5.style.display = 'none';
+            div4.style.display = 'none';
+            div3.style.display = 'none';
+            div7.style.display = 'none';
+            div9.style.display = 'none';
+            div10.style.display = 'none';
+            div11.style.display = 'none';
+            div2.style.display = 'none';
+            div8.style.display = 'none';
         }
 
         function updateTextArea() {
