@@ -1,5 +1,4 @@
-from flask import Flask, request, render_template, json, url_for
-import os
+from flask import Flask, request, render_template
 from my_Packages import utils
 import my_Packages.review_plot as rplt
 from my_Packages.scraper import get_reviews
@@ -12,7 +11,6 @@ home_page = 'main.html'	# main.html
 predict_page = 'predict.html'
 new_predict_page = 'new_predict.html'
 analysis_page = 'analysis.html'
-platform = ''
 chart_html= 'chart.html'
 user_rating = 1
 
@@ -90,6 +88,10 @@ def get_Url():
         data_url = request.form.get("myTextarea")  
         if data_url is None :
             raise ValueError('Please input a url under "Overview tab".')
+        if 'google' in data_url:
+            platform = 'Googlemaps'
+        else:
+            platform = 'Foodpanda'
         
         form_time_start = request.form.get('time_start') 
         form_time_end = request.form.get('time_end')
@@ -103,6 +105,7 @@ def get_Url():
         # may remove the check_cache until client web have proper function to handle
         review_file = get_reviews(url=data_url, webname=platform, format='json', check_cache=True)
     except:
+        raise
         return ('', 500)
     
     # TODO: Change filename to dynamic to avoid redundant image creation
@@ -150,19 +153,6 @@ def calculate_labels(labels: list[tuple]):
             index += 1
 
     return analysis
-
-def read_review_file(FILE: str):
-    '''Read lines from file for the BERT
-    '''
-
-    TEXT = []
-
-    if FILE.split('.')[-1] == 'json':
-        with open(FILE, 'r', encoding='utf-8') as file:
-            data = json.load(file)
-            for line in data:
-                TEXT.append(line['comment'])
-        return TEXT
 
 def debug_type(var):
     print('----------')
