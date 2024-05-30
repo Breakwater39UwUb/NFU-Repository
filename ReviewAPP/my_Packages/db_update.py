@@ -117,6 +117,32 @@ def db_upload_file(filename: str,
         db.close()
         log.log(f'{filename} uploaded successfully.')
 
+def insert_review(rating: int, content: str):
+    '''Insert filtered review to database
+    
+    rating: star rating
+    content: review text
+    '''
+
+    log = utils.Debug_Logger('insert_review')
+    db = init_db()
+    if db is None:
+        return
+    cursor = db.cursor()
+    command = f"INSERT INTO filtered\
+        (rating, content) VALUES \
+        (%s, %s)"
+    review = (rating, content)
+    try:
+        cursor.execute(command, review)
+        db.commit()
+    except pymysql.IntegrityError as e:
+        if e.args[0] == DUP_ENTRY:
+            log.log(e)
+    finally:
+        db.close()
+    log.log('Review insert to databse', 20)
+
 def fetch_by_range(time_range: str, table: str):
     '''Download reviews from given table within given time range
     
@@ -191,6 +217,8 @@ def check_exist_table(table_name: str):
 
 def init_db(ngrok_file: str = './ngrok.txt',
             db_name: str = 'reviews'):
+    log = utils.Debug_Logger('init_db')
+
     try:
         forward_ip, forward_port = get_connection_args(ngrok_file)
     except:
@@ -204,9 +232,8 @@ def init_db(ngrok_file: str = './ngrok.txt',
                             password="password",   # 239mikuNFU@~@
                             charset='utf8mb4')
     except pymysql.err.OperationalError as err:
-        log = utils.Debug_Logger('init_db')
         log.log(f'Error connecting to MySQL database, check your ngrok host and port.\nhost: {forward_ip}\nport: {forward_port}', 30)
-    
+
     try:
         log.log(f'Trying localhost:3306')
         return pymysql.connect(host='localhost',
