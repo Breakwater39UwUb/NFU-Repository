@@ -269,13 +269,11 @@
         </div>
 
         <div style="display:none;" class="form_box" id="myDiv8">
-
-
             <form action="get_Change" name="myForm" method="POST">
                 <img src="image/background1.jpg" width="200" height="200">
                 <h3>虎尾餐廳</h3>
                 預測的結果: {{ berts }}，輸入的星級: {{ users }}
-                <textarea rows="10" cols="30" id="myText">{{ user_txt }}</textarea>
+                <textarea rows="10" cols="30" id="myText2" name="txtbox1" required>{{ user_txt }}</textarea>
 
                 <div class="slidecontainer">
                     <input type="range" min="1" max="5" value="1" class="slider" id="myRange">
@@ -348,6 +346,41 @@
         if (month < 0) {
             year -= 1;
             month += 12;
+        }
+
+        function sendData() {
+            var txt = document.getElementById("txtbox").value;
+            var star = document.getElementById("myRange").value;
+            var passed = 1
+
+            $.ajax({
+                url: ('/get_Commet'),
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(txt)
+            });
+
+            $.ajax({
+                url: ('/get_Star'),
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(star)
+            });
+
+            $.ajax({
+                url: ('/get_Passed'),
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(passed)
+            });
+
+            $.ajax({
+                url: ('/get_Date'),
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(currentDate)
+            });
+
         }
 
         // 创建新的日期对象
@@ -452,7 +485,7 @@
 
         function ShowDiv9() {
             document.getElementById("myDiv9").style.display = "";
-            document.getElementById("myDiv9").style.display = 'none';
+            document.getElementById("myDiv8").style.display = 'none';
         }
     </script>
 </body>
