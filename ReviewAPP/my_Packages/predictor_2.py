@@ -24,6 +24,7 @@ def review_analyze(TEXT: list = [], file_path: str = None):
 
     returns list of tuples
         >>> [(label: list[int], text: str, time: list[str])]
+        >>> ([1, 1, 1, 1], 'text', 'YYYY/MM')
 
     Examples:
     ```python
