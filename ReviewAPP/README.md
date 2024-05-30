@@ -8,7 +8,7 @@
     - [Development](#development)
   - [How to use](#how-to-use)
   - [Todo](#todo)
-  - [Fix](#fix)
+    - [Fix](#fix)
   - [Dataset](#dataset)
   - [Database implementation](#database-implementation)
   - [Issue and work-around](#issue-and-work-around)
@@ -107,6 +107,8 @@ ReviewAPP $ python app.py
 
 In browser, go to <http://127.0.0.1:8900>
 
+All saved reviews in `SaveDate/{restaurant}/`
+
 ## Todo
 
 - To prevent ngrok.txt path is not found, add a try/catch block
@@ -114,7 +116,7 @@ In browser, go to <http://127.0.0.1:8900>
 
 - Close the chromedriver properly, preventing from too many zombie processes in background
 
-## Fix
+### Fix
 
 1. Web scraper sometimes doen't works as expected.
 2. Weird error from flask
@@ -144,8 +146,9 @@ BERT multi label model
 ```text
 +-- Database: reviews
     +-- Table: reviews
-    |   +-- column 1: rating INT
-    |   +-- column 2: txt VARCHAR(1024)
+    |   +-- column 1: time_range CHAR(8)
+    |   +-- column 2: rating INT
+    |   +-- column 3: txt VARCHAR(1024)
 ```
 
 ## Issue and work-around
