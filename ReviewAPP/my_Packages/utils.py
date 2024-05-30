@@ -1,4 +1,9 @@
-import glob, os, re, calendar, logging
+import glob
+import os
+import re
+import calendar
+import logging
+import json, csv
 from datetime import datetime, timedelta
 
 invalid_chars = '<>:"/\|?*｜\n. '
@@ -246,6 +251,23 @@ def get_review_abs_time(time_ago: str):
         new_time = time_now - timedelta(days=int(review_rel_time[0])*365)
         return new_time.strftime('%Y/')
     return new_time.strftime('%Y/%m')
+
+def read_predictions(FILE_PATH: str):
+    '''Read lines from multi-label prediction files
+
+    FILE: path under restaurant directory
+        >>> SaveData/{name}/prediction_{name}_{chart_type}_{time_range}.json
+    '''
+
+    TEXT = []
+    file_type = FILE_PATH.split('.')[-1]
+
+    if file_type == 'json':
+        with open(FILE_PATH, 'r', encoding='utf-8') as file:
+            data = json.load(file)
+            for line in data:
+                TEXT.append(line['comment'])
+        return TEXT
 
 class Debug_Logger:
     '''Custom logger class'''
