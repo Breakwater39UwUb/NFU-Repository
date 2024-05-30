@@ -1,4 +1,6 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, url_for, send_from_directory
+from os.path import sep
+from urllib.parse import quote
 from my_Packages import utils
 import my_Packages.review_plot as rplt
 from my_Packages.scraper import get_reviews
@@ -115,7 +117,7 @@ def get_Url():
         predictions = review_analyze(file_path=review_file)
     else:
         # TODO: Read predictions from file
-        pass
+        predictions = utils.read_predictions(prediction_file)
     filtered_data = [d for d in predictions  if d[2].split('/')[1] != '']
 
     # TODO: Read cached predictions file to plot charts
@@ -123,15 +125,37 @@ def get_Url():
     price_label_chart = rplt.plot_by_label(filtered_data, rplt.PRICE, month_range, review_file)
     serve_label_chart = rplt.plot_by_label(filtered_data, rplt.SERVICE, month_range, review_file)
     envir_label_chart = rplt.plot_by_label(filtered_data, rplt.ENV, month_range, review_file)
-    debug_type(predictions)
+    
+    food_label_chart = food_label_chart.split(sep)[1:]
+    price_label_chart = price_label_chart.split(sep)[1:]
+    serve_label_chart = serve_label_chart.split(sep)[1:]
+    envir_label_chart = envir_label_chart.split(sep)[1:]
+
+    food_label_chart = '/'.join(food_label_chart)
+    price_label_chart = '/'.join(price_label_chart)
+    serve_label_chart = '/'.join(serve_label_chart)
+    envir_label_chart = '/'.join(envir_label_chart)
+
+    food_label_url = url_for('serve_image', filename=food_label_chart)
+    price_label_url = url_for('serve_image', filename=price_label_chart)
+    serve_label_url = url_for('serve_image', filename=serve_label_chart)
+    envir_label_url = url_for('serve_image', filename=envir_label_chart)
+    print('-----------------', envir_label_chart)
+    
     analysis = calculate_labels(predictions)
     return render_template(chart_html,
                         str1=analysis[0], str2=analysis[1], str3=analysis[2], str4=analysis[3],
-                        Food = "image/Food.png",
-                        Price = "image/Price.png",
-                        Service = "image/Service.png",
-                        Conment = "image/Conment.png"
+                        Food = food_label_url,
+                        Price = price_label_url,
+                        Service = serve_label_url,
+                        Environment = envir_label_url
                         )
+
+@app.route('/<path:filename>')
+def serve_image(filename):
+    print('--------------------------------------------------------')
+    print(filename)
+    return send_from_directory('', filename)
 
 def calculate_labels(labels: list[tuple]):
     '''Calculate all labels and show results on web
