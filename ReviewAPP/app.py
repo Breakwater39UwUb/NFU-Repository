@@ -5,6 +5,7 @@ import my_Packages.review_plot as rplt
 from my_Packages.scraper import get_reviews
 from my_Packages.predictor_1 import review_predict
 from my_Packages.predictor_2 import review_analyze
+from my_Packages.db_update import insert_review
 
 flask_template_path = 'web/'	# web/templates/
 home_page = 'main.html'	# main.html
@@ -78,6 +79,7 @@ def get_Change():
         bert_rating, valid_ratings = utils.rating_dict[answer]
         if user_rating in valid_ratings:
             bert_rating += '且評分與評論相符。'
+            insert_review(user_rating, data)
         else:
             bert_rating += '但評分與評論不符。'
     return render_template(new_predict_page, users = user_rating, berts = bert_rating, user_txt = data)
