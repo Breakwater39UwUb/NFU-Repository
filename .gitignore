@@ -7,6 +7,7 @@ gwd_preview_web/
 gwd_workspace.json
 Data_local/
 sklearn-venv/
+ReviewAPP/web/charts/*
 
 .vscode/*
 !.vscode/settings.json

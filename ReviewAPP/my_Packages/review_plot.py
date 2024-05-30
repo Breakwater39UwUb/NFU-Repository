@@ -4,13 +4,18 @@ This module contains functions to plot review counts per time
 import os
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
+from matplotlib.ticker import MaxNLocator
 import numpy as np
 import pandas as pd
 from datetime import datetime, timedelta
 from collections import defaultdict
-from my_Packages.utils import check_month_range
+from my_Packages.utils import check_month_range, gen_diagram_name
 global labels
 labels = {0: 'Food', 1: 'Price', 2: 'Service', 3: 'Environment'}
+FOOD = 0
+PRICE = 1
+SERVICE = 2
+ENV = 3
 def sort_by_month(data: list):
     '''Count reviews per month
 
@@ -44,8 +49,8 @@ def sort_by_month(data: list):
 def plot_by_label(data: list,
                   label: int,
                   time_range: str,
-                  save_filename: str = None,
-                  save_folder: str = None):
+                  save_filename: str,
+                  save_folder: str = 'SaveData'):
     '''Count given label per month
     
     data: list[tuple]
@@ -65,6 +70,7 @@ def plot_by_label(data: list,
     '''
     counts = defaultdict(int)
     label_counts = defaultdict(int)
+    bar_width = 10
 
     # Count the number of data points for each month
     for d in data:
@@ -89,22 +95,23 @@ def plot_by_label(data: list,
     # ax.plot(times, counts)
     ax.xaxis.set_major_locator(mdates.MonthLocator())
     ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y/%m'))
+    ax.yaxis.set_major_locator(MaxNLocator(integer=True))
     
     global labels
-    print(f'debug-----------------------------------------------------------\n{times}\n{counts}')
-    plt.bar(times, counts, 10, color='red', label='Total')
-    plt.plot(times, label_counts, label=f'Label: {labels[label]}')
-    plt.xlabel('Month')
-    plt.ylabel('Review Count')
+    plt.bar(times, counts, bar_width, color='red', label='總評論數量')
+    plt.plot(times, label_counts, label=f'標籤: {labels[label]}')
+    plt.xlabel('月份')
+    plt.ylabel('評論數量')
     plt.legend()
-    plt.title('Label Count per month')
+    plt.title('個月份標籤數量')
+    plt.rcParams['font.sans-serif'] = ['Microsoft JhengHei'] 
+    plt.rcParams['axes.unicode_minus'] = False
+    plt.rc('font', size=16)
 
     # TODO: Save file to ./Saved_images
-    # TODO: Create directory if it doesn't exist
-    if save_folder:
-        os.makedirs(save_folder, exist_ok=True)
-        save_path = os.path.join(save_folder, save_filename)
-        plt.savefig(save_path)
+    save_path = gen_diagram_name(save_filename, labels[label], time_range)
+    plt.savefig(save_path)
+    return save_path
 
 def compare_labels(data: list, comp_labels: list):
     '''Compare data with given labels

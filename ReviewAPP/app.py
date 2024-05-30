@@ -1,20 +1,20 @@
-from flask import Flask, request, render_template, json, url_for
-import os
-from my_Packages.utils import sort_times
+from flask import Flask, request, render_template, url_for, send_from_directory
+from os.path import sep
+from urllib.parse import quote
+from my_Packages import utils
 import my_Packages.review_plot as rplt
 from my_Packages.scraper import get_reviews
 from my_Packages.predictor_1 import review_predict
 from my_Packages.predictor_2 import review_analyze
+from my_Packages.db_update import insert_review
 
 flask_template_path = 'web/'	# web/templates/
 home_page = 'main.html'	# main.html
 predict_page = 'predict.html'
 new_predict_page = 'new_predict.html'
 analysis_page = 'analysis.html'
-platform = ''
 chart_html= 'chart.html'
 user_rating = 1
-answer = ''
 
 app = Flask(__name__,
             template_folder=flask_template_path,
@@ -30,7 +30,7 @@ def Home():
 def get_Star():
     '''Get user review rating for multi-class classification'''
     global user_rating
-    user_rating  = request.get_json()
+    user_rating  = int(request.get_json())
     return render_template(predict_page)
 
 # TODO: Remove this API due to it is not accessed
@@ -73,60 +73,89 @@ def get_Change():
     '''
     if request.method == "POST":
         data = request.form.get("txtbox")
-        print(data)
     answer = review_predict(q_input=data)
     
-    # TODO: Change return string for better presentation of results
-    if answer == '0':
-        bert_rating = '負向(1,2 星)' # Negative (1, 2 star) 
-        #英文子太長超出去，所以改中文
-    if answer == '1':
-        bert_rating = '中立(3 星)' # Neutral (3 star)
-        #英文子太長超出去，所以改中文
-    if answer == '2':
-        bert_rating = '正向(4,5 星)' # Positive (4, 5 star)
-        #英文子太長超出去，所以改中文
+    if answer in utils.rating_dict:
+        bert_rating, valid_ratings = utils.rating_dict[answer]
+        if user_rating in valid_ratings:
+            bert_rating += '且評分與評論相符。'
+            insert_review(user_rating, data)
+        else:
+            bert_rating += '但評分與評論不符。'
     return render_template(new_predict_page, users = user_rating, berts = bert_rating, user_txt = data)
 
 @app.route( "/get_Url" , methods=['POST','GET'])
 def get_Url():
     if request.method == "POST":
         data_url = request.form.get("myTextarea")  
+        if data_url is None :
+            raise ValueError('Please input a url under "Overview tab".')
+        if 'google' in data_url:
+            platform = 'Googlemaps'
+        else:
+            platform = 'Foodpanda'
+        
         form_time_start = request.form.get('time_start') 
         form_time_end = request.form.get('time_end')
-        form_time_start, form_time_end = sort_times(form_time_start, form_time_end)
-        # month_range: '2003-05 2004-03
+        form_time_start, form_time_end = utils.sort_times(form_time_start, form_time_end)
+        # month_range: '2003-05 2004-03'
         month_range = f'{form_time_start} {form_time_end}'
-        print('\n----------------------------------------------------------------')
-        print(form_time_end)
-        print('\n----------------------------------------------------------------')
 
-    if data_url is None :
-        raise ValueError('Please input a url under "Overview tab".')
     
     try:
         # TODO: file format should select by user
         # may remove the check_cache until client web have proper function to handle
-        review_file = get_reviews(url=data_url, webname=platform, format= 'json', check_cache=True)
+        review_file = get_reviews(url=data_url, webname=platform, format='json', check_cache=True)
     except:
+        raise
         return ('', 500)
     
     # TODO: Change filename to dynamic to avoid redundant image creation
-    predictions = review_analyze(file_path=review_file)
+    # Check prediction cache for plot
+    prediction_file = utils.check_predict_cache(review_file)
+    if prediction_file is None:
+        predictions = review_analyze(file_path=review_file)
+    else:
+        # TODO: Read predictions from file
+        predictions = utils.read_predictions(prediction_file)
     filtered_data = [d for d in predictions  if d[2].split('/')[1] != '']
-    rplt.plot_by_label(filtered_data, 0, month_range, 'Food.png','web')
-    rplt.plot_by_label(filtered_data, 1, month_range, 'Price.png','web')
-    rplt.plot_by_label(filtered_data, 2, month_range, 'Service.png','web')
-    rplt.plot_by_label(filtered_data, 3, month_range, 'Conment.png','web')
-    debug_type(predictions)
+
+    # TODO: Read cached predictions file to plot charts
+    food_label_chart = rplt.plot_by_label(filtered_data, rplt.FOOD, month_range, review_file)
+    price_label_chart = rplt.plot_by_label(filtered_data, rplt.PRICE, month_range, review_file)
+    serve_label_chart = rplt.plot_by_label(filtered_data, rplt.SERVICE, month_range, review_file)
+    envir_label_chart = rplt.plot_by_label(filtered_data, rplt.ENV, month_range, review_file)
+    
+    food_label_chart = food_label_chart.split(sep)[1:]
+    price_label_chart = price_label_chart.split(sep)[1:]
+    serve_label_chart = serve_label_chart.split(sep)[1:]
+    envir_label_chart = envir_label_chart.split(sep)[1:]
+
+    food_label_chart = '/'.join(food_label_chart)
+    price_label_chart = '/'.join(price_label_chart)
+    serve_label_chart = '/'.join(serve_label_chart)
+    envir_label_chart = '/'.join(envir_label_chart)
+
+    food_label_url = url_for('serve_image', filename=food_label_chart)
+    price_label_url = url_for('serve_image', filename=price_label_chart)
+    serve_label_url = url_for('serve_image', filename=serve_label_chart)
+    envir_label_url = url_for('serve_image', filename=envir_label_chart)
+    print('-----------------', envir_label_chart)
+    
     analysis = calculate_labels(predictions)
     return render_template(chart_html,
                         str1=analysis[0], str2=analysis[1], str3=analysis[2], str4=analysis[3],
-                        Food = "image/Food.png",
-                        Price = "image/Price.png",
-                        Service = "image/Service.png",
-                        Conment = "image/Conment.png"
+                        Food = food_label_url,
+                        Price = price_label_url,
+                        Service = serve_label_url,
+                        Environment = envir_label_url
                         )
+
+@app.route('/<path:filename>')
+def serve_image(filename):
+    print('--------------------------------------------------------')
+    print(filename)
+    return send_from_directory('', filename)
 
 def calculate_labels(labels: list[tuple]):
     '''Calculate all labels and show results on web
@@ -148,19 +177,6 @@ def calculate_labels(labels: list[tuple]):
             index += 1
 
     return analysis
-
-def read_review_file(FILE: str):
-    '''Read lines from file for the BERT
-    '''
-
-    TEXT = []
-
-    if FILE.split('.')[-1] == 'json':
-        with open(FILE, 'r', encoding='utf-8') as file:
-            data = json.load(file)
-            for line in data:
-                TEXT.append(line['comment'])
-        return TEXT
 
 def debug_type(var):
     print('----------')
