@@ -219,7 +219,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <nav class="nav">
             <ul class="nav_items" style="list-style-type:none;background-color:white">
-                <a href="#" class="nav_logo" id="logo" style="list-style-type:none;background-color:white">首頁 </a>
+                <a href="/" class="nav_logo" id="logo" style="list-style-type:none;background-color:white">首頁 </a>
                 <h1 id="title" class="title">評論系統</h1>
                 <button type="button" class="Open" onclick="ShowDiv2() " id="button3">評論標籤比例</button>
                 <select id="select1" onchange="toggleDiv()">
@@ -432,12 +432,10 @@
     </div>
 
     <div style="display:none;" class="form_box" id="myDiv7">
-        <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
-        <h1>服務標籤數量統計</h1>
-        <img src={{Service}} width="800" heigh="800" alt="一張圖片">
+        
         <form action="#">
             <h1>服務標籤數量統計</h1>
-            <img src="Service.png" width="800" heigh="800" alt="一張圖片"> 長條圆為該月份的評論數量，折線圖表示選擇的標籤在該月的數量
+            <img src={{Service}} width="800" heigh="800" alt="一張圖片"> 長條圆為該月份的評論數量，折線圖表示選擇的標籤在該月的數量
         </form>
         <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
     </div>
