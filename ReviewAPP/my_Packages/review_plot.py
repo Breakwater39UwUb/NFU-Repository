@@ -111,6 +111,7 @@ def plot_by_label(data: list,
     # TODO: Save file to ./Saved_images
     save_path = gen_diagram_name(save_filename, labels[label], time_range)
     plt.savefig(save_path)
+    return save_path
 
 def compare_labels(data: list, comp_labels: list):
     '''Compare data with given labels
