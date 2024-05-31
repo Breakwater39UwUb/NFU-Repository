@@ -281,14 +281,14 @@
         </div>
 
 
-        <div style="display:none;" class="form_box1" id="myDiv8">
+        <div style="display:none;" class="form_box" id="myDiv8">
 
 
             <form action="get_Change" name="myForm" method="POST">
                 <img src="image/background1.jpg" width="200" height="200">
                 <h3>虎尾餐廳</h3>
 
-                <textarea rows="10" cols="30" id="myText2" name="txtbox" required></textarea>
+                <textarea rows="10" cols="30" id="myText2" name="txtbox1" required></textarea>
 
                 <div class="slidecontainer">
                     <input type="range" min="1" max="5" value="1" class="slider" id="myRange">
@@ -309,7 +309,7 @@
             <form action="get_Url" name="myForm1" method="POST" onsubmit="required()">
                 <h3>輸入網址</h3>
 
-                <textarea rows="10" cols="30" id="txtbox" name="myTextarea" placeholder="input Something" align="center" required></textarea>
+                <textarea rows="10" cols="30" id="txtbox" name="myTextarea" placeholder="輸入店家網址" align="center" required></textarea>
                 <div class="Send-field">
                     <button type="submit" onclick="sendData()" align="center" style="height:25px;width:120px">送出</button>
                     <div id="output"></div>
@@ -463,12 +463,12 @@
 
     <div style="display:none;" class="form_box" id="myDiv11">
 
-        <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
         <h1>餐點標籤數量統計</h1>
         <img src="Food.png" width="800" heigh="800" alt="一張圖片">
         <form action="#">
             長條圆為該月份的評論數量 ， 折線圖表示選擇的標籤在該月的數量
         </form>
+        <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
     </div>
 
     </div>
@@ -535,6 +535,45 @@
         dateend.value = ""
 
         var t = document.getElementById('txtbox').value;
+
+        function sendData() {
+            var txt = document.getElementById("txtbox").value;
+            var star = document.getElementById("myRange").value;
+            var passed = 1
+
+
+
+
+
+            $.ajax({
+                url: ('/get_Commet'),
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(txt)
+            });
+
+            $.ajax({
+                url: ('/get_Star'),
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(star)
+            });
+
+            $.ajax({
+                url: ('/get_Passed'),
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(passed)
+            });
+
+            $.ajax({
+                url: ('/get_Date'),
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(currentDate)
+            });
+
+        }
 
 
 
