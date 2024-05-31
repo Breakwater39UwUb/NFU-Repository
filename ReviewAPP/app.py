@@ -72,7 +72,7 @@ def get_Change():
         - '2', Positive (4, 5 star)
     '''
     if request.method == "POST":
-        data = request.form.get("txtbox")
+        data = request.form.get("txtbox1")
     answer = review_predict(q_input=data)
     
     if answer in utils.rating_dict:
