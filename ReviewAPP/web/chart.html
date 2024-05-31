@@ -288,7 +288,7 @@
                 <img src="image/background1.jpg" width="200" height="200">
                 <h3>虎尾餐廳</h3>
 
-                <textarea rows="10" cols="30" id="myText2" name="txtbox" required></textarea>
+                <textarea rows="10" cols="30" id="myText2" name="txtbox1" required></textarea>
 
                 <div class="slidecontainer">
                     <input type="range" min="1" max="5" value="1" class="slider" id="myRange">
@@ -309,7 +309,7 @@
             <form action="get_Url" name="myForm1" method="POST" onsubmit="required()">
                 <h3>輸入網址</h3>
 
-                <textarea rows="10" cols="30" id="txtbox" name="myTextarea" placeholder="input Something" align="center" required></textarea>
+                <textarea rows="10" cols="30" id="txtbox" name="myTextarea" placeholder="輸入店家網址" align="center" required></textarea>
                 <div class="Send-field">
                     <button type="submit" onclick="sendData()" align="center" style="height:25px;width:120px">送出</button>
                     <div id="output"></div>
@@ -320,64 +320,65 @@
                 <input type="month" id="time_end" name="time_end" required>
             </form>
         </div>
+    </div>
 
-        <div style="display:none;" class="form_box1" id="myDiv2">
-            <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
-            <form action="#">
-                <canvas id="myChart" width="200" height="200"></canvas>
-            </form>
-        </div>
+    <div style="display:none;" class="form_box1" id="myDiv2">
+        <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
+        <form action="#">
+            <canvas id="myChart" width="200" height="200"></canvas>
+        </form>
+    </div>
 
-        <div style="display:none;" class="form_box1" id="myDiv3">
+    <div style="display:none;" class="form_box1" id="myDiv3">
 
-            <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
-            <form action="#">
-                <table bgcolor="black" width="350">
-                    <tr bgcolor="grey">
-                        <th width="40">1星</th>
-                        <th width="40">2星</th>
-                        <th width="40">3星</th>
-                        <th width="40">4星</th>
-                        <th width="40">5星</th>
-                    </tr>
-                    <tr bgcolor="lightgrey" align="center">
-                        <td id="Value_f1">2</td>
-                        <td id="Value_f2">2</td>
-                        <td id="Value_f3">1</td>
-                        <td id="Value_f4">1</td>
-                        <td id="Value_f5">1</td>
-                    </tr>
-                </table>
-                <canvas id="myChart2" width="200" height="200"></canvas>
+        <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
+        <form action="#">
+            <table bgcolor="black" width="350">
+                <tr bgcolor="grey">
+                    <th width="40">1星</th>
+                    <th width="40">2星</th>
+                    <th width="40">3星</th>
+                    <th width="40">4星</th>
+                    <th width="40">5星</th>
+                </tr>
+                <tr bgcolor="lightgrey" align="center">
+                    <td id="Value_f1">2</td>
+                    <td id="Value_f2">2</td>
+                    <td id="Value_f3">1</td>
+                    <td id="Value_f4">1</td>
+                    <td id="Value_f5">1</td>
+                </tr>
+            </table>
+            <canvas id="myChart2" width="200" height="200"></canvas>
 
-            </form>
-        </div>
+        </form>
+    </div>
 
-        <div style="display:none;" class="form_box1" id="myDiv4">
+    <div style="display:none;" class="form_box1" id="myDiv4">
 
-            <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
-            <form action="#">
-                <table bgcolor="black" width="350">
-                    <tr bgcolor="grey">
-                        <th width="40">1星</th>
-                        <th width="40">2星</th>
-                        <th width="40">3星</th>
-                        <th width="40">4星</th>
-                        <th width="40">5星</th>
+        <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
+        <form action="#">
+            <table bgcolor="black" width="350">
+                <tr bgcolor="grey">
+                    <th width="40">1星</th>
+                    <th width="40">2星</th>
+                    <th width="40">3星</th>
+                    <th width="40">4星</th>
+                    <th width="40">5星</th>
 
-                    </tr>
-                    <tr bgcolor="lightgrey" align="center">
-                        <td id="Value_e1">10</td>
-                        <td id="Value_e2">1</td>
-                        <td id="Value_e3">2</td>
-                        <td id="Value_e4">2</td>
-                        <td id="Value_e5">1</td>
-                    </tr>
-                </table>
-                <canvas id="myChart3" width="200" height="200"></canvas>
+                </tr>
+                <tr bgcolor="lightgrey" align="center">
+                    <td id="Value_e1">10</td>
+                    <td id="Value_e2">1</td>
+                    <td id="Value_e3">2</td>
+                    <td id="Value_e4">2</td>
+                    <td id="Value_e5">1</td>
+                </tr>
+            </table>
+            <canvas id="myChart3" width="200" height="200"></canvas>
 
-            </form>
-        </div>
+        </form>
+    </div>
     </div>
 
     <div style="display:none;" class="form_box1" id="myDiv5">
@@ -431,14 +432,7 @@
         </form>
     </div>
 
-    <div style="display:none;" class="form_box" id="myDiv7">
-        
-        <form action="#">
-            <h1>服務標籤數量統計</h1>
-            <img src={{Service}} width="800" heigh="800" alt="一張圖片"> 長條圆為該月份的評論數量，折線圖表示選擇的標籤在該月的數量
-        </form>
-        <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
-    </div>
+
 
     <div style="display:none;" class="form_box" id="myDiv9">
 
@@ -464,12 +458,25 @@
 
     <div style="display:none;" class="form_box" id="myDiv11">
 
-        <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
+
         <h1>餐點標籤數量統計</h1>
         <img src={{Food}} width="800" heigh="800" alt="一張圖片">
         <form action="#">
             長條圆為該月份的評論數量 ， 折線圖表示選擇的標籤在該月的數量
         </form>
+        <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
+    </div>
+
+
+    <div style="display:none;" class="form_box" id="myDiv7">
+
+
+        <h1>服務標籤數量統計</h1>
+        <img src={{Service}} width="800" heigh="800" alt="一張圖片">
+        <form action="#">
+            長條圆為該月份的評論數量，折線圖表示選擇的標籤在該月的數量
+        </form>
+        <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
     </div>
 
     </div>
@@ -772,6 +779,45 @@
             var inputField = document.getElementById("txtbox");
             var textArea = document.getElementById("myText");
             textArea.value = inputField.value;
+        }
+
+        function sendData() {
+            var txt = document.getElementById("txtbox").value;
+            var star = document.getElementById("myRange").value;
+            var passed = 1
+
+
+
+
+
+            $.ajax({
+                url: ('/get_Commet'),
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(txt)
+            });
+
+            $.ajax({
+                url: ('/get_Star'),
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(star)
+            });
+
+            $.ajax({
+                url: ('/get_Passed'),
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(passed)
+            });
+
+            $.ajax({
+                url: ('/get_Date'),
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(currentDate)
+            });
+
         }
 
 

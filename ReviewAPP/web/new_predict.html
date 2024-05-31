@@ -286,26 +286,26 @@
             </form>
             <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
         </div>
-
-        <div style="display:none;" class="form_box" id="myDiv9">
-
-            <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
-            <form action="get_Url" name="myForm1" method="POST" onsubmit="required()">
-                <h3>輸入網址</h3>
-
-                <textarea rows="10" cols="30" id="txtbox" name="myTextarea" placeholder="input Something" align="center" required></textarea>
-                <div class="Send-field">
-                    <button type="submit" onclick="sendData()" align="center" style="height:25px;width:120px">送出</button>
-                    <div id="output"></div>
-                </div>
-                <h3>輸入開始時間</h3>
-                <input type="month" id="time_start" name="time_start" required>
-                <h3>輸入結束時間</h3>
-                <input type="month" id="time_end" name="time_end" required>
-            </form>
-        </div>
     </div>
 
+    <div style="display:none;" class="form_box" id="myDiv9">
+
+        <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
+        <form action="get_Url" name="myForm1" method="POST" onsubmit="required()">
+            <h3>輸入網址</h3>
+
+            <textarea rows="10" cols="30" id="txtbox" name="myTextarea" placeholder="input Something" align="center" required></textarea>
+            <div class="Send-field">
+                <button type="submit" onclick="sendData()" align="center" style="height:25px;width:120px">送出</button>
+                <div id="output"></div>
+            </div>
+            <h3>輸入開始時間</h3>
+            <input type="month" id="time_start" name="time_start" required>
+            <h3>輸入結束時間</h3>
+            <input type="month" id="time_end" name="time_end" required>
+        </form>
+    </div>
+    </div>
 
 
     </div>
