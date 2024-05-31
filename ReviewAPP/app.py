@@ -73,7 +73,7 @@ def get_Change():
     '''
     if request.method == "POST":
         data = request.form.get("txtbox1")
-        print(data)
+        
     answer = review_predict(q_input=data)
     
     # TODO: Change return string for better presentation of results
