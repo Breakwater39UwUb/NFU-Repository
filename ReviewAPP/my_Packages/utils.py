@@ -124,7 +124,7 @@ def gen_diagram_name(name: str, chart_type: str, date_range: str):
     
     return filename
 
-def create_dir(name: str, parent_dir: str|list='SaveData'):
+def create_dir(name: str, parent_dir: str|list=''):
     '''Create directory for review files and charts
     
     name: restaurant name
@@ -135,8 +135,13 @@ def create_dir(name: str, parent_dir: str|list='SaveData'):
     return 'SaveData\\麥當勞-虎尾新興餐廳-Google地圖'
     '''
     
-    parent_dir.append(name)
-    target_dir = os.path.sep.join(parent_dir)
+    if type(parent_dir) == str:
+        if parent_dir == '' or parent_dir is None:
+            parent_dir = 'SaveData'
+        target_dir = os.path.sep.join([parent_dir, name])
+    elif type(parent_dir) == list:
+        parent_dir.append(name)
+        target_dir = os.path.sep.join(parent_dir)
     if not os.path.exists(target_dir):
         os.makedirs(target_dir)
     return target_dir
