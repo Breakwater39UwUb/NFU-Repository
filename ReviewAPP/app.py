@@ -76,16 +76,13 @@ def get_Change():
         
     answer = review_predict(q_input=data)
     
-    # TODO: Change return string for better presentation of results
-    if answer == '0':
-        bert_rating = '負向(1,2 星)' # Negative (1, 2 star) 
-        #英文子太長超出去，所以改中文
-    if answer == '1':
-        bert_rating = '中立(3 星)' # Neutral (3 star)
-        #英文子太長超出去，所以改中文
-    if answer == '2':
-        bert_rating = '正向(4,5 星)' # Positive (4, 5 star)
-        #英文子太長超出去，所以改中文
+    if answer in utils.rating_dict:
+        bert_rating, valid_ratings = utils.rating_dict[answer]
+        if user_rating in valid_ratings:
+            bert_rating += '且評分與評論相符。'
+            insert_review(user_rating, data)
+        else:
+            bert_rating += '但評分與評論不符。'
     return render_template(new_predict_page, users = user_rating, berts = bert_rating, user_txt = data)
 
 @app.route( "/get_Url" , methods=['POST','GET'])
