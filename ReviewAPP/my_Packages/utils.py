@@ -124,7 +124,7 @@ def gen_diagram_name(name: str, chart_type: str, date_range: str):
     
     return filename
 
-def create_dir(name: str, parent_dir: str|list=''):
+def create_dir(name: str, parent_dir):
     '''Create directory for review files and charts
     
     name: restaurant name
