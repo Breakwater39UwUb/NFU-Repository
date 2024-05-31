@@ -1,22 +1,20 @@
-import csv, json
+'''Multi-label classification
+
+'''
 # PyTorch
 import torch
-import torch.nn as nn
-import torch.optim as optim
-from torch.utils.data import DataLoader
-from torch.utils.data.dataset import random_split
-import torch.utils.data as data
+# import torch.nn as nn
+# import torch.optim as optim
+# from torch.utils.data import DataLoader
+# from torch.utils.data.dataset import random_split
+# import torch.utils.data as data
 
 # BERT Related Libraries
 from transformers import BertTokenizer, BertForSequenceClassification
 
 # Python
-import pandas as pd
-import numpy as np
-import os, platform
+import os, csv, json
 from my_Packages.bert_paths import multi_label_model
-D = ''
-device = None
 
 def review_analyze(TEXT: list = [], file_path: str = None):
     '''BERT Predict Multi-labels
@@ -26,6 +24,7 @@ def review_analyze(TEXT: list = [], file_path: str = None):
 
     returns list of tuples
         >>> [(label: list[int], text: str, time: list[str])]
+        >>> ([1, 1, 1, 1], 'text', 'YYYY/MM')
 
     Examples:
     ```python
@@ -38,7 +37,6 @@ def review_analyze(TEXT: list = [], file_path: str = None):
 
     TIME = []
     if file_path is not None:
-        print(file_path)
         TEXT = []
         # Read reviews from json
         if file_path.split('.')[-1] == 'json':
@@ -59,26 +57,19 @@ def review_analyze(TEXT: list = [], file_path: str = None):
             file.close()
 
         # debug output
-        print(TEXT[0])
+        # print(TEXT[0])
 
     Predictions = []
 
     # ML Parameters
     LabelNum = 4
-    global D
-    if (platform.processor() == 'arm'):
-        D = 'mps'
-    else:
-        D = 'cuda'
-
-    global device
-    device = torch.device(D)
-    print("using device",device)
 
     # hard code the label dimension to be 4 (because the data has 4 classes)
     num_labels = LabelNum
 
     # Define model
+    global device
+    set_device_by_platform()
     model = BertForSequenceClassification.from_pretrained('bert-base-chinese', num_labels=LabelNum)
     model.to(device)
 
@@ -92,7 +83,7 @@ def review_analyze(TEXT: list = [], file_path: str = None):
             TEXT[i] = TEXT[i][0:512]
         labels = Predict(model, TEXT[i], tokenizer)
         Predictions.append((labels, TEXT[i], TIME[i]))
-
+    save_predictions(Predictions, file_path)
     return Predictions
 
 def Predict(model, text, tokenizer):
@@ -138,3 +129,30 @@ def Predict(model, text, tokenizer):
         Prediction.append(int(prediction.tolist()[0][i]))
 
     return Prediction
+
+def set_device_by_platform():
+    global device
+    if torch.backends.mps.is_available():
+        D = 'mps'
+    elif torch.cuda.is_available():
+        D = 'cuda'
+    else:
+        D = 'cpu'
+    device = torch.device(D)
+    print("using device",device)
+
+def save_predictions(data: list, save_path: str):
+    '''Save predictions to json file
+    
+    save_path: /SaveData/SHOPNAME/SHOPNAME.json
+    '''
+
+    save_path = save_path.split(os.path.sep)
+    dir_ = os.path.sep.join(save_path[:-1])
+    file = 'prediction_' + save_path[1] + '.json'
+    save_path = os.path.sep.join([dir_, file])
+
+    SAVES = [{'labels': row[0], 'content': row[1], 'time_range': row[2]} for row in data]
+
+    with open(save_path, 'w', encoding='utf-8') as file:
+        json.dump(SAVES, file, ensure_ascii=False, indent=4)

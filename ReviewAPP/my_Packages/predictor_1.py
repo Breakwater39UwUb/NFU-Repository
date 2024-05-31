@@ -9,9 +9,6 @@ import pickle
 from core import to_bert_ids, use_model
 from my_Packages import bert_paths
 
-global device 
-device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
-
 def init_multi_class_model():
 
     # load and init
@@ -37,7 +34,13 @@ def init_multi_class_model():
     #     "num_labels":149 # 分幾類
     # }
     
-    global model, tokenizer
+    global model, tokenizer, device
+    if torch.backends.mps.is_available():
+        device = torch.device('mps')
+    elif torch.cuda.is_available():
+        device = torch.device('cuda')
+    else:
+        device = torch.device('cpu')
     model, tokenizer = use_model(**model_setting)
     model.to(device)
     model.eval()
