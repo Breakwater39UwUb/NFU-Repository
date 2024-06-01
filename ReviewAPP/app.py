@@ -75,6 +75,14 @@ def get_Change():
         data = request.form.get("txtbox1")
         
     answer = review_predict(q_input=data)
+
+    if answer in utils.rating_dict:
+        bert_rating, valid_ratings = utils.rating_dict[answer]
+        if user_rating in valid_ratings:
+            bert_rating += '且評分與評論相符。'
+            insert_review(user_rating, data)
+        else:
+            bert_rating += '但評分與評論不符。'
     
     if answer in utils.rating_dict:
         bert_rating, valid_ratings = utils.rating_dict[answer]
@@ -84,6 +92,9 @@ def get_Change():
         else:
             bert_rating += '但評分與評論不符。'
     return render_template(new_predict_page, users = user_rating, berts = bert_rating, user_txt = data)
+
+
+
 
 @app.route( "/get_Url" , methods=['POST','GET'])
 def get_Url():
