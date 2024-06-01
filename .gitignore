@@ -11,6 +11,7 @@ ReviewAPP/web/charts/*
 ReviewAPP/web/*.png
 ReviewAPP/web/*.jpg
 ReviewAPP/web/*.jpeg
+SaveData/
 
 .vscode/*
 !.vscode/settings.json
