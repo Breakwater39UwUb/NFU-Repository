@@ -20,7 +20,7 @@ ENV = 3
 
 plt.rcParams['font.sans-serif'] = ['Microsoft JhengHei', 'SimSun']
 plt.rcParams['axes.unicode_minus'] = False
-plt.rc('font', size=18)
+plt.rc('font', size=22)
 
 def sort_by_month(data: list):
     '''Count reviews per month
@@ -53,13 +53,18 @@ def sort_by_month(data: list):
     plt.show()
 
 def sort_by_year(DATA: list,
-                 year: str):
+                 year: str,
+                 save_filename: str):
     '''Count reviews per year
     
     DATA: list of reviews
         ([1, 0, 1, 0], 'text', '2022/')
     year: like 2024/
+    save_filename: filepath from review scraper
+        ex: 'SaveData\虎尾小籠包(虎尾站)-Google地圖\虎尾小籠包(虎尾站)-Google地圖.json'
     '''
+
+    bar_width = 0.5
     counts = defaultdict(int)
 
     # Count the number of data points for each label
@@ -71,11 +76,30 @@ def sort_by_year(DATA: list,
     LABEL, N = zip(*sorted(counts.items()))
     LABEL = [LABELS_CH[label] for label in LABEL]
 
-    plt.bar(LABEL, N)
+    # Create a new figure with increased height and width
+    plt.figure(figsize=[8, 8])  # Adjust the size as needed
+
+    bars = plt.bar(LABEL, N, width=bar_width)
     plt.xlabel('評論標籤')
     plt.ylabel('評論數量')
     plt.title(f'{year}年總評論標籤')
+
+    # Increase the maximum value of the Y-axis
+    plt.ylim(0, max(N) + 10)
+
+    # Add value on each label
+    for bar in bars:
+        yval = bar.get_height()
+        plt.text(bar.get_x() + bar_width/2,
+                 yval + 0.05,
+                 yval,
+                 ha='center', va='bottom')
+
+    save_path = gen_diagram_name(name=save_filename,
+                                 date_range=year)
+    plt.savefig(save_path, bbox_inches='tight')
     plt.show()
+    return save_path
 
 def plot_by_label(data: list,
                   label: int,
@@ -137,7 +161,9 @@ def plot_by_label(data: list,
     plt.title('個月份標籤數量')
 
     # TODO: Save file to ./Saved_images
-    save_path = gen_diagram_name(save_filename, LABELS[label], time_range)
+    save_path = gen_diagram_name(name=save_filename,
+                                 label=LABELS[label],
+                                 date_range=time_range)
     plt.savefig(save_path)
     return save_path
 
