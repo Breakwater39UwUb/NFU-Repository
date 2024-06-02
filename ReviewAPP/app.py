@@ -106,9 +106,18 @@ def get_Url():
         
         form_time_start = request.form.get('time_start') 
         form_time_end = request.form.get('time_end')
-        form_time_start, form_time_end = utils.sort_times(form_time_start, form_time_end)
-        # month_range: '2003-05 2004-03'
-        month_range = f'{form_time_start} {form_time_end}'
+        # TODO: Get year from web
+        YEAR = '2023'
+
+        if form_time_start is not None:
+            form_time_start, form_time_end = utils.sort_times(form_time_start, form_time_end)
+            # month_range: '2003-05 2004-03'
+            month_range = f'{form_time_start} {form_time_end}'
+            YEAR = None
+        
+        if YEAR is not None:
+            month_range = None
+
 
     
     global review_file
@@ -117,8 +126,7 @@ def get_Url():
         # may remove the check_cache until client web have proper function to handle
         review_file = get_reviews(url=data_url, webname=platform, format='json', check_cache=True)
     except:
-        raise
-        return ('', 500)
+        raise Exception('Failed at get_reviews()')
     
     # TODO: Change filename to dynamic to avoid redundant image creation
     # Check prediction cache for plot
@@ -129,43 +137,41 @@ def get_Url():
         # TODO: Read predictions from file
         predictions = utils.read_predictions(prediction_file)
     
-    # TODO: Add statement to determine filtering month or year
-    filtered_data = [d for d in predictions  if d[2].split('/')[1] != '']
-    
-    # get review on given year
-    # filtered_data = [d for d in predictions  if year in d[2].split('/')]
-
-    # TODO: Read cached predictions file to plot charts
-    food_label_chart = rplt.plot_by_label(filtered_data, rplt.FOOD, month_range, review_file)
-    price_label_chart = rplt.plot_by_label(filtered_data, rplt.PRICE, month_range, review_file)
-    serve_label_chart = rplt.plot_by_label(filtered_data, rplt.SERVICE, month_range, review_file)
-    envir_label_chart = rplt.plot_by_label(filtered_data, rplt.ENV, month_range, review_file)
-    
-    food_label_chart = food_label_chart.split(sep)[1:]
-    price_label_chart = price_label_chart.split(sep)[1:]
-    serve_label_chart = serve_label_chart.split(sep)[1:]
-    envir_label_chart = envir_label_chart.split(sep)[1:]
-
-    food_label_chart = '/'.join(food_label_chart)
-    price_label_chart = '/'.join(price_label_chart)
-    serve_label_chart = '/'.join(serve_label_chart)
-    envir_label_chart = '/'.join(envir_label_chart)
-
-    food_label_url = url_for('serve_image', filename=food_label_chart)
-    price_label_url = url_for('serve_image', filename=price_label_chart)
-    serve_label_url = url_for('serve_image', filename=serve_label_chart)
-    envir_label_url = url_for('serve_image', filename=envir_label_chart)
-    print('-----------------', envir_label_chart)
-    
     analysis = calculate_labels(predictions)
-    return render_template(chart_html,
-                        str1=analysis[0], str2=analysis[1], str3=analysis[2], str4=analysis[3],
-                        Food = food_label_url,
-                        Price = price_label_url,
-                        Service = serve_label_url,
-                        Environment = envir_label_url,
-                        passed = passed
-                        )
+
+    # TODO: Add statement to determine filtering month or year
+    if month_range is not None:
+        filtered_data = [d for d in predictions  if d[2].split('/')[1] != '']
+        
+        labels = [rplt.FOOD, rplt.PRICE, rplt.SERVICE, rplt.ENV]
+        label_names = ['Food', 'Price', 'Service', 'Environment']
+        chart_urls = {}
+
+        for label, name in zip(labels, label_names):
+            chart_urls[name] = process_chart_by_month(filtered_data, label, month_range, review_file)
+    
+        return render_template(chart_html,
+                            str1=analysis[0], str2=analysis[1], str3=analysis[2], str4=analysis[3],
+                            Food = chart_urls['Food'],
+                            Price = chart_urls['Price'],
+                            Service = chart_urls['Service'],
+                            Environment = chart_urls['Environment'],
+                            passed = passed
+                            )
+    # get review on given year
+    if YEAR is not None:
+        filtered_data = [d for d in predictions if YEAR in d[2].split('/')]
+
+        chart_url = rplt.sort_by_year(filtered_data, YEAR, review_file)
+        chart_url = chart_url.split(sep)[1:]
+        chart_url = '/'.join(chart_url)
+        chart_url = url_for('serve_image', filename=chart_url)
+        # return render_template(chart_html,
+        #                        str1=analysis[0], str2=analysis[1], str3=analysis[2], str4=analysis[3],
+        #                        YEARLY = chart_url)
+        return (chart_url, 200)
+
+    
 
 @app.route('/<path:filename>')
 def serve_image(filename):
@@ -187,6 +193,20 @@ def show_years():
         print(years, 200)
         return years
 
+def process_chart_by_month(data: list,
+                           label: int,
+                           month_range: str,
+                           file_path: str):
+    chart_url = rplt.plot_by_label(data, label, month_range, file_path)
+    chart_url = chart_url.split(sep)[1:]
+    chart_url = '/'.join(chart_url)
+    return url_for('serve_image', filename=chart_url)
+
+@app.errorhandler(Exception)
+def handle_exception(error):
+    # now you're handling non-HTTP exceptions only
+    return render_template('error.html', error_message=str(error)), 500
+    
 
 def calculate_labels(labels: list[tuple]):
     '''Calculate all labels and show results on web
@@ -219,4 +239,4 @@ def debug_type(var):
         print(f'value: {var}')
 
 if __name__ == "__main__":
-    app.run(port=8900)
+    app.run(host='10.1.1.22', port=8901)
