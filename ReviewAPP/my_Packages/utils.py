@@ -87,9 +87,11 @@ def check_predict_cache(query: str,
         return files[0]
     return None
 
-def convert_to_tablename(filepath: str):
+def convert_to_tablename(filepath: str, surround_by_backtick=True):
     '''Convert file path to tablename
+
     filepath: like './SaveData/review-Google地圖.json'
+    surround_by_backtick: surround by backtick or not
 
     return 
     ---
@@ -97,9 +99,18 @@ def convert_to_tablename(filepath: str):
     table_name: str
         table name surrounded by sql escape
         >>> `table_name`
+        surround_by_backtick = False
+        >>> table_name
     '''
 
-    table_name = '`' + filepath.split('/')[2].split('-Google')[0] + '`'
+    if 'Google' in filepath:
+        table_name = filepath.split(os.path.sep)[2].split('-Google')[0]
+    elif 'Foodpanda' in filepath:
+        table_name = filepath.split(os.path.sep)[2].split('-Foodpanda')[0]
+
+    if surround_by_backtick:
+        table_name = '`' + table_name + '`'
+
     return table_name
 
 # TODO: create a function to create filename with date range
