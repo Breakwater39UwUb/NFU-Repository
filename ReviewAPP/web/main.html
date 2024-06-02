@@ -4,6 +4,7 @@
 <head>
     <title>美食評論系統</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <style>
         * {
@@ -42,6 +43,10 @@
             margin-bottom: 60%;
             color: blue;
             position: relative;
+        }
+        
+        .year {
+            display: none;
         }
         
         .input-fieid {
@@ -293,18 +298,22 @@
         <div style="display:none;" class="form_box" id="myDiv9">
 
             <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
-            <form action="get_Url" name="myForm1" method="POST" onsubmit="required()">
+            <form action="get_Url" name="myForm1" method="POST" onsubmit="return validateForm()">
                 <h3>輸入網址</h3>
 
-                <textarea rows="10" cols="30" id="txtbox" name="myTextarea" placeholder="輸入店家網址" align="center" required></textarea>
+                <textarea rows="10" cols="30" id="txtbox" name="myTextarea" placeholder="輸入店家網址" align="center"></textarea>
                 <div class="Send-field">
                     <button type="submit" onclick="sendData()" align="center" style="height:25px;width:120px">送出</button>
                     <div id="output"></div>
                 </div>
                 <h3>輸入開始時間</h3>
-                <input type="month" id="time_start" name="time_start" required>
+                <input type="month" id="time_start" name="time_start">
                 <h3>輸入結束時間</h3>
-                <input type="month" id="time_end" name="time_end" required>
+                <input type="month" id="time_end" name="time_end">
+                <div id="year" class="year">
+                    <h3>選擇年分</h3>
+                    <input type="number" id="select_year" name="select_year">
+                </div>
             </form>
         </div>
     </div>
@@ -391,36 +400,11 @@
             var star = document.getElementById("myRange").value;
             var passed = 1
 
-
-
-
-
-            $.ajax({
-                url: ('/get_Commet'),
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify(txt)
-            });
-
             $.ajax({
                 url: ('/get_Star'),
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(star)
-            });
-
-            $.ajax({
-                url: ('/get_Passed'),
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify(passed)
-            });
-
-            $.ajax({
-                url: ('/get_Date'),
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify(currentDate)
             });
 
         }
@@ -496,11 +480,20 @@
             document.getElementById("myDiv8").style.display = 'none';
         }
 
-        function updateTextArea() {
-            document.getElementById("myDiv9").style.display = 'none';
-            var inputField = document.getElementById("txtbox");
-            var textArea = document.getElementById("myText2");
-            textArea.value = inputField.value
+        function validateForm() {
+            var form = document.forms['myForm1'];
+            var x = form['txtbox'].value;
+            if (x != "") {
+
+                return true;
+            }
+            if (x == "") {
+                alert("")
+                document.querySelector("input[type=number]")
+                    .oninput = e => console.log(new Date(e.target.valueAsNumber, 0, 1))
+                document.getElementById("year").style.display = 'none';
+                return true;
+            }
         }
     </script>
 </body>
