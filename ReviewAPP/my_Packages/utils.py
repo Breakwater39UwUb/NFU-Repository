@@ -87,9 +87,11 @@ def check_predict_cache(query: str,
         return files[0]
     return None
 
-def convert_to_tablename(filepath: str):
+def convert_to_tablename(filepath: str, surround_by_backtick=True):
     '''Convert file path to tablename
+
     filepath: like './SaveData/review-Google地圖.json'
+    surround_by_backtick: surround by backtick or not
 
     return 
     ---
@@ -97,20 +99,33 @@ def convert_to_tablename(filepath: str):
     table_name: str
         table name surrounded by sql escape
         >>> `table_name`
+        surround_by_backtick = False
+        >>> table_name
     '''
 
-    table_name = '`' + filepath.split('/')[2].split('-Google')[0] + '`'
+    if 'Google' in filepath:
+        table_name = filepath.split(os.path.sep)[2].split('-Google')[0]
+    elif 'Foodpanda' in filepath:
+        table_name = filepath.split(os.path.sep)[2].split('-Foodpanda')[0]
+
+    if surround_by_backtick:
+        table_name = '`' + table_name + '`'
+
     return table_name
 
 # TODO: create a function to create filename with date range
-def gen_diagram_name(name: str, chart_type: str, date_range: str):
+def gen_diagram_name(name: str,
+                     date_range: str,
+                     chart_type: str = None,
+                     label: str='ALL'):
     '''Generate diagram name with arguments.
     
     name: web title, which is restaurant name
     chart_type: chart type
         'BAR', 'PLOT'
-    date_range: date range
-        'YYYY-MM YYYY-MM'
+    date_range: date range or year
+        'YYYY-MM YYYY-MM', 'YYYY'
+    label: 'ALL' or 'Food'...
 
     Return web/charts/{name}_{chart_type}_{date_range}.png
     '''
@@ -118,7 +133,7 @@ def gen_diagram_name(name: str, chart_type: str, date_range: str):
     date_range = date_range.replace(' ', '_')
     name = name.split(os.path.sep)
     dir_ = create_dir(name[1], ['web', 'charts'])
-    file = '_'.join([name[1], chart_type, date_range])
+    file = '_'.join([name[1], label, date_range])
     file += '.png'
     filename = os.path.sep.join([dir_, file])
     
