@@ -15,6 +15,7 @@ new_predict_page = 'new_predict.html'
 analysis_page = 'analysis.html'
 chart_html= 'chart.html'
 user_rating = 1
+passed = 0
 
 app = Flask(__name__,
             template_folder=flask_template_path,
@@ -46,8 +47,9 @@ def get_Date():
     return render_template(predict_page)
 
 # TODO: Ask 1234AWEOoooo for the feature of this API
-@app.route("/get_Passed", methods=['GET','POST']) # Funtion to handle get Star value
+@app.route("/get_Passed", methods=['GET','POST']) # Funtion to handle get Passed value
 def get_Passed():
+    global passed
     passed = request.get_json()
     print (passed)
 
@@ -160,7 +162,8 @@ def get_Url():
                         Food = food_label_url,
                         Price = price_label_url,
                         Service = serve_label_url,
-                        Environment = envir_label_url
+                        Environment = envir_label_url,
+                        passed = passed
                         )
 
 @app.route('/<path:filename>')

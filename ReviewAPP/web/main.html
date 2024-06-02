@@ -45,10 +45,6 @@
             position: relative;
         }
         
-        .year {
-            display: none;
-        }
-        
         .input-fieid {
             background: #eaeaea;
             display: flex;
@@ -103,16 +99,8 @@
             display: none;
         }
         
-        .header {
-            position: fixed;
-            height: 10%;
-            width: 100%;
-            background: white;
-            z-index: 100;
-        }
-        
         .nav {
-            width: 7000%;
+            width: 100%;
         }
         
         .nav,
@@ -138,7 +126,7 @@
         }
         
         .nav_items {
-            column-gap: 3%;
+            column-gap: 1%;
             font-size: 130%;
             color: black;
         }
@@ -158,7 +146,7 @@
             border-radius: 6px;
             cursor: pointer;
             text-align: center;
-            height: 65%;
+            height: auto;
         }
         
         .Open:active {
@@ -199,6 +187,26 @@
             right: 0;
             top: 0;
             width: auto;
+        }
+        
+        @media (max-width: 669px) {
+            .header {
+                position: fixed;
+                height: 20%;
+                width: 100%;
+                background: white;
+                z-index: 100;
+            }
+        }
+        
+        @media (min-width: 576px) {
+            .header {
+                position: fixed;
+                height: auto;
+                width: 100%;
+                background: white;
+                z-index: 100;
+            }
         }
     </style>
 
@@ -299,21 +307,20 @@
 
             <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
             <form action="get_Url" name="myForm1" method="POST" onsubmit="return validateForm()">
+
+
                 <h3>輸入網址</h3>
 
                 <textarea rows="10" cols="30" id="txtbox" name="myTextarea" placeholder="輸入店家網址" align="center"></textarea>
+
                 <div class="Send-field">
                     <button type="submit" onclick="sendData()" align="center" style="height:25px;width:120px">送出</button>
                     <div id="output"></div>
                 </div>
                 <h3>輸入開始時間</h3>
-                <input type="month" id="time_start" name="time_start">
+                <input type="month" id="time_start" name="time_start" required>
                 <h3>輸入結束時間</h3>
-                <input type="month" id="time_end" name="time_end">
-                <div id="year" class="year">
-                    <h3>選擇年分</h3>
-                    <input type="number" id="select_year" name="select_year">
-                </div>
+                <input type="month" id="time_end" name="time_end" required>
             </form>
         </div>
     </div>
@@ -407,6 +414,16 @@
                 data: JSON.stringify(star)
             });
 
+            var form = document.forms['myForm1'];
+            var x = form['txtbox'].value;
+            if (x != "") {
+                $.ajax({
+                    url: ('/get_Passed'),
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(passed)
+                });
+            }
         }
 
         SignupBtn.onclick = function() {
@@ -478,22 +495,6 @@
         function ShowDiv9() {
             document.getElementById("myDiv9").style.display = "";
             document.getElementById("myDiv8").style.display = 'none';
-        }
-
-        function validateForm() {
-            var form = document.forms['myForm1'];
-            var x = form['txtbox'].value;
-            if (x != "") {
-
-                return true;
-            }
-            if (x == "") {
-                alert("")
-                document.querySelector("input[type=number]")
-                    .oninput = e => console.log(new Date(e.target.valueAsNumber, 0, 1))
-                document.getElementById("year").style.display = 'none';
-                return true;
-            }
         }
     </script>
 </body>
