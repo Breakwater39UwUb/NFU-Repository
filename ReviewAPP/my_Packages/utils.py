@@ -114,14 +114,18 @@ def convert_to_tablename(filepath: str, surround_by_backtick=True):
     return table_name
 
 # TODO: create a function to create filename with date range
-def gen_diagram_name(name: str, chart_type: str, date_range: str):
+def gen_diagram_name(name: str,
+                     date_range: str,
+                     chart_type: str = None,
+                     label: str='ALL'):
     '''Generate diagram name with arguments.
     
     name: web title, which is restaurant name
     chart_type: chart type
         'BAR', 'PLOT'
-    date_range: date range
-        'YYYY-MM YYYY-MM'
+    date_range: date range or year
+        'YYYY-MM YYYY-MM', 'YYYY'
+    label: 'ALL' or 'Food'...
 
     Return web/charts/{name}_{chart_type}_{date_range}.png
     '''
@@ -129,7 +133,7 @@ def gen_diagram_name(name: str, chart_type: str, date_range: str):
     date_range = date_range.replace(' ', '_')
     name = name.split(os.path.sep)
     dir_ = create_dir(name[1], ['web', 'charts'])
-    file = '_'.join([name[1], chart_type, date_range])
+    file = '_'.join([name[1], label, date_range])
     file += '.png'
     filename = os.path.sep.join([dir_, file])
     
