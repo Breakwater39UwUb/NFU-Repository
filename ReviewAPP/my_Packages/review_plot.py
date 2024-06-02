@@ -11,11 +11,17 @@ from datetime import datetime, timedelta
 from collections import defaultdict
 from my_Packages.utils import check_month_range, gen_diagram_name
 global labels
-labels = {0: 'Food', 1: 'Price', 2: 'Service', 3: 'Environment'}
+LABELS = {0: 'Food', 1: 'Price', 2: 'Service', 3: 'Environment'}
+LABELS_CH = {'Food': '餐點', 'Price': '價格', 'Service': '服務', 'Environment': '環境'}
 FOOD = 0
 PRICE = 1
 SERVICE = 2
 ENV = 3
+
+plt.rcParams['font.sans-serif'] = ['Microsoft JhengHei', 'SimSun']
+plt.rcParams['axes.unicode_minus'] = False
+plt.rc('font', size=18)
+
 def sort_by_month(data: list):
     '''Count reviews per month
 
@@ -48,19 +54,26 @@ def sort_by_month(data: list):
 
 def sort_by_year(DATA: list,
                  year: str):
+    '''Count reviews per year
+    
+    DATA: list of reviews
+        ([1, 0, 1, 0], 'text', '2022/')
+    year: like 2024/
+    '''
     counts = defaultdict(int)
 
     # Count the number of data points for each label
     for data in DATA:
         for i in range(4):
             if data[0][i]:
-                counts[labels[i]] += 1
+                counts[LABELS[i]] += 1
 
     LABEL, N = zip(*sorted(counts.items()))
+    LABEL = [LABELS_CH[label] for label in LABEL]
 
-    plt.rcParams['font.sans-serif'] = ['Microsoft JhengHei']
-    plt.rcParams['axes.unicode_minus'] = False
-    plt.rc('font', size=16)
+    # plt.rcParams['font.sans-serif'] = ['Microsoft JhengHei', 'SimSun']
+    # plt.rcParams['axes.unicode_minus'] = False
+    # plt.rc('font', size=16)
 
     plt.bar(LABEL, N)
     plt.xlabel('評論標籤')
@@ -119,9 +132,9 @@ def plot_by_label(data: list,
     ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y/%m'))
     ax.yaxis.set_major_locator(MaxNLocator(integer=True))
     
-    global labels
+    global LABELS
     plt.bar(times, counts, bar_width, color='red', label='總評論數量')
-    plt.plot(times, label_counts, label=f'標籤: {labels[label]}')
+    plt.plot(times, label_counts, label=f'標籤: {LABELS[label]}')
     plt.xlabel('月份')
     plt.ylabel('評論數量')
     plt.legend()
@@ -131,7 +144,7 @@ def plot_by_label(data: list,
     plt.rc('font', size=16)
 
     # TODO: Save file to ./Saved_images
-    save_path = gen_diagram_name(save_filename, labels[label], time_range)
+    save_path = gen_diagram_name(save_filename, LABELS[label], time_range)
     plt.savefig(save_path)
     return save_path
 
@@ -173,7 +186,7 @@ def compare_labels(data: list, comp_labels: list):
 
     for i, index in enumerate(comp_labels):
         counts = [label_counts[index].get(time, 0) for time in all_times]
-        plt.bar(time_indices + i*bar_width, counts, bar_width, label=labels[index])
+        plt.bar(time_indices + i*bar_width, counts, bar_width, label=LABELS[index])
 
     plt.xlabel('Month')
     plt.ylabel('Data Count')
