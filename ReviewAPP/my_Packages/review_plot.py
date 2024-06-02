@@ -151,6 +151,8 @@ def plot_by_label(data: list,
     ax.xaxis.set_major_locator(mdates.MonthLocator())
     ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y/%m'))
     ax.yaxis.set_major_locator(MaxNLocator(integer=True))
+
+    # TODO: Show values on data points
     
     global LABELS
     plt.bar(times, counts, bar_width, color='red', label='總評論數量')
@@ -164,7 +166,7 @@ def plot_by_label(data: list,
     save_path = gen_diagram_name(name=save_filename,
                                  label=LABELS[label],
                                  date_range=time_range)
-    plt.savefig(save_path)
+    plt.savefig(save_path, bbox_inches='tight')
     return save_path
 
 def compare_labels(data: list, comp_labels: list):
