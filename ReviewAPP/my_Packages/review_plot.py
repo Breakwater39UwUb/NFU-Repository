@@ -46,6 +46,28 @@ def sort_by_month(data: list):
     plt.title('Data Count Over Time')
     plt.show()
 
+def sort_by_year(DATA: list,
+                 year: str):
+    counts = defaultdict(int)
+
+    # Count the number of data points for each label
+    for data in DATA:
+        for i in range(4):
+            if data[0][i]:
+                counts[labels[i]] += 1
+
+    LABEL, N = zip(*sorted(counts.items()))
+
+    plt.rcParams['font.sans-serif'] = ['Microsoft JhengHei']
+    plt.rcParams['axes.unicode_minus'] = False
+    plt.rc('font', size=16)
+
+    plt.bar(LABEL, N)
+    plt.xlabel('評論標籤')
+    plt.ylabel('評論數量')
+    plt.title(f'{year}年總評論標籤')
+    plt.show()
+
 def plot_by_label(data: list,
                   label: int,
                   time_range: str,
