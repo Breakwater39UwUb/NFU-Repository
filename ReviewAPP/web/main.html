@@ -323,6 +323,16 @@
                 <input type="month" id="time_end" name="time_end" required>
             </form>
         </div>
+
+
+
+        <div style="display:none;" class="form_box" id="Loading">
+            <h1>Loading</h1>
+            <form>
+                <img src=assets/Gray_circles_rotate.gif width="200" heigh="200" alt="一張圖片">
+            </form>
+        </div>
+
     </div>
 
 
@@ -405,6 +415,8 @@
         function sendData() {
             var txt = document.getElementById("txtbox").value;
             var star = document.getElementById("myRange").value;
+            let div9 = document.getElementById("myDiv9");
+            let loading = document.getElementById("Loading");
             var passed = 1
 
             $.ajax({
@@ -424,6 +436,8 @@
                     data: JSON.stringify(passed)
                 });
             }
+            document.getElementById("Loading").style.display = 'block'
+            div9.style.display = 'none';
         }
 
         SignupBtn.onclick = function() {

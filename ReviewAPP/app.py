@@ -36,15 +36,7 @@ def get_Star():
 
 # TODO: Remove this API due to it is not accessed
 # Ask 1234AWEOOOOOO before removing
-@app.route("/get_Date", methods=['GET','POST'])
-def get_Date():
-    '''Set platform to set scrape web
-    Foodpanda | Googlemaps
-    '''
-    global dateTEST
-    dateTEST  = request.get_json()
-    print (dateTEST)
-    return render_template(predict_page)
+
 
 # TODO: Ask 1234AWEOoooo for the feature of this API
 @app.route("/get_Passed", methods=['GET','POST']) # Funtion to handle get Passed value

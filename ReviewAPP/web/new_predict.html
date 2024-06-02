@@ -174,7 +174,6 @@
         
         .title {
             white-space: nowrap;
-            height: auto
         }
         
         input[type="date"]::-webkit-calendar-picker-indicator {
@@ -220,9 +219,9 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <nav class="nav">
             <ul class="nav_items" style="list-style-type:none;background-color:white">
-                <a href="/" class="nav_logo" id="logo" style="list-style-type:none;background-color:white">首頁 </a>
+                <a href="/" class="nav_logo" id="logo" style="list-style-type:none;background-color:#fff font size = 7">首頁</a>
                 <h1 id="title" class="title">評論系統</h1>
-                <button type="button" class="Open" id="button3" onclick="ShowDiv2()">評論標籤比例</button>
+                <button type="button" align="center" valign="center" class="Open" onclick="ShowDiv2() " id="button3">評論標籤比例</button>
                 <select id="select1" onchange="toggleDiv()">
                     <option >各項標籤比例</option>
                     <option value="myDiv6">服務標籤比例</option>
@@ -243,7 +242,7 @@
 
                 <button type="button" class="Open" id="button2" onclick="ShowDiv9()">輸入網址</button>
             </ul>
-            <nav>
+        </nav>
     </header>
 
 
@@ -254,7 +253,7 @@
         <div style="display:none;" class="form_box" id="myDiv">
 
             <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
-            <form action="#">
+            <form action="/get_url" method="POST">
 
                 <div class="input-group">
                     <div class="input-fieid">
@@ -283,9 +282,12 @@
         </div>
 
         <div style="display:none;" class="form_box" id="myDiv8">
+
+
             <form action="get_Change" name="myForm" method="POST">
                 <img src="image/background1.jpg" width="200" height="200">
                 <h3>虎尾餐廳</h3>
+
                 <h4>預測的結果: {{ berts }}，輸入的星級: {{ users }}</h4>
                 <textarea rows="10" cols="30" id="myText2" name="txtbox1" required>{{ user_txt }}</textarea>
 
@@ -300,26 +302,40 @@
             </form>
             <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
         </div>
+
+
+        <div style="display:none;" class="form_box" id="myDiv9">
+
+            <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
+            <form action="get_Url" name="myForm1" method="POST" onsubmit="return validateForm()">
+
+
+                <h3>輸入網址</h3>
+
+                <textarea rows="10" cols="30" id="txtbox" name="myTextarea" placeholder="輸入店家網址" align="center"></textarea>
+
+                <div class="Send-field">
+                    <button type="submit" onclick="sendData()" align="center" style="height:25px;width:120px">送出</button>
+                    <div id="output"></div>
+                </div>
+                <h3>輸入開始時間</h3>
+                <input type="month" id="time_start" name="time_start" required>
+                <h3>輸入結束時間</h3>
+                <input type="month" id="time_end" name="time_end" required>
+            </form>
+        </div>
+
+
+
+        <div style="display:none;" class="form_box" id="Loading">
+            <h1>Loading</h1>
+            <form>
+                <img src=assets/Gray_circles_rotate.gif width="200" heigh="200" alt="一張圖片">
+            </form>
+        </div>
+
     </div>
 
-    <div style="display:none;" class="form_box" id="myDiv9">
-
-        <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
-        <form action="get_Url" name="myForm1" method="POST" onsubmit="required()">
-            <h3>輸入網址</h3>
-
-            <textarea rows="10" cols="30" id="txtbox" name="myTextarea" placeholder="input Something" align="center" required></textarea>
-            <div class="Send-field">
-                <button type="submit" onclick="sendData()" align="center" style="height:25px;width:120px">送出</button>
-                <div id="output"></div>
-            </div>
-            <h3>輸入開始時間</h3>
-            <input type="month" id="time_start" name="time_start" required>
-            <h3>輸入結束時間</h3>
-            <input type="month" id="time_end" name="time_end" required>
-        </form>
-    </div>
-    </div>
 
 
     </div>
@@ -362,19 +378,6 @@
             month += 12;
         }
 
-        function sendData() {
-            var txt = document.getElementById("txtbox").value;
-            var star = document.getElementById("myRange").value;
-            var passed = 1
-
-            $.ajax({
-                url: ('/get_Star'),
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify(star)
-            });
-        }
-
         // 创建新的日期对象
         let newDate = new Date(year, month, currentDate.getDate());
         var max = newDate.getMonth() + 1
@@ -385,6 +388,7 @@
         dateend.max = currentDate.getFullYear().toString() + "-0" + min.toString()
         dateend.min = newDate.getFullYear().toString() + "-0" + max.toString()
         dateend.value = ""
+        var t = document.getElementById('txtbox').value;
 
 
         document.getElementById("logo").style.fontSize = "140%";
@@ -398,15 +402,43 @@
         document.getElementById("button2").style.fontSize = "100%";
         document.getElementById("button3").style.fontSize = "100%";
 
-        var t = document.getElementById('txtbox').value;
 
         var slider = document.getElementById("myRange");
         var output = document.getElementById("demo");
+
         value.innerHTML = slider.value; // Display the default slider value
 
         // Update the current slider value (each time you drag the slider handle)
         slider.oninput = function() {
             value.innerHTML = this.value;
+        }
+
+        function sendData() {
+            var txt = document.getElementById("txtbox").value;
+            var star = document.getElementById("myRange").value;
+            let div9 = document.getElementById("myDiv9");
+            let loading = document.getElementById("Loading");
+            var passed = 1
+
+            $.ajax({
+                url: ('/get_Star'),
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(star)
+            });
+
+            var form = document.forms['myForm1'];
+            var x = form['txtbox'].value;
+            if (x != "") {
+                $.ajax({
+                    url: ('/get_Passed'),
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(passed)
+                });
+            }
+            document.getElementById("Loading").style.display = 'block'
+            div9.style.display = 'none';
         }
 
         SignupBtn.onclick = function() {

@@ -194,10 +194,6 @@
             white-space: nowrap;
         }
         
-        .year {
-            display: none;
-        }
-        
         input[type="date"]::-webkit-calendar-picker-indicator {
             background: transparent;
             bottom: 0;
@@ -324,19 +320,21 @@
             <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
         </div>
 
-
         <div style="display:none;" class="form_box1" id="myDiv13">
 
             <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
-            <form action="get_Url" name="myForm1" method="POST" onsubmit="required()">
+            <form action="get_Url" name="myForm1" method="POST" onsubmit="return validateForm()">
+
+
                 <h3>輸入網址</h3>
 
-                <textarea rows="10" cols="30" id="txtbox" name="myTextarea" placeholder="輸入店家網址" align="center" required></textarea>
+                <textarea rows="10" cols="30" id="txtbox" name="myTextarea" placeholder="輸入店家網址" align="center"></textarea>
+
                 <div class="Send-field">
                     <button type="submit" onclick="sendData()" align="center" style="height:25px;width:120px">送出</button>
                     <div id="output"></div>
                 </div>
-                <h3>輸入結束時間</h3>
+                <h3>輸入開始時間</h3>
                 <input type="month" id="time_start" name="time_start" required>
                 <h3>輸入結束時間</h3>
                 <input type="month" id="time_end" name="time_end" required>
@@ -347,30 +345,37 @@
                 </div>
             </form>
         </div>
-    </div>
 
-    <div style="display:none;" class="form_box1" id="myDiv2">
-        <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
-        <form action="#">
-            <canvas id="myChart" width="200" height="200"></canvas>
-        </form>
-    </div>
 
-    <div style="display:none;" class="form_box1" id="myDiv3">
+        <div style="display:none;" class="form_box1" id="Loading">
+            <h1>Loading</h1>
+            <form>
+                <img src=assets/Gray_circles_rotate.gif width="200" heigh="200" alt="一張圖片">
+            </form>
+        </div>
 
-        <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
-        <form action="#">
-            <canvas id="myChart2" width="200" height="200"></canvas>
-        </form>
-    </div>
+        <div style="display:none;" class="form_box1" id="myDiv2">
+            <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
+            <form action="#">
+                <canvas id="myChart" width="200" height="200"></canvas>
+            </form>
+        </div>
 
-    <div style="display:none;" class="form_box1" id="myDiv4">
+        <div style="display:none;" class="form_box1" id="myDiv3">
 
-        <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
-        <form action="#">
-            <canvas id="myChart3" width="200" height="200"></canvas>
-        </form>
-    </div>
+            <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
+            <form action="#">
+                <canvas id="myChart2" width="200" height="200"></canvas>
+            </form>
+        </div>
+
+        <div style="display:none;" class="form_box1" id="myDiv4">
+
+            <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
+            <form action="#">
+                <canvas id="myChart3" width="200" height="200"></canvas>
+            </form>
+        </div>
     </div>
 
     <div style="display:none;" class="form_box1" id="myDiv5">
@@ -389,7 +394,6 @@
     </div>
 
 
-
     <div style="display:none;" class="form_box" id="myDiv9">
         <h1>價格標籤數量統計</h1>
         <img src={{Price}} width="800" heigh="800" alt="一張圖片">
@@ -398,6 +402,7 @@
         </form>
         <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
     </div>
+
 
     <div style="display:none;" class="form_box" id="myDiv10">
         <h1>環境標籤數量統計</h1>
@@ -427,7 +432,11 @@
         <button type="button" class="Close" onclick='$(this).parent().hide();'>Close</button>
     </div>
 
+
     </div>
+
+
+
 
     <script>
         $(function() {
@@ -528,6 +537,7 @@
             let div2 = document.getElementById("myDiv2");
             let div13 = document.getElementById("myDiv13");
             let div8 = document.getElementById("myDiv8");
+
 
             if (value1 === "myDiv6") {
 
@@ -724,6 +734,7 @@
             let div6 = document.getElementById("myDiv6");
             let div3 = document.getElementById("myDiv3");
             let div2 = document.getElementById("myDiv2");
+            let div13 = document.getElementById("myDiv13");
             let div8 = document.getElementById("myDiv8");
             div6.style.display = 'none';
             div5.style.display = 'none';
@@ -737,15 +748,12 @@
             div8.style.display = 'none';
         }
 
-        function updateTextArea() {
-            var inputField = document.getElementById("txtbox");
-            var textArea = document.getElementById("myText");
-            textArea.value = inputField.value;
-        }
-
         function sendData() {
             var txt = document.getElementById("txtbox").value;
             var star = document.getElementById("myRange").value;
+            let div13 = document.getElementById("myDiv13");
+            let loading = document.getElementById("Loading");
+
             $.ajax({
                 url: ('/get_Star'),
                 type: 'POST',
@@ -753,9 +761,12 @@
                 data: JSON.stringify(star)
             });
 
+
             if (parseInt(passed) = 1) {
                 document.getElementById('year').style.display = 'block'
             }
+
+
 
         }
 
@@ -891,83 +902,6 @@
             }
 
         });
-
-        const labels = ['第一天', '第二天', '第三天', '第四天', '第五天', '第六天', '第七天'];
-        const yValues1 = [7, 8, 8, 9, 9, 9, 10];
-
-        const yValues2 = [8, 9, 9, 10, 10, 10, 1];
-
-        const yValues3 = [6, 9, 10, 9, 9, 9, 10, 1];
-
-        const yValues4 = [8, 9, 6, 7, 10, 9, 10, 2];
-
-        const options = {
-            labels: labels,
-            datasets: [{
-                label: '服務',
-                data: yValues1,
-                borderColor: 'pink'
-            }]
-
-        }
-
-        const config = {
-            type: 'line', // 设置图表类型
-            data: options,
-        };
-
-        new Chart(ctx6, config);
-
-        const options1 = {
-            labels: labels,
-            datasets: [{
-                label: '價格',
-                data: yValues2,
-                borderColor: 'Blue'
-            }]
-
-        }
-
-        const config1 = {
-            type: 'line', // 设置图表类型
-            data: options1,
-        };
-
-        new Chart(ctx7, config1);
-
-        const options2 = {
-            labels: labels,
-            datasets: [{
-                label: '環境',
-                data: yValues3,
-                borderColor: 'orange'
-            }]
-
-        }
-
-        const config2 = {
-            type: 'line', // 设置图表类型
-            data: options2,
-        };
-
-        new Chart(ctx8, config2);
-
-        const options3 = {
-            labels: labels,
-            datasets: [{
-                label: '價格',
-                data: yValues4,
-                borderColor: 'Black'
-            }]
-
-        }
-
-        const config3 = {
-            type: 'line', // 设置图表类型
-            data: options3,
-        };
-
-        new Chart(ctx9, config3);
     </script>
 </body>
 
