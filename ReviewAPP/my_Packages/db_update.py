@@ -197,20 +197,71 @@ def get_top_review(table_name: str):
     db.close()
     return newest
 
-def check_exist_table(table_name: str):
+def get_years(table_name: str, json_like: bool=False):
+    '''Get the number of years
+    which there are reviews.
+
+    table_name: table to get years.
+    json_like: default = False
+        Whether return json format.
+    '''
+
+    if table_name is None:
+        raise ValueError('Must given table name exist in database.')
+
+    logger = utils.Debug_Logger('get_years')
+    db = init_db()
+    if db is None:
+        logger.log('Failed to connect Database.')
+        return
+    
+    if check_exist_table(table_name, db) == False:
+        return
+
+    cursor = db.cursor()
+    years = None
+    table_name = utils.convert_to_tablename(table_name, True)
+    try:
+        cursor.execute(f'''SELECT SUBSTRING_INDEX(time_range, '/', 1) AS year
+                            FROM reviews.{table_name}
+                            GROUP BY year
+                            ORDER BY year DESC;''')
+        years = cursor.fetchall()
+    except:
+        logger.log(f'Failed to get years from table, {table_name}.')
+        raise
+    finally:
+        db.close()
+        if json_like:
+            years = [{'year': year[0]} for year in years]
+            return json.dumps(years, ensure_ascii=False, indent=4)
+        return years
+
+def check_exist_table(table_name: str, db=None):
     '''Check if the table is exist in database
     
     table_name: web title from web scraper
     '''
 
-    table_name = table_name.split('-Google')[0]
-    db = init_db()
+    # TODO: Add detection of Foodpanda
+    table_name = utils.convert_to_tablename(table_name, False)
+
     if db is None:
-        return
-    cursor = db.cursor()
-    cursor.execute(f"SHOW TABLES LIKE '{table_name}'")
-    result = cursor.fetchone()
-    db.close()
+        # No db object passed, init one
+        db = init_db()
+
+        if db is None:
+            return
+        cursor = db.cursor()
+        cursor.execute(f"SHOW TABLES LIKE '{table_name}'")
+        result = cursor.fetchone()
+        db.close()
+    else:
+        # Use given db object
+        cursor = db.cursor()
+        cursor.execute(f"SHOW TABLES LIKE '{table_name}'")
+        result = cursor.fetchone()
+
     if result is None:
         return False
     return True

@@ -11,11 +11,17 @@ from datetime import datetime, timedelta
 from collections import defaultdict
 from my_Packages.utils import check_month_range, gen_diagram_name
 global labels
-labels = {0: 'Food', 1: 'Price', 2: 'Service', 3: 'Environment'}
+LABELS = {0: 'Food', 1: 'Price', 2: 'Service', 3: 'Environment'}
+LABELS_CH = {'Food': '餐點', 'Price': '價格', 'Service': '服務', 'Environment': '環境'}
 FOOD = 0
 PRICE = 1
 SERVICE = 2
 ENV = 3
+
+plt.rcParams['font.sans-serif'] = ['Microsoft JhengHei', 'SimSun']
+plt.rcParams['axes.unicode_minus'] = False
+plt.rc('font', size=22)
+
 def sort_by_month(data: list):
     '''Count reviews per month
 
@@ -45,6 +51,55 @@ def sort_by_month(data: list):
     plt.ylabel('Data Count')
     plt.title('Data Count Over Time')
     plt.show()
+
+def sort_by_year(DATA: list,
+                 year: str,
+                 save_filename: str):
+    '''Count reviews per year
+    
+    DATA: list of reviews
+        ([1, 0, 1, 0], 'text', '2022/')
+    year: like 2024/
+    save_filename: filepath from review scraper
+        ex: 'SaveData\虎尾小籠包(虎尾站)-Google地圖\虎尾小籠包(虎尾站)-Google地圖.json'
+    '''
+
+    bar_width = 0.5
+    counts = defaultdict(int)
+
+    # Count the number of data points for each label
+    for data in DATA:
+        for i in range(4):
+            if data[0][i]:
+                counts[LABELS[i]] += 1
+
+    LABEL, N = zip(*sorted(counts.items()))
+    LABEL = [LABELS_CH[label] for label in LABEL]
+
+    # Create a new figure with increased height and width
+    plt.figure(figsize=[8, 8])  # Adjust the size as needed
+
+    bars = plt.bar(LABEL, N, width=bar_width)
+    plt.xlabel('評論標籤')
+    plt.ylabel('評論數量')
+    plt.title(f'{year}年總評論標籤')
+
+    # Increase the maximum value of the Y-axis
+    plt.ylim(0, max(N) + 10)
+
+    # Add value on each label
+    for bar in bars:
+        yval = bar.get_height()
+        plt.text(bar.get_x() + bar_width/2,
+                 yval + 0.05,
+                 yval,
+                 ha='center', va='bottom')
+
+    save_path = gen_diagram_name(name=save_filename,
+                                 date_range=year)
+    plt.savefig(save_path, bbox_inches='tight')
+    plt.show()
+    return save_path
 
 def plot_by_label(data: list,
                   label: int,
@@ -97,19 +152,18 @@ def plot_by_label(data: list,
     ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y/%m'))
     ax.yaxis.set_major_locator(MaxNLocator(integer=True))
     
-    global labels
+    global LABELS
     plt.bar(times, counts, bar_width, color='red', label='總評論數量')
-    plt.plot(times, label_counts, label=f'標籤: {labels[label]}')
+    plt.plot(times, label_counts, label=f'標籤: {LABELS[label]}')
     plt.xlabel('月份')
     plt.ylabel('評論數量')
     plt.legend()
     plt.title('個月份標籤數量')
-    plt.rcParams['font.sans-serif'] = ['Microsoft JhengHei'] 
-    plt.rcParams['axes.unicode_minus'] = False
-    plt.rc('font', size=16)
 
     # TODO: Save file to ./Saved_images
-    save_path = gen_diagram_name(save_filename, labels[label], time_range)
+    save_path = gen_diagram_name(name=save_filename,
+                                 label=LABELS[label],
+                                 date_range=time_range)
     plt.savefig(save_path)
     return save_path
 
@@ -151,7 +205,7 @@ def compare_labels(data: list, comp_labels: list):
 
     for i, index in enumerate(comp_labels):
         counts = [label_counts[index].get(time, 0) for time in all_times]
-        plt.bar(time_indices + i*bar_width, counts, bar_width, label=labels[index])
+        plt.bar(time_indices + i*bar_width, counts, bar_width, label=LABELS[index])
 
     plt.xlabel('Month')
     plt.ylabel('Data Count')

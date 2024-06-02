@@ -6,7 +6,7 @@ import my_Packages.review_plot as rplt
 from my_Packages.scraper import get_reviews
 from my_Packages.predictor_1 import review_predict
 from my_Packages.predictor_2 import review_analyze
-from my_Packages.db_update import insert_review
+from my_Packages.db_update import insert_review, get_years
 
 flask_template_path = 'web/'	# web/templates/
 home_page = 'main.html'	# main.html
@@ -15,6 +15,7 @@ new_predict_page = 'new_predict.html'
 analysis_page = 'analysis.html'
 chart_html= 'chart.html'
 user_rating = 1
+review_file = ''
 passed = 0
 
 app = Flask(__name__,
@@ -77,14 +78,6 @@ def get_Change():
         data = request.form.get("txtbox1")
         
     answer = review_predict(q_input=data)
-
-    if answer in utils.rating_dict:
-        bert_rating, valid_ratings = utils.rating_dict[answer]
-        if user_rating in valid_ratings:
-            bert_rating += '且評分與評論相符。'
-            insert_review(user_rating, data)
-        else:
-            bert_rating += '但評分與評論不符。'
     
     if answer in utils.rating_dict:
         bert_rating, valid_ratings = utils.rating_dict[answer]
@@ -101,7 +94,9 @@ def get_Change():
 @app.route( "/get_Url" , methods=['POST','GET'])
 def get_Url():
     if request.method == "POST":
-        data_url = request.form.get("myTextarea")  
+        data_url = request.form.get("myTextarea")
+        # TODO: Add boolean to check if data_url is entered before
+        # If True, skip scraping.
         if data_url is None :
             raise ValueError('Please input a url under "Overview tab".')
         if 'google' in data_url:
@@ -116,6 +111,7 @@ def get_Url():
         month_range = f'{form_time_start} {form_time_end}'
 
     
+    global review_file
     try:
         # TODO: file format should select by user
         # may remove the check_cache until client web have proper function to handle
@@ -132,7 +128,12 @@ def get_Url():
     else:
         # TODO: Read predictions from file
         predictions = utils.read_predictions(prediction_file)
+    
+    # TODO: Add statement to determine filtering month or year
     filtered_data = [d for d in predictions  if d[2].split('/')[1] != '']
+    
+    # get review on given year
+    # filtered_data = [d for d in predictions  if year in d[2].split('/')]
 
     # TODO: Read cached predictions file to plot charts
     food_label_chart = rplt.plot_by_label(filtered_data, rplt.FOOD, month_range, review_file)
@@ -171,6 +172,21 @@ def serve_image(filename):
     print('--------------------------------------------------------')
     print(filename)
     return send_from_directory('', filename)
+
+@app.route('/show_years', methods=['POST','GET'])
+def show_years():
+    '''Get all review from given year
+    
+    year format in YYYY/
+    '''
+
+    global review_file
+    if request.method == "POST":
+        test_ = 'SaveData\麥當勞-虎尾新興餐廳-Google地圖\麥當勞-虎尾新興餐廳-Google地圖.json'
+        years = get_years(test_, True)
+        print(years, 200)
+        return years
+
 
 def calculate_labels(labels: list[tuple]):
     '''Calculate all labels and show results on web
