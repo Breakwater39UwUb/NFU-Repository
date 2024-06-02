@@ -71,10 +71,6 @@ def sort_by_year(DATA: list,
     LABEL, N = zip(*sorted(counts.items()))
     LABEL = [LABELS_CH[label] for label in LABEL]
 
-    # plt.rcParams['font.sans-serif'] = ['Microsoft JhengHei', 'SimSun']
-    # plt.rcParams['axes.unicode_minus'] = False
-    # plt.rc('font', size=16)
-
     plt.bar(LABEL, N)
     plt.xlabel('評論標籤')
     plt.ylabel('評論數量')
@@ -139,9 +135,6 @@ def plot_by_label(data: list,
     plt.ylabel('評論數量')
     plt.legend()
     plt.title('個月份標籤數量')
-    plt.rcParams['font.sans-serif'] = ['Microsoft JhengHei'] 
-    plt.rcParams['axes.unicode_minus'] = False
-    plt.rc('font', size=16)
 
     # TODO: Save file to ./Saved_images
     save_path = gen_diagram_name(save_filename, LABELS[label], time_range)
