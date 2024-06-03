@@ -103,9 +103,12 @@ def db_upload_file(filename: str,
 
             if text == '':
                 continue
-            # rating = int(rating)
+
+            if len(text) > 510:
+                text = text[:510]
+
             review = (time, rating, text)
-            # print(review)
+
             
             try:
                 cursor.execute(command, review)
