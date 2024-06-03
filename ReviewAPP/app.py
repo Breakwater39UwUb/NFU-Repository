@@ -192,7 +192,7 @@ def show_years():
 
         year_file_url = YJ_path.split(sep)
         year_file_url = '/'.join(year_file_url)
-        return ("test", 200)
+        return (year_file_url, 200)
 
 def process_chart_by_month(data: list,
                            label: int,
