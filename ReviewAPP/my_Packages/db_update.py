@@ -235,8 +235,8 @@ def get_years(table_name: str, json_like: bool=False):
         raise
     finally:
         db.close()
+        years = [{'year': year[0]} for year in years]
         if json_like:
-            years = [{'year': year[0]} for year in years]
             return json.dumps(years, ensure_ascii=False, indent=4)
         return years
 
