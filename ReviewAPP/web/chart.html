@@ -328,7 +328,7 @@
 
                 <h3>輸入網址</h3>
 
-                <textarea rows="10" cols="30" id="txtbox" name="myTextarea" placeholder="輸入店家網址" align="center"></textarea>
+                <textarea rows="10" cols="30" id="txtbox" name="myTextarea" placeholder="輸入店家網址" align="center">{{Url}}</textarea>
 
                 <div class="Send-field">
                     <button type="submit" onclick="sendData()" align="center" style="height:25px;width:120px">送出</button>
@@ -751,8 +751,6 @@
         function sendData() {
             var txt = document.getElementById("txtbox").value;
             var star = document.getElementById("myRange").value;
-            let div13 = document.getElementById("myDiv13");
-            let loading = document.getElementById("Loading");
 
             $.ajax({
                 url: ('/get_Star'),
@@ -760,13 +758,6 @@
                 contentType: 'application/json',
                 data: JSON.stringify(star)
             });
-
-
-            if (parseInt(passed) = 1) {
-                document.getElementById('year').style.display = 'block'
-            }
-
-
 
         }
 

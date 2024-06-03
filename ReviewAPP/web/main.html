@@ -417,7 +417,7 @@
             var star = document.getElementById("myRange").value;
             let div9 = document.getElementById("myDiv9");
             let loading = document.getElementById("Loading");
-            var passed = 1
+            let t = ""
 
             $.ajax({
                 url: ('/get_Star'),
@@ -426,16 +426,21 @@
                 data: JSON.stringify(star)
             });
 
-            var form = document.forms['myForm1'];
-            var x = form['txtbox'].value;
-            if (x != "") {
-                $.ajax({
-                    url: ('/get_Passed'),
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify(passed)
-                });
-            }
+            var passed = 'passed';
+            $.ajax({
+                url: ('/get_Passed'),
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(passed)
+            });
+
+            $.ajax({
+                url: ('/show_years'),
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(t)
+            });
+
             document.getElementById("Loading").style.display = 'block'
             div9.style.display = 'none';
         }
@@ -509,6 +514,14 @@
         function ShowDiv9() {
             document.getElementById("myDiv9").style.display = "";
             document.getElementById("myDiv8").style.display = 'none';
+        }
+
+        function validateForm() {
+            var form = document.forms['myForm1'];
+            var x = form['txtbox'].value;
+            if (x != "") {
+                return true;
+            }
         }
     </script>
 </body>
