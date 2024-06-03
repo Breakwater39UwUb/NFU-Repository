@@ -417,6 +417,8 @@
             var star = document.getElementById("myRange").value;
             let div9 = document.getElementById("myDiv9");
             let loading = document.getElementById("Loading");
+            let t = ""
+
             $.ajax({
                 url: ('/get_Star'),
                 type: 'POST',
@@ -430,6 +432,13 @@
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(passed)
+            });
+
+            $.ajax({
+                url: ('/show_years'),
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(t)
             });
 
             document.getElementById("Loading").style.display = 'block'

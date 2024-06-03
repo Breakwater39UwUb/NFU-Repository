@@ -194,10 +194,6 @@
             white-space: nowrap;
         }
         
-        .Send-Url {
-            display: none;
-        }
-        
         input[type="date"]::-webkit-calendar-picker-indicator {
             background: transparent;
             bottom: 0;
@@ -331,9 +327,8 @@
 
 
                 <h3>輸入網址</h3>
-                <div class="Send-Url">
-                    <textarea rows="10" cols="30" id="txtbox" name="myTextarea" onsubmit="return validateForm()" placeholder="輸入店家網址" align="center">{{Url}}</textarea>
-                </div>
+
+                <textarea rows="10" cols="30" id="txtbox" name="myTextarea" placeholder="輸入店家網址" align="center">{{Url}}</textarea>
 
                 <div class="Send-field">
                     <button type="submit" onclick="sendData()" align="center" style="height:25px;width:120px">送出</button>
@@ -477,8 +472,7 @@
         let str2 = '{{ str2 }}';
         let str3 = '{{ str3 }}';
         let str4 = '{{ str4 }}';
-        let passed = '{{ passed }}';
-        let Url = "{{ Url }}";
+        let passed = '{{ passed }}'
         let currentDate = new Date();
         var min = currentDate.getMonth() + 1
         let datestart = document.getElementById('time_start');
@@ -505,6 +499,9 @@
         dateend.max = currentDate.getFullYear().toString() + "-0" + min.toString()
         dateend.min = newDate.getFullYear().toString() + "-0" + max.toString()
         dateend.value = ""
+
+        var t = document.getElementById('txtbox').value;
+
 
 
         SignupBtn.onclick = function() {
@@ -751,11 +748,10 @@
             div8.style.display = 'none';
         }
 
-
-
         function sendData() {
             var txt = document.getElementById("txtbox").value;
             var star = document.getElementById("myRange").value;
+
             $.ajax({
                 url: ('/get_Star'),
                 type: 'POST',
@@ -763,17 +759,6 @@
                 data: JSON.stringify(star)
             });
 
-            $.ajax({
-                url: ('/show_years'),
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify(star)
-            });
-
-            var t = document.getElementById('txtbox');
-            if (passed === 'passed') {
-                t.style.display = 'block';
-            }
         }
 
 
