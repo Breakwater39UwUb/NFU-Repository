@@ -16,7 +16,7 @@ analysis_page = 'analysis.html'
 chart_html= 'chart.html'
 user_rating = 1
 review_file = ''
-passed = 0
+passed = ''
 
 app = Flask(__name__,
             template_folder=flask_template_path,
@@ -44,7 +44,6 @@ def get_Star():
 def get_Passed():
     global passed
     passed = request.get_json()
-    print (passed)
 
     return render_template(predict_page)
 
@@ -86,7 +85,8 @@ def get_Change():
 @app.route( "/get_Url" , methods=['POST','GET'])
 def get_Url():
     if request.method == "POST":
-        data_url = request.form.get("myTextarea")
+        data_url = requesturl.form.get("myTextarea")
+        url = request.form.get("myTextarea")
         # TODO: Add boolean to check if data_url is entered before
         # If True, skip scraping.
         if data_url is None :
@@ -148,7 +148,7 @@ def get_Url():
     serve_label_url = url_for('serve_image', filename=serve_label_chart)
     envir_label_url = url_for('serve_image', filename=envir_label_chart)
     print('-----------------', envir_label_chart)
-    
+    print (passed)
     analysis = calculate_labels(predictions)
     return render_template(chart_html,
                         str1=analysis[0], str2=analysis[1], str3=analysis[2], str4=analysis[3],
@@ -156,7 +156,7 @@ def get_Url():
                         Price = price_label_url,
                         Service = serve_label_url,
                         Environment = envir_label_url,
-                        passed = passed
+                        passed = passed, Url = url
                         )
 
 @app.route('/<path:filename>')
