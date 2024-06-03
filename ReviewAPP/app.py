@@ -1,4 +1,5 @@
 from flask import Flask, request, render_template, url_for, send_from_directory
+import json
 from os.path import sep
 from urllib.parse import quote
 from my_Packages import utils
@@ -180,9 +181,18 @@ def show_years():
 
     global review_file
     if request.method == "POST":
-        test_ = 'SaveData\麥當勞-虎尾新興餐廳-Google地圖\麥當勞-虎尾新興餐廳-Google地圖.json'
-        years = get_years(review_file, True)
-        return (years, 200)
+        YJ_path = review_file.split(sep)
+        dir_ = utils.create_dir(YJ_path[1], ['web', 'charts'])
+        YJ_path = 'YEARS' + YJ_path[1] + '.json'
+        YJ_path = sep.join([dir_, YJ_path])
+
+        years = get_years(review_file)
+        with open(YJ_path, 'w') as year_file:
+            json.dump(years, year_file, ensure_ascii=False, indent=4)
+
+        year_file_url = YJ_path.split(sep)
+        year_file_url = '/'.join(year_file_url)
+        return (year_file_url, 200)
 
 def process_chart_by_month(data: list,
                            label: int,
