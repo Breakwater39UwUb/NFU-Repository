@@ -13,19 +13,20 @@ from my_Packages.utils import (
     check_loacal_cache,
     get_review_abs_time,
     valid_time_interval,
-    create_dir
+    create_dir,
+    Debug_Logger
 )
 from my_Packages.db_update import(
     check_exist_table,
     get_top_review
 )
 
-rating_level_G = [0, 0, 0, 0, 0] # from star 1 to 5, google
-rating_level_F = [0, 0, 0, 0, 0] # from star 1 to 5, foodpanda
+info_logger = Debug_Logger('Scraper_modules', 20, 'INFO.log')
+debug_logger = Debug_Logger('Scraper_modules', 10, 'DEBUG.log')
 
 def get_data(web, t_range):
     global driver
-    print('get data...')
+    info_logger.log('Get reviews from web.')
     if web == 'Foodpanda':
         return get_foodpanda(web)
     
@@ -36,7 +37,8 @@ def get_data(web, t_range):
         for list_more_element in more_elemets:
             list_more_element.click()
     except:
-        pass
+        # debug_logger.log('', 30)
+        raise
     
     # xpath = '//*[@id="QA0Szd"]/div/div/div[1]/div[2]/div/div[1]/div/div/div[2]/div[8]/div[1]'
     elements = driver.find_elements(By.XPATH, './/div[@class="jftiEf fontBodyMedium "]')
@@ -70,8 +72,8 @@ def get_data(web, t_range):
             review_time = get_review_abs_time(time_to_check)
         except:
             # text = ''
-            # raise
-            continue
+            raise
+            # continue
         # //*[@id="QA0Szd"]/div/div/div[1]/div[2]/div/div[1]/div/div/div[2]/div[8]/div[22]/div/div/div[4]/div[1]/span[1]
             
         score = data.find_element(
@@ -83,7 +85,7 @@ def get_data(web, t_range):
 
 def get_foodpanda(web):
     global driver
-    print('get_foodpanda...')
+    info_logger.log('get_foodpanda...')
 
     xpath = '//div[@class="info-reviews-modal-review-card"]'
     elements = driver.find_elements(By.CLASS_NAME, 'info-reviews-modal-review-card')
@@ -97,17 +99,6 @@ def get_foodpanda(web):
         stars = score\
                 .find_elements(By.CLASS_NAME, 'rating--star-type-full')
         rating = len(stars)
-        
-        if rating == 1:
-            rating_level_G[0] += 1
-        elif rating == 2:
-            rating_level_G[1] += 1
-        elif rating == 3:
-            rating_level_G[2] += 1
-        elif rating == 4:
-            rating_level_G[3] += 1
-        elif rating == 5:
-            rating_level_G[4] += 1
         
         lst_data.append([text, rating])
 
@@ -124,7 +115,7 @@ def counter(web):
         x = 0
         try:
             # TODO: Change print statement to logging or delete
-            print('Jumping to review tab')
+            info_logger.log('Jumping to review tab.')
             reviewBTN = driver.find_element(By.XPATH, review_btn_xpath)
             reviewBTN.click()
             driver.implicitly_wait(2)
@@ -149,9 +140,9 @@ def counter(web):
             # drop_menu.click()
             # time.sleep(1.5)
         except selenium.common.exceptions.StaleElementReferenceException as sere:
-            print(sere, sere.args)
+            debug_logger.log((sere, sere.args), 30)
         except selenium.common.exceptions.NoSuchElementException as nsee:
-            print(nsee, nsee.args)
+            debug_logger.log((nsee, nsee.args), 30)
         except:
             raise
         else:
@@ -174,7 +165,7 @@ def counter(web):
             result = result.split(' ')
             result = result[x].split('\n')
             counts = int(int(result[0])/10)+1
-            print(counts)
+            info_logger.log(f'{counts} pages.')
             return counts
 
     elif web == 'Foodpanda':
@@ -190,9 +181,9 @@ def counter(web):
             xpath = '//*[@id="info-reviews-content"]/div/div/div[1]/div/div/div[1]/div[3]'
             result = driver.find_element(By.CLASS_NAME, class_name_1).find_element(By.XPATH, xpath).find_element(By.XPATH, class_name_2).text
         except selenium.common.exceptions.StaleElementReferenceException as sere:
-            print(sere, sere.args)
+            debug_logger.log((sere, sere.args), 30)
         except selenium.common.exceptions.NoSuchElementException as nsee:
-            print(nsee, nsee.args)
+            debug_logger.log((nsee, nsee.args), 30)
         else:
             driver.implicitly_wait(2)
             reviewBTN = driver.find_element(By.XPATH, review_btn_xpath)
@@ -206,7 +197,7 @@ def counter(web):
             return int(int(result[0])/10)+1
 
 def scrolling(counter, web):
-    print('scrolling...')
+    info_logger.log('Scrolling...')
 
     global driver
     if web == 'Foodpanda':
@@ -233,7 +224,7 @@ def scrolling(counter, web):
             time.sleep(0.02)
             current_h = review_block.size['height']
             if current_h <= last_h:
-                print('Scrolled tp bottom')
+                info_logger.log('Scrolled to bottom')
                 return
     elif web == 'Googlemaps':
         # # <div class="m6QErb DxyBCb kA9KIf dS8AEf ">
@@ -297,10 +288,10 @@ def scrolling(counter, web):
                 time.sleep(1)
             except selenium.common.exceptions.StaleElementReferenceException as sere:
                 time.sleep(2)
-                # print(sere)
+                debug_logger.log((sere, sere.args), 30)
                 continue
             except selenium.common.exceptions.TimeoutException as te:
-                # print(te)
+                debug_logger.log((te, te.args), 30)
                 continue
             except:
                 raise
@@ -326,7 +317,7 @@ def write_to_xlsx(data, filename, dir, format):
     sub_dir = create_dir(filename)
     # save file into this directory
     filepath = os.path.join(sub_dir, filename) + '.' + format
-    print(f'write to {filepath}...')
+    info_logger.log(f'Write to {filepath}...')
     cols = ['time','rating', 'comment']
     df = pd.DataFrame(data, columns=cols) # this insert the head
     # df = pd.DataFrame(data) # headless column name
@@ -385,8 +376,6 @@ def get_reviews(url: str = None,
         elif time_range[1] not in utils.time_filter_zh:
             raise Exception(f'Argument format must be one of {utils.time_filter_zh}')
 
-    # print(f'Find reviews on {url}...')
-
     try:
         # setup webdriver options
         options = webdriver.ChromeOptions()
@@ -420,11 +409,13 @@ def get_reviews(url: str = None,
         if check_cache:
             cached_path = check_loacal_cache(query=webTitle, query_dir=save_path, file_type=format)
             # cached_path = os.path.join(save_path, webTitle) + f'.{format}'
-            print(f'Already cached: {cached_path}')
+            info_logger.log(f'Already cached: {cached_path}')
 
             if cached_path is not None:
                 return cached_path
-        
+
+        info_logger.log(f'Scraping {webTitle}...')
+
         # count for scrolling
         counts = counter(webname)
 
@@ -436,10 +427,11 @@ def get_reviews(url: str = None,
 
         # write reviews to csv file
         file = write_to_xlsx(data, webTitle, save_path, format)
-        print(f'Your restaurant review file is saved to {file}')
+        info_logger.log(f'Your restaurant review file is saved to {file}')
         return file
+    # TODO: catch more exceptions
     except:
-        print('Failed to scrape web')
+        # print('Failed to scrape web')
         raise
     finally:
         driver.close()

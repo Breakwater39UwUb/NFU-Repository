@@ -2,6 +2,7 @@
 This module contains functions to plot review counts per time
 '''
 import os
+import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 from matplotlib.ticker import MaxNLocator
@@ -21,6 +22,7 @@ ENV = 3
 plt.rcParams['font.sans-serif'] = ['Microsoft JhengHei', 'SimSun']
 plt.rcParams['axes.unicode_minus'] = False
 plt.rc('font', size=22)
+matplotlib.use('agg')
 
 def sort_by_month(data: list):
     '''Count reviews per month

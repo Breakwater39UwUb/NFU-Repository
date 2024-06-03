@@ -103,9 +103,12 @@ def db_upload_file(filename: str,
 
             if text == '':
                 continue
-            # rating = int(rating)
+
+            if len(text) > 510:
+                text = text[:510]
+
             review = (time, rating, text)
-            # print(review)
+
             
             try:
                 cursor.execute(command, review)
@@ -232,8 +235,8 @@ def get_years(table_name: str, json_like: bool=False):
         raise
     finally:
         db.close()
+        years = [{'year': year[0]} for year in years]
         if json_like:
-            years = [{'year': year[0]} for year in years]
             return json.dumps(years, ensure_ascii=False, indent=4)
         return years
 
