@@ -181,9 +181,8 @@ def show_years():
     global review_file
     if request.method == "POST":
         test_ = 'SaveData\麥當勞-虎尾新興餐廳-Google地圖\麥當勞-虎尾新興餐廳-Google地圖.json'
-        years = get_years(test_, True)
-        print(years, 200)
-        return years
+        years = get_years(review_file, True)
+        return (years, 200)
 
 def process_chart_by_month(data: list,
                            label: int,
