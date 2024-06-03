@@ -58,7 +58,7 @@ def check_loacal_cache(query: str, query_dir: str = 'SaveData', file_type: str =
     '''search = query_dir/query/*.type'''
     files = glob.glob(search)
     for file in files:
-        if query in file:
+        if query in file and ('prediction_' not in file):
             return file
 
     return None
