@@ -17,7 +17,7 @@ analysis_page = 'analysis.html'
 chart_html= 'chart.html'
 user_rating = 1
 review_file = ''
-passed = 0
+passed = " "
 
 app = Flask(__name__,
             template_folder=flask_template_path,
@@ -34,7 +34,7 @@ def get_Star():
     '''Get user review rating for multi-class classification'''
     global user_rating
     user_rating  = int(request.get_json())
-    return render_template(predict_page)
+    return render_template(home_page)
 
 # TODO: Remove this API due to it is not accessed
 # Ask 1234AWEOOOOOO before removing
@@ -47,7 +47,7 @@ def get_Passed():
     passed = request.get_json()
     print (passed)
 
-    return render_template(predict_page)
+    return render_template(home_page)
 
 # TODO: Rename this API for better readability
 # TODO: Change main.html to handle renamed API
@@ -111,8 +111,6 @@ def get_Url():
         if YEAR is not None:
             month_range = None
 
-
-    
     global review_file
     try:
         # TODO: file format should select by user
@@ -142,15 +140,18 @@ def get_Url():
 
         for label, name in zip(labels, label_names):
             chart_urls[name] = process_chart_by_month(filtered_data, label, month_range, review_file)
-    
-        return render_template(chart_html,
-                            str1=analysis[0], str2=analysis[1], str3=analysis[2], str4=analysis[3],
-                            Food = chart_urls['Food'],
-                            Price = chart_urls['Price'],
-                            Service = chart_urls['Service'],
-                            Environment = chart_urls['Environment'],
-                            passed = passed
-                            )
+
+        if(passed == 'passed'): # cheak url input
+                return render_template(chart_html,
+                                        str1=analysis[0], 
+                                        str2=analysis[1], 
+                                        str3=analysis[2], 
+                                        str4=analysis[3],
+                                        Food = chart_urls['Food'],
+                                        Price = chart_urls['Price'],
+                                        Service = chart_urls['Service'],
+                                        Environment = chart_urls['Environment'],
+                                        data = data_url)
     # get review on given year
     if YEAR is not None:
         filtered_data = [d for d in predictions if YEAR in d[2].split('/')]
@@ -178,9 +179,10 @@ def show_years():
     
     year format in YYYY/
     '''
-
+    t= request.get_json()
+    print(t)
     global review_file
-    if request.method == "POST":
+    if request.method == "POST" or request.method == "GET":
         YJ_path = review_file.split(sep)
         dir_ = utils.create_dir(YJ_path[1], ['web', 'charts'])
         YJ_path = 'YEARS' + YJ_path[1] + '.json'
@@ -192,8 +194,25 @@ def show_years():
 
         year_file_url = YJ_path.split(sep)
         year_file_url = '/'.join(year_file_url)
-        return (year_file_url, 200)
+        # Opening JSON file
+        f = open('year_file_url')
+        
+        # returns JSON object as 
+        # a dictionary
+        data = json.load(f)
+        
+        # Iterating through the json
+        # list
+        json_list = [ i for i in data[0]]
+        year_list = json.dumps(json_list)
+         # Closing file
+        f.close()
+        return render_template(chart_html, year_list = year_list)
+        
+   
 
+    
+    
 def process_chart_by_month(data: list,
                            label: int,
                            month_range: str,
