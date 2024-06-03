@@ -13,15 +13,15 @@ from my_Packages.utils import (
     check_loacal_cache,
     get_review_abs_time,
     valid_time_interval,
-    create_dir
+    create_dir,
+    Debug_Logger
 )
 from my_Packages.db_update import(
     check_exist_table,
     get_top_review
 )
 
-rating_level_G = [0, 0, 0, 0, 0] # from star 1 to 5, google
-rating_level_F = [0, 0, 0, 0, 0] # from star 1 to 5, foodpanda
+
 
 def get_data(web, t_range):
     global driver
@@ -97,17 +97,6 @@ def get_foodpanda(web):
         stars = score\
                 .find_elements(By.CLASS_NAME, 'rating--star-type-full')
         rating = len(stars)
-        
-        if rating == 1:
-            rating_level_G[0] += 1
-        elif rating == 2:
-            rating_level_G[1] += 1
-        elif rating == 3:
-            rating_level_G[2] += 1
-        elif rating == 4:
-            rating_level_G[3] += 1
-        elif rating == 5:
-            rating_level_G[4] += 1
         
         lst_data.append([text, rating])
 
