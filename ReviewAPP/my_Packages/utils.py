@@ -299,10 +299,21 @@ def read_predictions(FILE_PATH: str):
 class Debug_Logger:
     '''Custom logger class'''
 
-    def __init__(self, logger_name, log_level=logging.DEBUG):
+    def __init__(self, logger_name, log_level=logging.DEBUG, filename='debug.log'):
+        '''
+        logger_name: name of logger
+        log_level: logging level
+            CRITICAL: 50
+            ERROR: 40
+            WARNING: 30
+            INFO: 20
+            DEBUG: 10
+        filename: name of log file
+        '''
         self.logger = logging.getLogger(logger_name)
         self.logger.setLevel(log_level)
         self._setup_console_handler()
+        self._setup_file_handler(filename)
 
     def _setup_console_handler(self):
         console_handler = logging.StreamHandler()
@@ -310,6 +321,13 @@ class Debug_Logger:
         formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
         console_handler.setFormatter(formatter)
         self.logger.addHandler(console_handler)
+
+    def _setup_file_handler(self, filename):
+        file_handler = logging.FileHandler(filename, encoding='utf-8')
+        file_handler.setLevel(logging.DEBUG)
+        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+        file_handler.setFormatter(formatter)
+        self.logger.addHandler(file_handler)
 
     def log(self, message, level=logging.INFO):
         '''

@@ -7,7 +7,7 @@ import my_Packages.review_plot as rplt
 from my_Packages.scraper import get_reviews
 from my_Packages.predictor_1 import review_predict
 from my_Packages.predictor_2 import review_analyze
-from my_Packages.db_update import insert_review, get_years
+from my_Packages.db_update import insert_review, get_years, db_upload_file
 
 flask_template_path = 'web/'	# web/templates/
 home_page = 'main.html'	# main.html
@@ -118,6 +118,11 @@ def get_Url():
         review_file = get_reviews(url=data_url, webname=platform, format='json', check_cache=True)
     except:
         raise Exception('Failed at get_reviews()')
+    
+    try:
+        db_upload_file(review_file)
+    except:
+        raise# Exception('Failed at db_upload_file()')
     
     # TODO: Change filename to dynamic to avoid redundant image creation
     # Check prediction cache for plot
