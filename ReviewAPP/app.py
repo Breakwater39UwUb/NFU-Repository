@@ -146,8 +146,8 @@ def get_Url():
         for label, name in zip(labels, label_names):
             chart_urls[name] = process_chart_by_month(filtered_data, label, month_range, review_file)
 
-        if(passed == 'passed'): # cheak url input
-                return render_template(chart_html,
+        # if(passed == 'passed'): # cheak url input
+        return render_template(chart_html,
                                         str1=analysis[0], 
                                         str2=analysis[1], 
                                         str3=analysis[2], 
@@ -199,20 +199,7 @@ def show_years():
 
         year_file_url = YJ_path.split(sep)
         year_file_url = '/'.join(year_file_url)
-        # Opening JSON file
-        f = open('year_file_url')
-        
-        # returns JSON object as 
-        # a dictionary
-        data = json.load(f)
-        
-        # Iterating through the json
-        # list
-        json_list = [ i for i in data[0]]
-        year_list = json.dumps(json_list)
-         # Closing file
-        f.close()
-        return render_template(chart_html, year_list = year_list)
+        return (year_file_url,200)
         
    
 
