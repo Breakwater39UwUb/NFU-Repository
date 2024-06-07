@@ -146,10 +146,14 @@ def plot_by_label(data: list,
             label_counts[time] += 0
 
     # Sort times and counts for plotting
+    plt.figure(figsize=[18, 10])
     times, counts = zip(*sorted(counts.items()))
+    plt.ylim(0, max(counts) + 10)
+    # plt.xlim(0, max(times) + 10)
     times, label_counts = zip(*sorted(label_counts.items()))
     fig, ax = plt.subplots(figsize=(12, 6))
     # ax.plot(times, counts)
+    ax.set_xticklabels(ax.get_xticklabels(), rotation=20)
     ax.xaxis.set_major_locator(mdates.MonthLocator())
     ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y/%m'))
     ax.yaxis.set_major_locator(MaxNLocator(integer=True))
@@ -159,6 +163,7 @@ def plot_by_label(data: list,
     global LABELS
     plt.bar(times, counts, bar_width, color='red', label='總評論數量')
     plt.plot(times, label_counts, label=f'標籤: {LABELS[label]}')
+    plt.tight_layout()
     plt.xlabel('月份')
     plt.ylabel('評論數量')
     plt.legend()
