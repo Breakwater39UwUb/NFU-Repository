@@ -390,7 +390,10 @@
 
 
     <div style="display:none;" class="form_box" id="myDiv9">
-        <h2>價格標籤數量統計</h2>
+        <h3>價格標籤數量統計</h3>
+        <br>
+        <br>
+        <br>
         <img src={{Price}} width="800" heigh="800" alt="一張圖片">
         <form action="#">
             <h1>長條圖為該月份的評論數量，折線圖表示選擇的標籤在該月的數量</h1>
@@ -400,7 +403,10 @@
 
 
     <div style="display:none;" class="form_box" id="myDiv10">
-        <h2>環境標籤數量統計</h2>
+        <h3>環境標籤數量統計</h3>
+        <br>
+        <br>
+        <br>
         <img src={{Environment}} width="800" heigh="800" alt="一張圖片">
         <form action="#">
             <h1>長條圖為該月份的評論數量，折線圖表示選擇的標籤在該月的數量</h1>
@@ -409,7 +415,10 @@
     </div>
 
     <div style="display:none;" class="form_box" id="myDiv11">
-        <h2>餐點標籤數量統計</h2>
+        <h3>餐點標籤數量統計</h3>
+        <br>
+        <br>
+        <br>
         <img src={{Food}} width="800" heigh="800" alt="一張圖片">
         <form action="#">
             <h1>長條圖為該月份的評論數量 ， 折線圖表示選擇的標籤在該月的數量</h1>
@@ -419,7 +428,10 @@
 
 
     <div style="display:none;" class="form_box" id="myDiv7">
-        <h2>服務標籤數量統計</h2>
+        <h3>服務標籤數量統計</h3>
+        <br>
+        <br>
+        <br>
         <img src={{Service}} width="800" heigh="800" alt="一張圖片">
         <form action="#">
             <h1>長條圖為該月份的評論數量，折線圖表示選擇的標籤在該月的數量</h1>
@@ -499,6 +511,8 @@
 
 
 
+
+
         SignupBtn.onclick = function() {
             Show.style.display = "block"
             NameField2.type = "text";
@@ -516,8 +530,15 @@
         document.getElementById("button1").style.fontSize = "100%";
         document.getElementById("button2").style.fontSize = "100%";
         document.getElementById("button3").style.fontSize = "100%";
+        var slider = document.getElementById("myRange");
+        var output = document.getElementById("demo");
 
+        value.innerHTML = slider.value; // Display the default slider value
 
+        // Update the current slider value (each time you drag the slider handle)
+        slider.oninput = function() {
+            value.innerHTML = this.value;
+        }
 
         function toggleDiv() {
             let value1 = document.getElementById("select1").value;
