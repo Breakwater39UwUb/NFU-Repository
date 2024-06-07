@@ -122,7 +122,8 @@ def get_Url():
     try:
         db_upload_file(review_file)
     except:
-        raise# Exception('Failed at db_upload_file()')
+        pass
+        # raise# Exception('Failed at db_upload_file()')
     
     # TODO: Change filename to dynamic to avoid redundant image creation
     # Check prediction cache for plot
@@ -157,18 +158,18 @@ def get_Url():
                                         Service = chart_urls['Service'],
                                         Environment = chart_urls['Environment'],
                                         data = data_url)
-    # get review on given year
-    if YEAR is not None:
-        filtered_data = [d for d in predictions if YEAR in d[2].split('/')]
+    # # get review on given year
+    # if YEAR is not None:
+    #     filtered_data = [d for d in predictions if YEAR in d[2].split('/')]
 
-        chart_url = rplt.sort_by_year(filtered_data, YEAR, review_file)
-        chart_url = chart_url.split(sep)[1:]
-        chart_url = '/'.join(chart_url)
-        chart_url = url_for('serve_image', filename=chart_url)
-        # return render_template(chart_html,
-        #                        str1=analysis[0], str2=analysis[1], str3=analysis[2], str4=analysis[3],
-        #                        YEARLY = chart_url)
-        return (chart_url, 200)
+    #     chart_url = rplt.sort_by_year(filtered_data, YEAR, review_file)
+    #     chart_url = chart_url.split(sep)[1:]
+    #     chart_url = '/'.join(chart_url)
+    #     chart_url = url_for('serve_image', filename=chart_url)
+    #     # return render_template(chart_html,
+    #     #                        str1=analysis[0], str2=analysis[1], str3=analysis[2], str4=analysis[3],
+    #     #                        YEARLY = chart_url)
+    #     return (chart_url, 200)
 
     
 
